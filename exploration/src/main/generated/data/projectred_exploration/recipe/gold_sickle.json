@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "M": {
-      "tag": "c:ingots/gold"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "M": "#c:ingots/gold",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     " M ",
@@ -15,7 +10,6 @@
     "SM "
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:gold_sickle"
   }
 }

@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:raw_materials/tin"
-    }
+    "S": "#c:raw_materials/tin"
   },
   "pattern": [
     "SSS",
@@ -12,7 +9,6 @@
     "SSS"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:raw_tin_block"
   }
 }

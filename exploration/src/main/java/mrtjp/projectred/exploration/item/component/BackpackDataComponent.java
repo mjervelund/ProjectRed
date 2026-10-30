@@ -108,7 +108,7 @@ public class BackpackDataComponent implements TooltipProvider {
 
     //region TooltipProvider
     @Override
-    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltip, TooltipFlag flag) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltip, TooltipFlag flag, net.minecraft.core.component.DataComponentGetter components) {
         if (isOpened) return; // Don't show tooltip if backpack is opened
         tooltip.accept(Component.literal(itemCount + " / 27").withStyle(ChatFormatting.GRAY));
     }

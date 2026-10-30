@@ -33,8 +33,7 @@ public class ElectrotineOreBlock extends DropExperienceBlock {
 
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
-    public static final DustParticleOptions ELECTROTINE_PARTICLE = new DustParticleOptions(
-            new Vector3f(15 / 255F, 103 / 255F, 178 / 255F), 0.6F);
+    public static final DustParticleOptions ELECTROTINE_PARTICLE = new DustParticleOptions(0x0F67B2, 0.6F);
 
     public ElectrotineOreBlock(IntProvider xpRange, BlockBehaviour.Properties properties) {
         super(xpRange, properties.lightLevel(s -> s.getValue(LIT) ? 9 : 0));
@@ -95,7 +94,7 @@ public class ElectrotineOreBlock extends DropExperienceBlock {
 
         for (Direction direction : Direction.values()) {
             BlockPos blockpos = pos.relative(direction);
-            if (!world.getBlockState(blockpos).isSolidRender(world, blockpos)) {
+            if (!world.getBlockState(blockpos).isSolidRender()) {
                 Direction.Axis axis = direction.getAxis();
                 double d1 = axis == Direction.Axis.X ? 0.5D + d0 * (double) direction.getStepX() : (double) random.nextFloat();
                 double d2 = axis == Direction.Axis.Y ? 0.5D + d0 * (double) direction.getStepY() : (double) random.nextFloat();

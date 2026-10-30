@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "C": {
-      "item": "projectred_core:woven_cloth"
-    },
-    "D": {
-      "tag": "c:dyes/light_gray"
-    }
+    "C": "projectred_core:woven_cloth",
+    "D": "#c:dyes/light_gray"
   },
   "pattern": [
     "CCC",
@@ -15,7 +10,6 @@
     "CCC"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:light_gray_backpack"
   }
 }

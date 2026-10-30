@@ -22,15 +22,15 @@ public class ExplorationBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider lookup) {
         tag(BlockTags.WALLS).add(
-                MARBLE_WALL.get(),
-                MARBLE_BRICK_WALL.get(),
-                BASALT_WALL.get(),
-                BASALT_COBBLE_WALL.get(),
-                BASALT_BRICK_WALL.get(),
-                RUBY_BLOCK_WALL.get(),
-                SAPPHIRE_BLOCK_WALL.get(),
-                PERIDOT_BLOCK_WALL.get(),
-                ELECTROTINE_BLOCK_WALL.get());
+                MARBLE_WALL.get().builtInRegistryHolder().key(),
+                MARBLE_BRICK_WALL.get().builtInRegistryHolder().key(),
+                BASALT_WALL.get().builtInRegistryHolder().key(),
+                BASALT_COBBLE_WALL.get().builtInRegistryHolder().key(),
+                BASALT_BRICK_WALL.get().builtInRegistryHolder().key(),
+                RUBY_BLOCK_WALL.get().builtInRegistryHolder().key(),
+                SAPPHIRE_BLOCK_WALL.get().builtInRegistryHolder().key(),
+                PERIDOT_BLOCK_WALL.get().builtInRegistryHolder().key(),
+                ELECTROTINE_BLOCK_WALL.get().builtInRegistryHolder().key());
 
         tag(Tags.Blocks.ORES)
                 .addTag(RUBY_ORES_BLOCK_TAG)

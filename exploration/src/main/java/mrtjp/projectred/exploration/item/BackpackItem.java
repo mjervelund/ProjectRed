@@ -9,7 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -45,12 +47,12 @@ public class BackpackItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public InteractionResult use(Level world, Player player, InteractionHand hand) {
         if (!world.isClientSide()) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             openGui(serverPlayer);
         }
-        return InteractionResultHolder.success(player.getItemInHand(hand));
+        return InteractionResult.SUCCESS;
     }
 
     private void openGui(ServerPlayer player) {
@@ -60,8 +62,8 @@ public class BackpackItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        stack.addToTooltip(ExplorationDataComponents.BACKPACK_DATA_COMPONENT, context, tooltip::add, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+        stack.addToTooltip(ExplorationDataComponents.BACKPACK_DATA_COMPONENT, context, display, tooltip, flag);
     }
 
     public DyeColor getDyeColor() {

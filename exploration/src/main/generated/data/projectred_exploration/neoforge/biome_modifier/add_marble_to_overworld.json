@@ -1,0 +1,7 @@
+{
+  "type": "projectred_exploration:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "configKey": "marble_cave",
+  "features": "projectred_exploration:marble",
+  "step": "underground_ores"
+}

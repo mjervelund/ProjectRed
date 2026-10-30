@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "G": {
-      "item": "projectred_exploration:wool_gin"
-    },
-    "W": {
-      "tag": "minecraft:wool"
-    }
+    "G": "projectred_exploration:wool_gin",
+    "W": "#minecraft:wool"
   },
   "pattern": [
     "GW"

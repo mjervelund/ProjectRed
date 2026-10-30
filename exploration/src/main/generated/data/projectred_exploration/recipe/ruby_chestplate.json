@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "M": {
-      "tag": "c:gems/ruby"
-    }
+    "M": "#c:gems/ruby"
   },
   "pattern": [
     "M M",
@@ -12,7 +9,6 @@
     "MMM"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:ruby_chestplate"
   }
 }

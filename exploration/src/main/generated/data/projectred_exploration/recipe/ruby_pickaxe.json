@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "M": {
-      "tag": "c:gems/ruby"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "M": "#c:gems/ruby",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "MMM",
@@ -15,7 +10,6 @@
     " S "
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:ruby_pickaxe"
   }
 }

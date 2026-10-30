@@ -18,7 +18,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 import java.util.List;
 import java.util.Set;
@@ -95,14 +95,14 @@ public class ExplorationLootTableProvider extends LootTableProvider {
             dropSelf(ELECTROTINE_BLOCK_WALL.get());
         }
 
-        private LootTable.Builder createOreMultiDrops(Block oreBlock, ItemLike dropItem, float min, float max) {
-            HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        private LootTable.Builder createOreMultiDrops(Block oreBlock, ItemLike dropItem, int min, int max) {
+            var registrylookup = this.enchantments;
             return createSilkTouchDispatchTable(
                     oreBlock,
                     this.applyExplosionDecay(
                             oreBlock,
                             LootItem.lootTableItem(dropItem)
-                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
+                                    .apply(SetItemCountFunction.setCount(ContextIntProviders.between(min, max)))
                                     .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
                     )
             );

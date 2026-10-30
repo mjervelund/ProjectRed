@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
-    {
-      "item": "projectred_exploration:sapphire_block"
-    }
+    "projectred_exploration:sapphire_block"
   ],
   "result": {
     "count": 9,

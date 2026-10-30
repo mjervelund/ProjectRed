@@ -205,6 +205,22 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
         return degrees % 360 == 0 ? variant : variant.withXRot(Quadrant.parseJson(degrees % 360));
     }
 
+    /** Wall block state and models (post, low and tall sides) textured with {@code texture}. */
+    protected void wallBlock(Block block, Identifier texture) {
+        TextureMapping mapping = new TextureMapping().put(TextureSlot.WALL, new Material(texture));
+        Identifier post = ModelTemplates.WALL_POST.create(block, mapping, blockModels.modelOutput);
+        Identifier low = ModelTemplates.WALL_LOW_SIDE.create(block, mapping, blockModels.modelOutput);
+        Identifier tall = ModelTemplates.WALL_TALL_SIDE.create(block, mapping, blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createWall(block,
+                BlockModelGenerators.plainVariant(post), BlockModelGenerators.plainVariant(low), BlockModelGenerators.plainVariant(tall)));
+    }
+
+    /** Wall item using vanilla's wall inventory model. */
+    protected void wallItem(Block wall, Identifier texture) {
+        Identifier model = ModelTemplates.WALL_INVENTORY.create(wall, new TextureMapping().put(TextureSlot.WALL, new Material(texture)), itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(wall.asItem(), ItemModelUtils.plainModel(model));
+    }
+
     /** One variant per block state, like the old {@code getVariantBuilder(block).forAllStates(...)}. */
     protected void forAllStates(Block block, Function<BlockState, Variant> variants) {
         Map<String, BlockStateModel.Unbaked> models = new LinkedHashMap<>();

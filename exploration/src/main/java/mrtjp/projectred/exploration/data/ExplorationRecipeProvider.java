@@ -161,7 +161,7 @@ public class ExplorationRecipeProvider extends RecipeProvider {
             backpackRecipe(getBackpackByColor(i));
         }
 
-        special(Identifier.fromNamespaceAndPath(MOD_ID, "backpack_dye"), () -> new BackpackDyeRecipe(CraftingBookCategory.MISC));
+        special(Identifier.fromNamespaceAndPath(MOD_ID, "backpack_dye"), () -> BackpackDyeRecipe.INSTANCE);
     }
 
     private void oreSmeltingRecipe(ItemLike result, Collection<ItemLike> sources, float xp) {

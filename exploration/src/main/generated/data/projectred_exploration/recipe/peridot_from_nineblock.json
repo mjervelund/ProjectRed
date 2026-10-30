@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
-    {
-      "item": "projectred_exploration:peridot_block"
-    }
+    "projectred_exploration:peridot_block"
   ],
   "result": {
     "count": 9,

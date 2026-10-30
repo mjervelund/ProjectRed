@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "M": {
-      "tag": "c:gems/peridot"
-    }
+    "M": "#c:gems/peridot"
   },
   "pattern": [
     "M M",
@@ -12,7 +9,6 @@
     "MMM"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:peridot_chestplate"
   }
 }

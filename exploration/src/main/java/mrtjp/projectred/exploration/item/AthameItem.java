@@ -13,7 +13,7 @@ public class AthameItem extends Item {
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity player) {
-        return super.hurtEnemy(stack, target, player);
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity player) {
+        super.hurtEnemy(stack, target, player);
     }
 }

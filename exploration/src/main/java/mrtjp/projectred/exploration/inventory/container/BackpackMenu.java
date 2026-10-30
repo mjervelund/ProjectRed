@@ -10,7 +10,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -64,7 +64,7 @@ public class BackpackMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
+    public void clicked(int slotId, int dragType, ContainerInput clickType, Player player) {
         // Required because vanilla's shyte handling of number hotbar quick swap.
         // Apparently it only asks the non-hotbar slot if it can accept the item, but it does not ask the
         // hotbar slot (corresponding to number pressed) if it can take the stack (which would be denied by the custom slot class's canTakeStack implemented above).
@@ -76,13 +76,13 @@ public class BackpackMenu extends AbstractContainerMenu {
 
         if (isHotbar(slotId)) {
             int hotbarIndex = slotId - 27;
-            if (hotbarIndex == player.getInventory().selected) {
+            if (hotbarIndex == player.getInventory().getSelectedSlot()) {
                 return;
             }
         }
 
-        if (clickType == ClickType.SWAP) {
-            if (dragType == player.getInventory().selected) {
+        if (clickType == ContainerInput.SWAP) {
+            if (dragType == player.getInventory().getSelectedSlot()) {
                 return;
             }
         }
@@ -169,7 +169,7 @@ public class BackpackMenu extends AbstractContainerMenu {
         @Override
         public boolean mayPickup(Player player) {
             // Dont allow pickup if this is the slot containing the selected backpack
-            return getSlotIndex() != player.getInventory().selected;
+            return getSlotIndex() != player.getInventory().getSelectedSlot();
         }
     }
 

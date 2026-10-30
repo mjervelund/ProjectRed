@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "item": "projectred_exploration:basalt"
-    }
+    "B": "projectred_exploration:basalt"
   },
   "pattern": [
     "BB",

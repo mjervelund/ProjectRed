@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "M": {
-      "tag": "c:gems/diamond"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "M": "#c:gems/diamond",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     " M ",
@@ -15,7 +10,6 @@
     "SM "
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:diamond_sickle"
   }
 }

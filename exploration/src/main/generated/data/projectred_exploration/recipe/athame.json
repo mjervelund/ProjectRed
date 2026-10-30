@@ -1,20 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:ingots/silver"
-    },
-    "W": {
-      "tag": "c:rods/wooden"
-    }
+    "S": "#c:ingots/silver",
+    "W": "#c:rods/wooden"
   },
   "pattern": [
     "S",
     "W"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:athame"
   }
 }

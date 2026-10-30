@@ -144,8 +144,6 @@ public class ExplorationItemModelProvider extends ProjectRedModelProvider {
     }
 
     private void wallItemBlock(Block wallBlock, Block textureBlock) {
-        getSimple(wallBlock)
-                .noTexture()
-                .parent(wallInventory(BuiltInRegistries.BLOCK.getKey(wallBlock) + "_inventory", blockTexture(textureBlock)));
+        wallItem(wallBlock, blockTexture(textureBlock));
     }
 }

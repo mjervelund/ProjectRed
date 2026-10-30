@@ -1,6 +1,5 @@
 package mrtjp.projectred.exploration.data;
 
-import codechicken.microblock.init.CBMicroblockTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
@@ -85,12 +84,12 @@ public class ExplorationItemTagsProvider extends ItemTagsProvider {
         tag(RAW_TIN_TAG).add(RAW_TIN_ITEM.get().builtInRegistryHolder().key());
         tag(RAW_SILVER_TAG).add(RAW_SILVER_ITEM.get().builtInRegistryHolder().key());
 
-        tag(RUBY_ORES_BLOCK_ITEM_TAG).add(RUBY_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_RUBY_ORE_BLOCK.get().asItem());
-        tag(SAPPHIRE_ORES_BLOCK_ITEM_TAG).add(SAPPHIRE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_SAPPHIRE_ORE_BLOCK.get().asItem());
-        tag(PERIDOT_ORES_BLOCK_ITEM_TAG).add(PERIDOT_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_PERIDOT_ORE_BLOCK.get().asItem());
-        tag(TIN_ORES_BLOCK_ITEM_TAG).add(TIN_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_TIN_ORE_BLOCK.get().asItem());
-        tag(SILVER_ORES_BLOCK_ITEM_TAG).add(SILVER_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_SILVER_ORE_BLOCK.get().asItem());
-        tag(ELECTROTINE_ORES_BLOCK_ITEM_TAG).add(ELECTROTINE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_ELECTROTINE_ORE_BLOCK.get().asItem());
+        tag(RUBY_ORES_BLOCK_ITEM_TAG).add(RUBY_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_RUBY_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(SAPPHIRE_ORES_BLOCK_ITEM_TAG).add(SAPPHIRE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_SAPPHIRE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(PERIDOT_ORES_BLOCK_ITEM_TAG).add(PERIDOT_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_PERIDOT_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(TIN_ORES_BLOCK_ITEM_TAG).add(TIN_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_TIN_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(SILVER_ORES_BLOCK_ITEM_TAG).add(SILVER_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_SILVER_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(ELECTROTINE_ORES_BLOCK_ITEM_TAG).add(ELECTROTINE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key()).add(DEEPSLATE_ELECTROTINE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key());
 
         tag(MARBLE_BLOCK_ITEM_TAG).add(MARBLE_BLOCK.get().asItem().builtInRegistryHolder().key());
         tag(BASALT_BLOCK_ITEM_TAG).add(BASALT_BLOCK.get().asItem().builtInRegistryHolder().key());
@@ -119,11 +118,5 @@ public class ExplorationItemTagsProvider extends ItemTagsProvider {
         tag(GREEN_BACKPACK_TAG).add(GREEN_BACKPACK.get().builtInRegistryHolder().key());
         tag(RED_BACKPACK_TAG).add(RED_BACKPACK.get().builtInRegistryHolder().key());
         tag(BLACK_BACKPACK_TAG).add(BLACK_BACKPACK.get().builtInRegistryHolder().key());
-
-        tag(CBMicroblockTags.Items.TOOL_SAW)
-                .add(GOLD_SAW.get().builtInRegistryHolder().key())
-                .add(RUBY_SAW.get().builtInRegistryHolder().key())
-                .add(SAPPHIRE_SAW.get().builtInRegistryHolder().key())
-                .add(PERIDOT_SAW.get().builtInRegistryHolder().key());
     }
 }

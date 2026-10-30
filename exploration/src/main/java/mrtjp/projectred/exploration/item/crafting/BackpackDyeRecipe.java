@@ -4,10 +4,8 @@ import mrtjp.projectred.exploration.init.ExplorationItems;
 import mrtjp.projectred.exploration.init.ExplorationRecipeSerializers;
 import mrtjp.projectred.exploration.item.BackpackItem;
 import mrtjp.projectred.exploration.item.component.BackpackDataComponent;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,8 +14,9 @@ import net.neoforged.neoforge.common.Tags;
 
 public class BackpackDyeRecipe extends CustomRecipe {
 
-    public BackpackDyeRecipe(CraftingBookCategory category) {
-        super(category);
+    public static final BackpackDyeRecipe INSTANCE = new BackpackDyeRecipe();
+
+    private BackpackDyeRecipe() {
     }
 
     @Override
@@ -53,7 +52,7 @@ public class BackpackDyeRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput inventory, HolderLookup.Provider registryAccess) {
+    public ItemStack assemble(CraftingInput inventory) {
         ItemStack backpack = ItemStack.EMPTY;
         ItemStack dye = ItemStack.EMPTY;
         int itemCount = 0;
@@ -85,12 +84,7 @@ public class BackpackDyeRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean canCraftInDimensions(int x, int y) {
-        return x * y >= 2;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<BackpackDyeRecipe> getSerializer() {
         return ExplorationRecipeSerializers.BACKPACK_DYE_RECIPE_SERIALIZER.get();
     }
 }

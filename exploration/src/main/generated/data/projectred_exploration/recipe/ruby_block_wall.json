@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:storage_blocks/ruby"
-    }
+    "S": "#c:storage_blocks/ruby"
   },
   "pattern": [
     "SSS",

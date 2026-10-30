@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:storage_blocks/peridot"
-    }
+    "S": "#c:storage_blocks/peridot"
   },
   "pattern": [
     "SSS",

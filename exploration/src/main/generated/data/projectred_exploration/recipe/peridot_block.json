@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:gems/peridot"
-    }
+    "S": "#c:gems/peridot"
   },
   "pattern": [
     "SSS",
@@ -12,7 +9,6 @@
     "SSS"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_exploration:peridot_block"
   }
 }
