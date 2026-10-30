@@ -348,8 +348,8 @@ public abstract class ArrayGatePart extends RedstoneGatePart implements IRedwire
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            signal1 = tag.getByte("s1");
-            signal2 = tag.getByte("s2");
+            signal1 = tag.getByteOr("s1", (byte) 0);
+            signal2 = tag.getByteOr("s2", (byte) 0);
         }
 
         @Override
@@ -382,7 +382,7 @@ public abstract class ArrayGatePart extends RedstoneGatePart implements IRedwire
         }
 
         protected void sendSignalUpdate() {
-            sendUpdate(KEY_SIGNAL, w -> w.writeByte(signal1).writeByte(signal2));
+            sendUpdateData(KEY_SIGNAL, w -> w.writeByte(signal1).writeByte(signal2));
         }
         //endregion
 
@@ -569,7 +569,7 @@ public abstract class ArrayGatePart extends RedstoneGatePart implements IRedwire
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            signal = tag.getByte("signal");
+            signal = tag.getByteOr("signal", (byte) 0);
         }
 
         @Override
@@ -599,7 +599,7 @@ public abstract class ArrayGatePart extends RedstoneGatePart implements IRedwire
         }
 
         protected void sendSignalUpdate() {
-            sendUpdate(KEY_SIGNAL, w -> w.writeByte(signal));
+            sendUpdateData(KEY_SIGNAL, w -> w.writeByte(signal));
         }
         //endregion
 

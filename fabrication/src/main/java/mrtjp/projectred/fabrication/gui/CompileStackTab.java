@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
@@ -14,7 +15,7 @@ import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ScrollBarNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class CompileStackTab extends AbstractGuiNode implements ICompileOverlayR
         ctnListNode.setNodeList(execStack);
     }
 
-    private void renderCompileTreeNode(ICCompilerLog.CompileTreeNode node, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    private void renderCompileTreeNode(ICCompilerLog.CompileTreeNode node, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         ccrs.reset();
         ccrs.bind(ICRenderTypes.selectionRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba(200);
@@ -77,7 +78,7 @@ public class CompileStackTab extends AbstractGuiNode implements ICompileOverlayR
 
     //region ICompileTabOverlayRenderer
     @Override
-    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         for (ICCompilerLog.CompileTreeNode node : editor.getStateMachine().getCompilerLog().getCurrentStack()) {
             renderCompileTreeNode(node, ccrs, getter, matrixStack);
         }

@@ -40,7 +40,7 @@ public abstract class FramedRedwirePart extends BaseCenterWirePart implements IR
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        signal = tag.getByte("signal");
+        signal = tag.getByteOr("signal", (byte) 0);
     }
 
     @Override
@@ -68,7 +68,7 @@ public abstract class FramedRedwirePart extends BaseCenterWirePart implements IR
     }
 
     protected void sendSignalUpdate() {
-        sendUpdate(KEY_SIGNAL, p -> p.writeByte(signal));
+        sendUpdateData(KEY_SIGNAL, p -> p.writeByte(signal));
     }
 
     @Override

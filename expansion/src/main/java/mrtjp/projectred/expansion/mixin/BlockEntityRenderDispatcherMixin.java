@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.expansion.MovingStructureInfo;
 import mrtjp.projectred.expansion.MovementManager;
 import mrtjp.projectred.expansion.client.MovementClientRegistry;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,13 +17,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class BlockEntityRenderDispatcherMixin {
 
     @Redirect(
-            method = "setupAndRender(Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;Lnet/minecraft/world/level/block/entity/BlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V",
+            method = "setupAndRender(Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderer;Lnet/minecraft/world/level/block/entity/BlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/RecordingBufferSource;)V",
             at = @At(
                     value = "INVOKE",
-                    target = "net/minecraft/client/renderer/blockentity/BlockEntityRenderer.render (Lnet/minecraft/world/level/block/entity/BlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;II)V"
+                    target = "net/minecraft/client/renderer/blockentity/BlockEntityRenderer.render (Lnet/minecraft/world/level/block/entity/BlockEntity;FLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/RecordingBufferSource;II)V"
             )
     )
-    private static <E extends BlockEntity> void wrapSetupAndRender(BlockEntityRenderer<E> renderer, E blockEntity, float partialTicks, PoseStack pStack, MultiBufferSource buffers, int packedLight, int packedOverlay) {
+    private static <E extends BlockEntity> void wrapSetupAndRender(BlockEntityRenderer<E> renderer, E blockEntity, float partialTicks, PoseStack pStack, RecordingBufferSource buffers, int packedLight, int packedOverlay) {
 
         if (blockEntity.getLevel() == null) {
             // Call wrapped target and bail

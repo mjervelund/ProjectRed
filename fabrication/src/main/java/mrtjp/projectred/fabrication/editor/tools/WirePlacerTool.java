@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -16,7 +17,7 @@ import mrtjp.projectred.fabrication.gui.ICRenderTypes;
 import mrtjp.projectred.transmission.client.WireModelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -187,7 +188,7 @@ public class WirePlacerTool extends BaseICEditorTool {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
         if (!isFirstHit && selectedPositionsList.isEmpty()) return;
 

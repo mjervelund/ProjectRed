@@ -6,7 +6,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.fengine.TileCoord;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
@@ -54,7 +54,7 @@ public class NoOutputsError extends CompileProblem {
     }
 
     @Override
-    public void renderOverlay(Vector3 mousePosition, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(Vector3 mousePosition, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
     }
 }

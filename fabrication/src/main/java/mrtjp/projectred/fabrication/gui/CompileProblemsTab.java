@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,7 +15,7 @@ import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ScrollBarNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -62,7 +63,7 @@ public class CompileProblemsTab extends AbstractGuiNode implements ICompileOverl
     }
 
     //region ICompileTabOverlayRenderer
-    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         ccrs.reset();
         ccrs.bind(ICRenderTypes.selectionRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
 

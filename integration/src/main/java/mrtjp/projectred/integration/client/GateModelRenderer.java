@@ -10,7 +10,7 @@ import mrtjp.projectred.integration.GateType;
 import mrtjp.projectred.integration.part.GatePart;
 import mrtjp.projectred.integration.part.IGateRenderData;
 import mrtjp.projectred.lib.VecLib;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -105,7 +105,7 @@ public class GateModelRenderer {
         renderDynamic(ccrs, key, t, null, null, 0, 0, partialFrame);
     }
 
-    public void renderDynamic(CCRenderState ccrs, IGateRenderData key, Transformation t, @Nullable PoseStack mStack, @Nullable MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+    public void renderDynamic(CCRenderState ccrs, IGateRenderData key, Transformation t, @Nullable PoseStack mStack, @Nullable RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
         GateRenderer r = getRenderer(key.getRenderIndex());
         if (r.hasSpecials()) {
             Transformation t2 = VecLib.orientT(key.getOrientation()).with(t);
@@ -123,7 +123,7 @@ public class GateModelRenderer {
         renderInventory(ccrs, stack, renderIndex, orient, t, null, null, 0, 0);
     }
 
-    public void renderInventory(CCRenderState ccrs, @Nullable ItemStack stack, int renderIndex, int orient, Transformation t, @Nullable PoseStack mStack, @Nullable MultiBufferSource buffers, int packedLight, int packedOverlay) {
+    public void renderInventory(CCRenderState ccrs, @Nullable ItemStack stack, int renderIndex, int orient, Transformation t, @Nullable PoseStack mStack, @Nullable RecordingBufferSource buffers, int packedLight, int packedOverlay) {
         GateRenderer r = getRenderer(renderIndex);
         r.prepareInventory(stack);
         r.renderStatic(ccrs, orient, t);
@@ -237,7 +237,7 @@ public class GateModelRenderer {
         public void renderDynamic(CCRenderState ccrs, Transformation t) {
         }
 
-        public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+        public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
         }
     }
 
@@ -1754,7 +1754,7 @@ public class GateModelRenderer {
         }
 
         @Override
-        public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+        public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
             buttons.renderLights(ccrs, lightPos, mStack, buffers, t);
         }
     }

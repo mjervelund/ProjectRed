@@ -10,7 +10,7 @@ import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.engine.BaseTile;
 import net.covers1624.quack.collection.FastStream;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -206,7 +206,7 @@ public class InteractTool extends BaseICEditorTool {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
         if (!isFirstHit) return;
 

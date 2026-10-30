@@ -60,7 +60,7 @@ public class BatteryBoxBlockEntity extends LowLoadPoweredBlockEntity {
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
-        powerStored = tag.getInt("storage");
+        powerStored = tag.getIntOr("storage", 0);
         inventory.loadFrom(tag, "inventory", lookupProvider);
     }
 

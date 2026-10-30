@@ -39,7 +39,7 @@ public abstract class BasePneumaticDeviceBlockEntity extends BaseDeviceBlockEnti
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
-        itemQueue.load(tag.getCompound("queue"), lookupProvider);
+        itemQueue.load(tag.getCompoundOrEmpty("queue"), lookupProvider);
     }
     //endregion
 

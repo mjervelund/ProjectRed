@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
@@ -13,7 +14,7 @@ import mrtjp.projectred.lib.Vec2;
 import mrtjp.projectred.redui.ViewportRenderNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 
 import java.util.Iterator;
@@ -167,7 +168,7 @@ public class ICRenderNode extends ViewportRenderNode {
     protected void renderInViewport(PoseStack renderStack, Vec2 ndcMouse, float partialFrame, boolean isFirstHit) {
 
         CCRenderState ccrs = CCRenderState.instance();
-        MultiBufferSource.BufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
+        RecordingBufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
 
         Vector3 worldPos = ndcMouseToWorld(ndcMouse);
 
@@ -194,7 +195,7 @@ public class ICRenderNode extends ViewportRenderNode {
             for (var entry : editor.getTileMap().getTilesOnLayer(y)) {
                 renderStack.pushPose();
                 renderStack.translate(entry.getKey().x, y, entry.getKey().z);
-                ccrs.bind(ICRenderTypes.layersRenderType, getter, renderStack);
+                getter.bind(ccrs, ICRenderTypes.layersRenderType, renderStack);
 
                 //TODO [1.21.1] Is this valid? Minecraft.getInstance().getPartialTick() -> partialFrame? Why was partialFrame not used here before?
                 entry.getValue().renderTile(ccrs, RedundantTransformation.INSTANCE, partialFrame);
@@ -293,7 +294,7 @@ public class ICRenderNode extends ViewportRenderNode {
 
         default void layerChanged(ICRenderNode renderNode, int previousLayer, int newLayer) { }
 
-        void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack);
+        void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack);
 
         void buildTooltip(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, List<Component> tooltip);
     }

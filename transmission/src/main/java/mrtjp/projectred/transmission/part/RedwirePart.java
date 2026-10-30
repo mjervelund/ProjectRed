@@ -42,7 +42,7 @@ public abstract class RedwirePart extends BaseFaceWirePart implements IRedstoneP
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        signal = tag.getByte("signal");
+        signal = tag.getByteOr("signal", (byte) 0);
     }
 
     @Override
@@ -72,7 +72,7 @@ public abstract class RedwirePart extends BaseFaceWirePart implements IRedstoneP
     }
 
     protected void sendSignalUpdate() {
-        sendUpdate(KEY_SIGNAL, p -> p.writeByte(signal));
+        sendUpdateData(KEY_SIGNAL, p -> p.writeByte(signal));
     }
     //endregion
 

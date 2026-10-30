@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.Vector3;
@@ -10,7 +11,7 @@ import mrtjp.projectred.expansion.part.BaseTubePart;
 import mrtjp.projectred.expansion.part.PneumaticTubePayload;
 import mrtjp.projectred.expansion.pneumatics.PneumaticTransportContainer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -32,27 +33,27 @@ public class TubePartRenderer implements PartRenderer<BaseTubePart> {
 
     @Override
     public void renderStatic(BaseTubePart part, @Nullable RenderType layer, CCRenderState ccrs) {
-        if (layer == null || (layer == RenderType.cutout() && part.useStaticRenderer())) {
+        if (layer == null || (layer == RenderTypes.cutoutMovingBlock() && part.useStaticRenderer())) {
             ccrs.brightness = 0;
             TubeModelRenderer.render(ccrs, part);
         }
     }
 
     @Override
-    public void renderDynamic(BaseTubePart part, PoseStack mStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+    public void renderDynamic(BaseTubePart part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
         if (!part.useStaticRenderer()) {
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.brightness = packedLight;
             ccrs.overlay = packedOverlay;
-            ccrs.bind(new TransformingVertexConsumer(buffers.getBuffer(RenderType.solid()), mStack), DefaultVertexFormat.BLOCK);
+            ccrs.bind(new TransformingVertexConsumer(buffers.getBuffer(RenderTypes.solidMovingBlock()), mStack), DefaultVertexFormat.BLOCK);
             TubeModelRenderer.render(ccrs, part);
         }
 
         renderPayloadTransport(part, mStack, buffers, packedLight, packedOverlay, partialTicks);
     }
 
-    private void renderPayloadTransport(BaseTubePart part, PoseStack mStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+    private void renderPayloadTransport(BaseTubePart part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
 
         if (!(part instanceof PneumaticTransportContainer ptc)) return;
 

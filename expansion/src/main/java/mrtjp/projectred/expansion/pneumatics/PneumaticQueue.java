@@ -58,14 +58,14 @@ public class PneumaticQueue {
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         queue.clear();
         // Load from list
-        var payloads = tag.getList("payloads", Tag.TAG_COMPOUND);
+        var payloads = tag.getListOrEmpty("payloads");
         for (int i = 0; i < payloads.size(); i++) {
             var payloadTag = payloads.getCompound(i);
             var payload = new PneumaticTubePayload();
             payload.load(payloadTag, lookupProvider);
             queue.addLast(payload);
         }
-        backStuffed = tag.getBoolean("backstuffed");
+        backStuffed = tag.getBooleanOr("backstuffed", false);
     }
     //endregion
 }

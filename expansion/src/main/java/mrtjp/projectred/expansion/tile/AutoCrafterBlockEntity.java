@@ -65,7 +65,7 @@ public class AutoCrafterBlockEntity extends BaseMachineBlockEntity implements Cr
         super.loadFromNBT(tag, lookupProvider);
         storageInventory.loadFrom(tag, "storage_inv", lookupProvider);
         planInventory.loadFrom(tag, "plan_inv", lookupProvider);
-        planSlot = tag.getByte("plan_slot") & 0xFF;
+        planSlot = tag.getByteOr("plan_slot", (byte) 0) & 0xFF;
     }
 
     @Override

@@ -4,7 +4,7 @@ import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.api.MultipartType;
-import codechicken.multipart.api.part.BaseMultipart;
+import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.multipart.api.part.IconHitEffectsPart;
 import codechicken.multipart.util.PartRayTraceResult;
 import mrtjp.projectred.core.Configurator;
@@ -19,7 +19,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-public abstract class BaseWirePart extends BaseMultipart implements IconHitEffectsPart {
+public abstract class BaseWirePart extends ProjectRedPart implements IconHitEffectsPart {
 
     protected static final int KEY_UPDATE = 0;
 
@@ -56,8 +56,8 @@ public abstract class BaseWirePart extends BaseMultipart implements IconHitEffec
 
     //region Packets
     @Override
-    public final void sendUpdate(Consumer<MCDataOutput> func) {
-        sendUpdate(KEY_UPDATE, func);
+    public final void sendUpdateData(Consumer<MCDataOutput> func) {
+        sendUpdateData(KEY_UPDATE, func);
     }
 
     @Override
@@ -65,8 +65,8 @@ public abstract class BaseWirePart extends BaseMultipart implements IconHitEffec
         read(packet, packet.readUByte());
     }
 
-    protected final void sendUpdate(int key, Consumer<MCDataOutput> func) {
-        super.sendUpdate(p -> {
+    protected final void sendUpdateData(int key, Consumer<MCDataOutput> func) {
+        super.sendUpdateData(p -> {
             p.writeByte(key);
             func.accept(p);
         });

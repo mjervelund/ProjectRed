@@ -59,7 +59,7 @@ public abstract class RedstoneGatePart extends GatePart implements FaceRedstoneP
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        gateState = tag.getByte("state");
+        gateState = tag.getByteOr("state", (byte) 0);
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class RedstoneGatePart extends GatePart implements FaceRedstoneP
     }
 
     protected void sendStateUpdate() {
-        sendUpdate(KEY_STATE, p -> p.writeByte(gateState));
+        sendUpdateData(KEY_STATE, p -> p.writeByte(gateState));
     }
     //endregion
 

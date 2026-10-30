@@ -96,10 +96,10 @@ public class PneumaticTubePayload {
     }
 
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        progress = tag.getInt("progress");
-        speed = tag.getInt("speed");
-        inputSide = tag.getInt("input_dir");
-        outputSide = tag.getInt("output_dir");
+        progress = tag.getIntOr("progress", 0);
+        speed = tag.getIntOr("speed", 0);
+        inputSide = tag.getIntOr("input_dir", 0);
+        outputSide = tag.getIntOr("output_dir", 0);
         itemStack = ItemStack.OPTIONAL_CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), tag.getCompoundOrEmpty("item_stack")).result().orElse(ItemStack.EMPTY);
     }
 

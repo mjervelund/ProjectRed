@@ -75,7 +75,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        lastRoundRobinDir = tag.getByte("last_dir");
+        lastRoundRobinDir = tag.getByteOr("last_dir", (byte) 0);
         transport.load(tag, lookupProvider);
     }
 
@@ -122,21 +122,21 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     }
 
     private void sendNewPayload(int id, PneumaticTubePayload payload) {
-        sendUpdate(KEY_NEW_PAYLOAD, out -> {
+        sendUpdateData(KEY_NEW_PAYLOAD, out -> {
             out.writeInt(id);
             payload.writeDesc(out);
         });
     }
 
     private void sendPayloadUpdate(int id, PneumaticTubePayload payload) {
-        sendUpdate(KEY_PAYLOAD_UPDATE, out -> {
+        sendUpdateData(KEY_PAYLOAD_UPDATE, out -> {
             out.writeInt(id);
             payload.writeDesc(out);
         });
     }
 
     private void sendPayloadHandoff(int id, PneumaticTubePayload payload, int newId, int dir) {
-        sendUpdate(KEY_PAYLOAD_HANDOFF, out -> {
+        sendUpdateData(KEY_PAYLOAD_HANDOFF, out -> {
             out.writeInt(id);
             payload.writeDesc(out);
             out.writeInt(newId);
@@ -145,7 +145,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     }
 
     private void sendPayloadRemoved(Collection<Integer> ids) {
-        sendUpdate(KEY_PAYLOAD_REMOVE, out -> {
+        sendUpdateData(KEY_PAYLOAD_REMOVE, out -> {
             out.writeInt(ids.size());
             for (int id : ids) {
                 out.writeInt(id);
@@ -154,11 +154,11 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     }
 
     private void sendNodeLinkUpdate() {
-        sendUpdate(KEY_NODE_LINKS_UPDATE, linkCache::writeLinkUpdate);
+        sendUpdateData(KEY_NODE_LINKS_UPDATE, linkCache::writeLinkUpdate);
     }
 
     private void sendNodeStateUpdate() {
-        sendUpdate(KEY_NODE_STATE_UPDATE, linkCache::writeStateUpdate);
+        sendUpdateData(KEY_NODE_STATE_UPDATE, linkCache::writeStateUpdate);
     }
 
     private void readPayloadHandoff(MCDataInput packet) {

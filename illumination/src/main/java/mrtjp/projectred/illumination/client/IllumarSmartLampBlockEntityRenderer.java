@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.BundledSignalsLib;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.tile.IllumarSmartLampBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.phys.AABB;
 
@@ -16,7 +16,7 @@ public class IllumarSmartLampBlockEntityRenderer implements BlockEntityRenderer<
     public static final Cuboid6 GLOW_BOUNDS = Cuboid6.full.copy().expand(0.05D);
 
     @Override
-    public void render(IllumarSmartLampBlockEntity tile, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
+    public void render(IllumarSmartLampBlockEntity tile, float pPartialTick, PoseStack pPoseStack, RecordingBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 
         byte[] signal = tile.getSignal();
         if (!BundledSignalsLib.isSignalZero(signal)) {

@@ -42,7 +42,7 @@ public abstract class BaseFrameMoverBlockEntity extends LowLoadPoweredBlockEntit
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
-        powered = tag.getBoolean("powered");
+        powered = tag.getBooleanOr("powered", false);
     }
     //endregion
 

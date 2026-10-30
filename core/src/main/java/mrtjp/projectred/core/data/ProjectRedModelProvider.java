@@ -14,6 +14,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelDispatcher;
 import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -124,6 +125,14 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
     /** Item model that just uses the block's model ({@code models/block/<name>}). */
     protected void simpleItemBlock(Block block) {
         itemModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(block)));
+    }
+
+    /**
+     * Item drawn by a {@link mrtjp.projectred.core.client.ProjectRedItemRenderer} (CCL's old {@code clazz(item, Renderer.class)}),
+     * with block display transforms.
+     */
+    protected void specialItem(ItemLike item, SpecialModelRenderer.Unbaked<?> renderer) {
+        itemModels.itemModelOutput.accept(item.asItem(), ItemModelUtils.specialModel(Identifier.withDefaultNamespace("block/block"), renderer));
     }
 
     /** Item that uses an existing model (for example a hand-written one in {@code src/main/resources}). */

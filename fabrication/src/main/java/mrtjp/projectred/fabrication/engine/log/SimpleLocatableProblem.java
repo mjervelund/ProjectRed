@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.engine.log;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -9,7 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.EditorDataUtils;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 
@@ -58,7 +59,7 @@ public abstract class SimpleLocatableProblem extends CompileProblem {
     }
 
     @Override
-    public void renderOverlay(Vector3 mousePosition, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(Vector3 mousePosition, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         ccrs.baseColour = severity == ERROR ? EnumColour.RED.rgba(200) : EnumColour.YELLOW.rgba(200);
         Vector3 vec = new Vector3(coord.x, coord.y, coord.z).add(0.5);
         ICRenderTypes.renderSelection(ccrs, vec, vec, 3 / 16D, 2 / 16D);

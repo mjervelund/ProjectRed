@@ -32,7 +32,7 @@ public abstract class LowLoadPoweredBlockEntity extends BasePoweredBlockEntity i
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
         conductor.load(tag);
-        chargeFlow = tag.getInt("chargeFlow");
+        chargeFlow = tag.getIntOr("chargeFlow", 0);
     }
 
     @Override

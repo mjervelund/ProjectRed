@@ -206,7 +206,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         }
 
         protected void sendClientUpdate() {
-            sendUpdate(KEY_PACKED_IO, p -> p.writeInt(packClientData()));
+            sendUpdateData(KEY_PACKED_IO, p -> p.writeInt(packClientData()));
         }
 
         private int packClientData() {
@@ -346,8 +346,8 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            mask = tag.getShort("in");
-            output = tag.getShort("out");
+            mask = tag.getShortOr("in", (short) 0);
+            output = tag.getShortOr("out", (short) 0);
             unpackDigital(unpackedOut, output);
         }
 
@@ -384,11 +384,11 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         }
 
         protected void sendOutUpdate() {
-            sendUpdate(KEY_OUTPUT, p -> p.writeShort(output));
+            sendUpdateData(KEY_OUTPUT, p -> p.writeShort(output));
         }
 
         protected void sendMaskUpdate() {
-            sendUpdate(KEY_MASK, p -> p.writeShort(mask));
+            sendUpdateData(KEY_MASK, p -> p.writeShort(mask));
         }
         //endregion
 
@@ -524,14 +524,14 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            rsIn = tag.getByte("in");
-            rsOut = tag.getByte("out");
-            if (tag.getBoolean("revised")) {
-                bIn = tag.getShort("in0");
-                setBOut(tag.getShort("out0"));
+            rsIn = tag.getByteOr("in", (byte) 0);
+            rsOut = tag.getByteOr("out", (byte) 0);
+            if (tag.getBooleanOr("revised", false)) {
+                bIn = tag.getShortOr("in0", (short) 0);
+                setBOut(tag.getShortOr("out0", (short) 0));
             } else {
-                bIn = tag.getByte("in0");
-                setBOut(tag.getByte("out0"));
+                bIn = tag.getByteOr("in0", (byte) 0);
+                setBOut(tag.getByteOr("out0", (byte) 0));
                 forceBInUpdate = true;
                 forceBOutUpdate = true;
             }
@@ -564,7 +564,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         }
 
         private void sendClientUpdate() {
-            sendUpdate(KEY_CLIENT_IO, p -> p.writeShort(packClientData()));
+            sendUpdateData(KEY_CLIENT_IO, p -> p.writeShort(packClientData()));
         }
 
         private short packClientData() {
@@ -736,8 +736,8 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            pressMask = tag.getShort("press");
-            setbOut(tag.getShort("mask"));
+            pressMask = tag.getShortOr("press", (short) 0);
+            setbOut(tag.getShortOr("mask", (short) 0));
         }
 
         @Override
@@ -767,7 +767,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         }
 
         private void sendClientUpdate() {
-            sendUpdate(KEY_PRESS_MASK, p -> p.writeShort(pressMask));
+            sendUpdateData(KEY_PRESS_MASK, p -> p.writeShort(pressMask));
         }
         //endregion
 
@@ -900,7 +900,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            bInput0 = tag.getShort("in");
+            bInput0 = tag.getShortOr("in", (short) 0);
         }
 
         @Override
@@ -930,7 +930,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         }
 
         private void sendInputUpdate() {
-            sendUpdate(KEY_BUNDLED_INPUT, p -> p.writeShort(bInput0));
+            sendUpdateData(KEY_BUNDLED_INPUT, p -> p.writeShort(bInput0));
         }
         //endregion
 

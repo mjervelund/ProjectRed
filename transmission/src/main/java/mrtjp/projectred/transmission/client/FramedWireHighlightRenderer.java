@@ -10,7 +10,7 @@ import codechicken.multipart.block.TileMultipart;
 import codechicken.multipart.util.PartRayTraceResult;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.transmission.part.BaseCenterWirePart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
@@ -23,7 +23,7 @@ public class FramedWireHighlightRenderer implements MicroHighlightRenderer {
     }
 
     @Override
-    public boolean renderHighlight(Player player, InteractionHand hand, BlockHitResult hit, StandardMicroFactory mcrFactory, int size, MicroMaterial material, PoseStack mStack, MultiBufferSource getter, float partialTicks) {
+    public boolean renderHighlight(Player player, InteractionHand hand, BlockHitResult hit, StandardMicroFactory mcrFactory, int size, MicroMaterial material, PoseStack mStack, RecordingBufferSource getter, float partialTicks) {
 
 
         if (mcrFactory != CBMicroblockModContent.FACE_MICROBLOCK_PART.get() || size != 1 || player.isCrouching() || material.isTransparent()) {

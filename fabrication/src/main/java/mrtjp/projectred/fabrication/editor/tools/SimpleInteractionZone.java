@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
@@ -7,7 +8,7 @@ import codechicken.lib.render.RenderUtils;
 import codechicken.lib.vec.Cuboid6;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -71,17 +72,17 @@ public class SimpleInteractionZone implements InteractionZone {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderZone(CCRenderState ccrs, MultiBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver) {
+    public void renderZone(CCRenderState ccrs, RecordingBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver) {
         Cuboid6 bounds = getBounds();
 
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.selectionRenderType, getter, poseStack);
+        getter.bind(ccrs, ICRenderTypes.selectionRenderType, poseStack);
         ccrs.baseColour = highlightColor;
         ccrs.alphaOverride = isSelected && isMouseOver ? 255 : isSelected ? 128 : isMouseOver ? 64 : 32;
         BlockRenderer.renderCuboid(ccrs, bounds, 1);
 
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.interactionZoneLinesRenderType.apply(boundingBoxLineWidth), getter, poseStack);
+        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType.apply(boundingBoxLineWidth), poseStack);
         ccrs.baseColour = boundingBoxColor;
         RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), bounds, 1, 1, 1, 1);
 

@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.vec.uv.MultiIconTransformation;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.core.client.FullyOrientableBlockModel;
@@ -33,7 +34,7 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
 
     @Override
     protected RenderType getBlockRenderLayer(@Nullable BlockState state) {
-        return RenderType.solid();
+        return RenderTypes.solidMovingBlock();
     }
 
     @Override

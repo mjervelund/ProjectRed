@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
@@ -13,7 +14,7 @@ import com.mojang.math.Axis;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -154,17 +155,17 @@ public class ICRenderTypes {
     public static TextureAtlasSprite rotateIcon;
     public static TextureAtlasSprite reflectIcon;
 
-    public static void renderICGrid(PoseStack renderStack, MultiBufferSource getter, Cuboid6 bounds, CCRenderState ccrs) {
+    public static void renderICGrid(PoseStack renderStack, RecordingBufferSource getter, Cuboid6 bounds, CCRenderState ccrs) {
 
         // Main
         double ymin = -2/16D;
         Cuboid6 box = new Cuboid6(bounds.min.x, ymin, bounds.min.z, bounds.max.x, 0, bounds.max.z);
-        ccrs.bind(ICRenderTypes.gridRenderType, getter, renderStack);
+        getter.bind(ccrs, ICRenderTypes.gridRenderType, renderStack);
         BlockRenderer.renderCuboid(ccrs, box, 1);
 
         // Edges
         double h = 0.01D;
-        ccrs.bind(ICRenderTypes.gridEdgeRenderType, getter, renderStack);
+        getter.bind(ccrs, ICRenderTypes.gridEdgeRenderType, renderStack);
         // Top
         box.set(bounds.min.x,     ymin, bounds.min.z,     bounds.max.x,     h, bounds.min.z + 1);
         BlockRenderer.renderCuboid(ccrs, box, 1);
@@ -180,7 +181,7 @@ public class ICRenderTypes {
 
         // Corners
         h = 0.02D;
-        ccrs.bind(ICRenderTypes.gridCornerRenderType, getter, renderStack);
+        getter.bind(ccrs, ICRenderTypes.gridCornerRenderType, renderStack);
         // Top left
         box.set(bounds.min.x, ymin, bounds.min.z, bounds.min.x + 1, h, bounds.min.z + 1);
         BlockRenderer.renderCuboid(ccrs, box, 1);
@@ -242,7 +243,7 @@ public class ICRenderTypes {
         BlockRenderer.renderCuboid(ccrs, box, 1 | 1<<2 | 1<<3);
     }
 
-    public static void renderGridInBounds(PoseStack stack, MultiBufferSource getter, Cuboid6 bounds, int amask) {
+    public static void renderGridInBounds(PoseStack stack, RecordingBufferSource getter, Cuboid6 bounds, int amask) {
 
         VertexConsumer vertexConsumer = getter.getBuffer(holoGridRenderType);
         Matrix4f pose = stack.last().pose();
@@ -283,7 +284,7 @@ public class ICRenderTypes {
         }
     }
 
-    public static void renderCenteredTextTopOfCuboid(Component text, Cuboid6 bounds, PoseStack stack, MultiBufferSource getter) {
+    public static void renderCenteredTextTopOfCuboid(Component text, Cuboid6 bounds, PoseStack stack, RecordingBufferSource getter) {
         double w = bounds.max.x - bounds.min.x;
         double h = bounds.max.z - bounds.min.z;
         double x = bounds.min.x + w / 2;
@@ -293,7 +294,7 @@ public class ICRenderTypes {
         renderConstrainedCenteredText(text, stack, getter, x, y, z, w, h);
     }
 
-    public static void renderConstrainedText(Component text, PoseStack stack, MultiBufferSource getter, double x, double y, double z, double maxW, double maxH) {
+    public static void renderConstrainedText(Component text, PoseStack stack, RecordingBufferSource getter, double x, double y, double z, double maxW, double maxH) {
         Font fontRenderer = Minecraft.getInstance().font;
         float h = fontRenderer.lineHeight;
         float w = fontRenderer.width(text);
@@ -305,14 +306,14 @@ public class ICRenderTypes {
         stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
         // Render text
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        RecordingBufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         fontRenderer.drawInBatch(text, 0, 0, EnumColour.WHITE.rgba(), false, stack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
         buffer.endBatch();
 
         stack.popPose();
     }
 
-    public static void renderConstrainedCenteredText(Component text, PoseStack stack, MultiBufferSource getter, double x, double y, double z, double maxW, double maxH) {
+    public static void renderConstrainedCenteredText(Component text, PoseStack stack, RecordingBufferSource getter, double x, double y, double z, double maxW, double maxH) {
         Font fontRenderer = Minecraft.getInstance().font;
         float h = fontRenderer.lineHeight;
         float w = fontRenderer.width(text);
@@ -324,7 +325,7 @@ public class ICRenderTypes {
         stack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
         // Render text ceneterd at desired position
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        RecordingBufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
         fontRenderer.drawInBatch(text, (float) (-fontRenderer.width(text) / 2), (float) (-fontRenderer.lineHeight / 2), EnumColour.WHITE.rgba(), false, stack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
         buffer.endBatch();
 

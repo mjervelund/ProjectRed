@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.block.IllumarLampBlock;
 import mrtjp.projectred.illumination.tile.IllumarLampBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -20,7 +20,7 @@ public class IllumarLampBlockEntityRenderer implements BlockEntityRenderer<Illum
     }
 
     @Override
-    public void render(IllumarLampBlockEntity tile, float partialTicks, PoseStack matrixStack, MultiBufferSource buffers, int combinedLight, int combinedOverlay) {
+    public void render(IllumarLampBlockEntity tile, float partialTicks, PoseStack matrixStack, RecordingBufferSource buffers, int combinedLight, int combinedOverlay) {
 
         if (tile.getLevel() != null) {
             BlockState state = tile.getLevel().getBlockState(tile.getBlockPos());

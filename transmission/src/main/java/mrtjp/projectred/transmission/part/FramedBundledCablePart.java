@@ -68,7 +68,7 @@ public class FramedBundledCablePart extends BaseCenterWirePart implements IBundl
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        setSignal(tag.getByteArray("signal"));
+        setSignal(tag.getByteArray("signal").orElseGet(() -> new byte[0]));
     }
     //endregion
 

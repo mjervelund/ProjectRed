@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.BlockRenderer;
@@ -13,7 +14,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
@@ -62,24 +63,24 @@ public class HotKeyInteractionZone implements InteractionZone {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderZone(CCRenderState ccrs, MultiBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver) {
+    public void renderZone(CCRenderState ccrs, RecordingBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver) {
 
         // Transparent box
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.selectionRenderType, getter, poseStack);
+        getter.bind(ccrs, ICRenderTypes.selectionRenderType, poseStack);
         ccrs.baseColour = backgroundColor;
         ccrs.alphaOverride = isSelected && isMouseOver ? 255 : isSelected ? 128 : isMouseOver ? 64 : 32;
         BlockRenderer.renderCuboid(ccrs, getBounds(), 1);
 
         // Bounds outline
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.interactionZoneLinesRenderType.apply(2.0), getter, poseStack);
+        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType.apply(2.0), poseStack);
         ccrs.baseColour = EnumColour.WHITE.rgba();
         RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), getBounds(), 1, 1, 1, 1);
 
         // Icon
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.layersRenderType, getter, poseStack);
+        getter.bind(ccrs, ICRenderTypes.layersRenderType, poseStack);
         ccrs.setPipeline(new IconTransformation((TextureAtlasSprite) icon.get()), blockTransform);
         BlockRenderer.renderFullBlock(ccrs, ~0x2); //Top face only
     }

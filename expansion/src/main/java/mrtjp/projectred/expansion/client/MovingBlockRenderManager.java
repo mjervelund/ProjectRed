@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.RenderUtils;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.Vector3;
@@ -10,7 +11,7 @@ import mrtjp.projectred.expansion.MovingStructure;
 import mrtjp.projectred.expansion.MovingStructureInfo;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.resources.model.BakedModel;
@@ -54,7 +55,7 @@ public class MovingBlockRenderManager {
         if (manager.hasNoMovingStructures()) return;
 
         // Get the renderType for this stage, and skip if we dont care about it
-        List<RenderType> renderTypes = List.of(RenderType.solid(), RenderType.cutout(), RenderType.cutoutMipped(), RenderType.translucent());
+        List<RenderType> renderTypes = List.of(RenderTypes.solidMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.translucentMovingBlock());
         RenderType renderType = null;
         for (RenderType type : renderTypes) {
             if (RenderLevelStageEvent.Stage.fromRenderType(type) == event.getStage()) {
@@ -80,7 +81,7 @@ public class MovingBlockRenderManager {
             stack.pushPose();
             stack.translate(offset.x, offset.y, offset.z);
 
-            MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+            RecordingBufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
             BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
             Iterator<BlockPos> it = structure.iteratePreMove();

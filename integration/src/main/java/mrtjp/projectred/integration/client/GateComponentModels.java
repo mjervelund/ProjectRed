@@ -21,7 +21,7 @@ import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.lib.VecLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -1086,7 +1086,7 @@ public class GateComponentModels {
             }
         }
 
-        public void renderLights(CCRenderState ccrs, BlockPos lightPos, PoseStack mStack, MultiBufferSource buffers, Transformation t) {
+        public void renderLights(CCRenderState ccrs, BlockPos lightPos, PoseStack mStack, RecordingBufferSource buffers, Transformation t) {
             Transformation t2 = t.with(new Translation(lightPos));
             for (int i = 0; i < 16; i++) {
                 if ((pressMask & 1 << i) != 0) {
@@ -1505,7 +1505,7 @@ public class GateComponentModels {
             icChipModel[orient].render(ccrs, t, icChipIcon);
         }
 
-        public void renderName(String name, Transformation t1, PoseStack mStack, MultiBufferSource bufferSource, int argb, int packedLight) {
+        public void renderName(String name, Transformation t1, PoseStack mStack, RecordingBufferSource bufferSource, int argb, int packedLight) {
 
             Component nameComponent = Component.literal(name).withStyle(UNIFORM);
             Font fr = Minecraft.getInstance().font;

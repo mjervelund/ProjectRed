@@ -13,7 +13,7 @@ import codechicken.microblock.api.MicroMaterial;
 import codechicken.microblock.client.MicroblockRender;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.transmission.part.BaseCenterWirePart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 
@@ -87,7 +87,7 @@ public class FramedWireModelRenderer {
         renderWireScaffold(modelKey(thickness, 0), ccrs, uvt, transformation);
     }
 
-    public static void renderCoverHighlight(BaseCenterWirePart wire, MicroMaterial material, CCRenderState ccrs, PoseStack mStack, MultiBufferSource getter) {
+    public static void renderCoverHighlight(BaseCenterWirePart wire, MicroMaterial material, CCRenderState ccrs, PoseStack mStack, RecordingBufferSource getter) {
         BlockPos pos = wire.pos();
 
         Matrix4 mat = new Matrix4(mStack);
@@ -95,7 +95,7 @@ public class FramedWireModelRenderer {
         mat.apply(new Scale(1.002, 1.002, 1.002).at(Vector3.CENTER));
 
         ccrs.reset();
-        ccrs.bind(MicroblockRender.HIGHLIGHT_RENDER_TYPE, getter, mat);
+        getter.bind(ccrs, MicroblockRender.HIGHLIGHT_RENDER_TYPE, mat);
         ccrs.alphaOverride = 127;
         getOrGenerateJacketModel(modelKey(wire)).renderHighlight(ccrs, material, true);
     }

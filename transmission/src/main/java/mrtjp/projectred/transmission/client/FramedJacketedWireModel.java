@@ -1,5 +1,6 @@
 package mrtjp.projectred.transmission.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -35,12 +36,12 @@ public class FramedJacketedWireModel {
     }
 
     public void renderMaterial(CCRenderState ccrs, MicroMaterial material, boolean inventory) {
-        RenderType layer = inventory ? null : RenderType.solid();
+        RenderType layer = inventory ? null : RenderTypes.solidMovingBlock();
         Objects.requireNonNull(MicroMaterialClient.get(material)).renderCuboids(ccrs, layer, wireBoxList);
     }
 
     public void renderHighlight(CCRenderState ccrs, MicroMaterial material, boolean inventory) {
-        RenderType layer = inventory ? null : RenderType.solid();
+        RenderType layer = inventory ? null : RenderTypes.solidMovingBlock();
         Objects.requireNonNull(MicroMaterialClient.get(material)).renderCuboids(ccrs, layer, highlightBoxList);
     }
 

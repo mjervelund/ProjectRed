@@ -45,13 +45,13 @@ public class PneumaticTransport {
         payloads.clear();
         ListTag payloadList = tag.getList("payloads", ListTag.TAG_COMPOUND);
         for (int i = 0; i < payloadList.size(); i++) {
-            CompoundTag payloadTag = payloadList.getCompound(i);
-            int id = payloadTag.getInt("id");
+            CompoundTag payloadTag = payloadList.getCompoundOrEmpty(i);
+            int id = payloadTag.getIntOr("id", 0);
             PneumaticTubePayload payload = new PneumaticTubePayload();
             payload.load(payloadTag, lookupProvider);
             payloads.put(id, payload);
         }
-        nextId = tag.getInt("nextId");
+        nextId = tag.getIntOr("nextId", 0);
     }
 
     public void writeDesc(MCDataOutput packet) {

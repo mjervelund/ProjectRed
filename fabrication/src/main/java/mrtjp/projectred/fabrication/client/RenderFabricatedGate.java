@@ -1,5 +1,7 @@
 package mrtjp.projectred.fabrication.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
@@ -9,7 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.fabrication.item.component.ICDataComponent;
 import mrtjp.projectred.integration.client.GateModelRenderer;
 import mrtjp.projectred.integration.part.IGateRenderData;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -98,7 +100,7 @@ public class RenderFabricatedGate extends GateModelRenderer.GateRenderer {
     }
 
     @Override
-    public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+    public void renderCustomDynamic(CCRenderState ccrs, Transformation t, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
 
         // Render name
         icHousing.renderName(name, t, mStack, buffers, runtimeError ? EnumColour.RED.argb() : EnumColour.WHITE.argb(), packedLight);
@@ -107,7 +109,7 @@ public class RenderFabricatedGate extends GateModelRenderer.GateRenderer {
         ccrs.reset();
         ccrs.brightness = packedLight;
         ccrs.overlay = packedOverlay;
-        ccrs.bind(new TransformingVertexConsumer(buffers.getBuffer(RenderType.translucentMovingBlock()), mStack), DefaultVertexFormat.BLOCK);
+        ccrs.bind(new TransformingVertexConsumer(buffers.getBuffer(RenderTypes.translucentMovingBlock()), mStack), DefaultVertexFormat.BLOCK);
         icHousing.renderGlass(t, ccrs);
     }
 }

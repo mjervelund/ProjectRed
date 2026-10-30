@@ -62,7 +62,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        state2 = tag.getByte("state2");
+        state2 = tag.getByteOr("state2", (byte) 0);
     }
 
     @Override
@@ -91,7 +91,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
     }
 
     protected void sendState2Update() {
-        sendUpdate(KEY_STATE2, w -> w.writeByte(state2));
+        sendUpdateData(KEY_STATE2, w -> w.writeByte(state2));
     }
     //endregion
 
@@ -314,8 +314,8 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            pointer_max = tag.getInt("pmax");
-            pointer_start = tag.getLong("pelapsed");
+            pointer_max = tag.getIntOr("pmax", 0);
+            pointer_start = tag.getLongOr("pelapsed", 0L);
         }
 
         @Override
@@ -355,11 +355,11 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         }
 
         protected void sendPointerMaxUpdate() {
-            sendUpdate(KEY_POINTER_MAX, p -> p.writeInt(pointer_max));
+            sendUpdateData(KEY_POINTER_MAX, p -> p.writeInt(pointer_max));
         }
 
         protected void sendPointerUpdate() {
-            sendUpdate(KEY_POINTER_START, p -> p.writeInt(pointer_start < 0 ? -1 : pointerValue()));
+            sendUpdateData(KEY_POINTER_START, p -> p.writeInt(pointer_start < 0 ? -1 : pointerValue()));
         }
         //endregion
 
@@ -515,7 +515,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            pointer_max = tag.getInt("pmax");
+            pointer_max = tag.getIntOr("pmax", 0);
         }
 
         @Override
@@ -544,7 +544,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         }
 
         protected void sendPointerMaxUpdate() {
-            sendUpdate(KEY_POINTER_MAX, p -> p.writeInt(pointer_max));
+            sendUpdateData(KEY_POINTER_MAX, p -> p.writeInt(pointer_max));
         }
         //endregion
 
@@ -657,10 +657,10 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            value = tag.getInt("val");
-            max = tag.getInt("max");
-            incr = tag.getInt("inc");
-            decr = tag.getInt("dec");
+            value = tag.getIntOr("val", 0);
+            max = tag.getIntOr("max", 0);
+            incr = tag.getIntOr("inc", 0);
+            decr = tag.getIntOr("dec", 0);
         }
 
         @Override
@@ -705,19 +705,19 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         }
 
         protected void sendValueUpdate() {
-            sendUpdate(KEY_VALUE, p -> p.writeInt(value));
+            sendUpdateData(KEY_VALUE, p -> p.writeInt(value));
         }
 
         protected void sendMaxUpdate() {
-            sendUpdate(KEY_MAX, p -> p.writeInt(max));
+            sendUpdateData(KEY_MAX, p -> p.writeInt(max));
         }
 
         protected void sendIncrUpdate() {
-            sendUpdate(KEY_INCR, p -> p.writeInt(incr));
+            sendUpdateData(KEY_INCR, p -> p.writeInt(incr));
         }
 
         protected void sendDecrUpdate() {
-            sendUpdate(KEY_DECR, p -> p.writeInt(decr));
+            sendUpdateData(KEY_DECR, p -> p.writeInt(decr));
         }
         //endregion
 
@@ -1032,7 +1032,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            lState2 = tag.getShort("state2");
+            lState2 = tag.getShortOr("state2", (short) 0);
         }
         //endregion
 

@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -48,7 +48,7 @@ public interface IICEditorTool {
     }
 
     @OnlyIn(Dist.CLIENT)
-    void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack);
+    void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack);
 
     @OnlyIn(Dist.CLIENT)
     void buildTooltip(Vector3 mousePosition, boolean isFirstHit, List<Component> tooltip);

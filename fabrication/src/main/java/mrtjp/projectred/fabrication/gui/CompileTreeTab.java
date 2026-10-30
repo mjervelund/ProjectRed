@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
@@ -17,7 +18,7 @@ import mrtjp.projectred.redui.ScrollBarNode;
 import mrtjp.projectred.redui.SpriteButtonNode;
 import net.covers1624.quack.collection.FastStream;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 
@@ -183,7 +184,7 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
 
     //region ICompileTabOverlayRenderer
     @Override
-    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
         var node = ctnListNode.getSelectedNode();
         if (node == null) node = currentNode;
@@ -198,9 +199,9 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
 
     }
 
-    private void renderOverlayForNode(CompileTreeNode node, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    private void renderOverlayForNode(CompileTreeNode node, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.selectionRenderType, getter, matrixStack);
+        getter.bind(ccrs, ICRenderTypes.selectionRenderType, matrixStack);
 
         // Render subnode positions in fainter color
         ccrs.baseColour = EnumColour.WHITE.rgba(127);

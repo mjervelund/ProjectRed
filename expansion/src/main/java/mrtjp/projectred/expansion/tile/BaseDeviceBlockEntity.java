@@ -39,10 +39,10 @@ public abstract class BaseDeviceBlockEntity extends ProjectRedBlockEntity {
 
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        schedTick = tag.getLong("schedTick");
-        side = tag.getByte("side");
-        powered = tag.getBoolean("powered");
-        active = tag.getBoolean("active");
+        schedTick = tag.getLongOr("schedTick", 0L);
+        side = tag.getByteOr("side", (byte) 0);
+        powered = tag.getBooleanOr("powered", false);
+        active = tag.getBooleanOr("active", false);
     }
 
     @Override

@@ -56,8 +56,8 @@ public class RedstoneTubePart extends BaseTubePart implements IRedstonePropagati
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        hasRedstone = tag.getBoolean("has_redstone");
-        signal = tag.getByte("signal");
+        hasRedstone = tag.getBooleanOr("has_redstone", false);
+        signal = tag.getByteOr("signal", (byte) 0);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class RedstoneTubePart extends BaseTubePart implements IRedstonePropagati
     }
 
     protected void sendSignalUpdate() {
-        sendUpdate(KEY_SIGNAL, p -> p.writeBoolean(hasRedstone).writeByte(signal));
+        sendUpdateData(KEY_SIGNAL, p -> p.writeBoolean(hasRedstone).writeByte(signal));
     }
     //endregion
 

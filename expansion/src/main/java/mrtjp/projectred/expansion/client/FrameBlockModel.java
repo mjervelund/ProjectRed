@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.model.PerspectiveModel;
 import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.render.CCRenderState;
@@ -32,7 +33,7 @@ public class FrameBlockModel implements IDynamicBakedModel, PerspectiveModel {
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
         // Cutout only
-        if (renderType != null && renderType != RenderType.cutout()) return List.of();
+        if (renderType != null && renderType != RenderTypes.cutoutMovingBlock()) return List.of();
 
         // No cull yet
         if (side != null) return List.of();
@@ -50,7 +51,7 @@ public class FrameBlockModel implements IDynamicBakedModel, PerspectiveModel {
 
     @Override
     public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-        return ChunkRenderTypeSet.of(RenderType.cutout());
+        return ChunkRenderTypeSet.of(RenderTypes.cutoutMovingBlock());
     }
 
     private static List<BakedQuad> getOrGenerateQuads(int mask) {

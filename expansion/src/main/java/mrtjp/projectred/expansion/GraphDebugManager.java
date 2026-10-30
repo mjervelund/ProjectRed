@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.packet.PacketCustom;
@@ -19,7 +20,7 @@ import mrtjp.projectred.expansion.graphs.GraphContainer;
 import mrtjp.projectred.expansion.part.PneumaticTubePart;
 import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
@@ -174,25 +175,25 @@ public class GraphDebugManager {
         stack.pushPose();
         stack.translate(-cam.x, -cam.y, -cam.z);
 
-        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
+        RecordingBufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
 
         renderLinks(stack, buffers, links);
     }
 
     @OnlyIn(Dist.CLIENT)
-    private static void renderLinks(PoseStack stack, MultiBufferSource.BufferSource buffers, Map<BlockPos, ClientSideLinkCache> links) {
+    private static void renderLinks(PoseStack stack, RecordingBufferSource buffers, Map<BlockPos, ClientSideLinkCache> links) {
         CCRenderState ccrs = CCRenderState.instance();
         ccrs.reset();
 
         // Render node cube outlines
-        ccrs.bind(GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(2.0), buffers, stack);
+        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(2.0), stack);
         ccrs.baseColour = EnumColour.ORANGE.rgba();
         for (var entry : links.entrySet()) {
             RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), Cuboid6.full.copy().expand(-2/16D).add(entry.getKey()), 1, 1, 1, 1);
         }
 
         // Render link lines
-        ccrs.bind(GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(1.5), buffers, stack);
+        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(1.5), stack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba();
         for (var entry : links.entrySet()) {
             for (var link : entry.getValue().links) {
@@ -222,7 +223,7 @@ public class GraphDebugManager {
         }
 
         // Render cubes at ends of segments
-        ccrs.bind(GraphDebugManagerClientRenderTypes.DEBUG_CUBE_RENDER_TYPE, buffers, stack);
+        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_CUBE_RENDER_TYPE, stack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba(128);
         double b = 0.5/16D;
         Cuboid6 box = new Cuboid6(-b, -b, -b, b, b, b);

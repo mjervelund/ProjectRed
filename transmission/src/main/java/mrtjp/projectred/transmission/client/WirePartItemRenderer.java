@@ -1,5 +1,6 @@
 package mrtjp.projectred.transmission.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.item.IItemRenderer;
@@ -8,7 +9,7 @@ import codechicken.lib.vec.RedundantTransformation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.transmission.WireType;
 import mrtjp.projectred.transmission.item.FaceWirePartItem;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +39,7 @@ public class WirePartItemRenderer implements IItemRenderer {
     }
 
     @Override
-    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, MultiBufferSource getter, int packedLight, int packedOverlay) {
+    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, RecordingBufferSource getter, int packedLight, int packedOverlay) {
 
         if (!(stack.getItem() instanceof FaceWirePartItem)) return;
 
@@ -48,7 +49,7 @@ public class WirePartItemRenderer implements IItemRenderer {
         ccrs.reset();
         ccrs.brightness = packedLight;
         ccrs.overlay = packedOverlay;
-        ccrs.bind(RenderType.cutout(), getter, mStack);
+        getter.bind(ccrs, RenderTypes.cutoutMovingBlock(), mStack);
 
         WireModelRenderer.renderInventory(ccrs, type.getThickness(), type.getItemColour() << 8 | 0xFF, type.getTextures().get(0), RedundantTransformation.INSTANCE);
     }

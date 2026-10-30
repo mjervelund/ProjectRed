@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Rotation;
@@ -13,7 +14,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.transmission.client.WireModelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
@@ -40,10 +41,10 @@ public class WirePlacerToolTab extends ICEditorToolTab {
 
             @Override
             public void renderIcon(GuiGraphicsExtractor graphics, Point absPos, float partialFrame) {
-                MultiBufferSource.BufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
+                RecordingBufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
                 CCRenderState ccrs = CCRenderState.instance();
                 ccrs.reset();
-                ccrs.bind(RenderType.cutout(), getter, graphics.pose());
+                ccrs.bind(RenderTypes.cutoutMovingBlock(), getter, graphics.pose());
                 ccrs.overlay = OverlayTexture.NO_OVERLAY;
                 ccrs.brightness = 0xF000F0;
 

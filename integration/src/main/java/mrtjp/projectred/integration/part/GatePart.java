@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.part;
 
+import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.VoxelShapeCache;
@@ -46,7 +47,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class GatePart extends BaseMultipart implements IConnectableFacePart, IOrientableFacePart, TickablePart, FacePart, NormalOcclusionPart, IconHitEffectsPart, IGateRenderData {
+public abstract class GatePart extends ProjectRedPart implements IConnectableFacePart, IOrientableFacePart, TickablePart, FacePart, NormalOcclusionPart, IconHitEffectsPart, IGateRenderData {
 
     private static final int KEY_UPDATE = 0;
     private static final int KEY_ORIENTATION = 1;
@@ -159,10 +160,10 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        orientation = tag.getByte("orient");
-        gateShape = tag.getByte("shape");
-        connMap = tag.getInt("connMap");
-        scheduledTime = tag.getLong("schedTime");
+        orientation = tag.getByteOr("orient", (byte) 0);
+        gateShape = tag.getByteOr("shape", (byte) 0);
+        connMap = tag.getIntOr("connMap", 0);
+        scheduledTime = tag.getLongOr("schedTime", 0L);
     }
 
     @Override
@@ -181,8 +182,8 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     //endregion
 
     //region Packets
-    public final void sendUpdate(Consumer<MCDataOutput> func) {
-        sendUpdate(KEY_UPDATE, func);
+    public final void sendUpdateData(Consumer<MCDataOutput> func) {
+        sendUpdateData(KEY_UPDATE, func);
     }
 
     @Override
@@ -190,8 +191,8 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
         read(packet, packet.readUByte());
     }
 
-    protected final void sendUpdate(int key, Consumer<MCDataOutput> func) {
-        super.sendUpdate(p -> {
+    protected final void sendUpdateData(int key, Consumer<MCDataOutput> func) {
+        super.sendUpdateData(p -> {
             p.writeByte(key);
             func.accept(p);
         });
@@ -221,11 +222,11 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     }
 
     protected void sendShapeUpdate() {
-        sendUpdate(KEY_SHAPE, p -> p.writeByte(gateShape));
+        sendUpdateData(KEY_SHAPE, p -> p.writeByte(gateShape));
     }
 
     protected void sendOrientationUpdate() {
-        sendUpdate(KEY_ORIENTATION, p -> p.writeByte(orientation));
+        sendUpdateData(KEY_ORIENTATION, p -> p.writeByte(orientation));
     }
     //endregion
 

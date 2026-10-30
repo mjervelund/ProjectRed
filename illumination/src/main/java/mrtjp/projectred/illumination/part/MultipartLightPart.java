@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.part;
 
+import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
@@ -31,7 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.Collections;
 
-public class MultipartLightPart extends BaseMultipart implements SlottedPart, NormalOcclusionPart, RedstonePart, IconHitEffectsPart {
+public class MultipartLightPart extends ProjectRedPart implements SlottedPart, NormalOcclusionPart, RedstonePart, IconHitEffectsPart {
 
     private final MultipartType<?> type;
     private final MultipartLightProperties properties;
@@ -80,8 +81,8 @@ public class MultipartLightPart extends BaseMultipart implements SlottedPart, No
 
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        powered = tag.getBoolean("pow");
-        side = tag.getByte("side") & 0xFF;
+        powered = tag.getBooleanOr("pow", false);
+        side = tag.getByteOr("side", (byte) 0) & 0xFF;
     }
 
     @Override
@@ -181,7 +182,7 @@ public class MultipartLightPart extends BaseMultipart implements SlottedPart, No
 
     private void updateRender() {
         if (!level().isClientSide())
-            sendUpdate(this::writeDesc);
+            sendUpdateData(this::writeDesc);
         tile().recalcLight(false, true);
         tile().markRender();
     }

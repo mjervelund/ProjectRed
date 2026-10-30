@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.part;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
@@ -12,7 +13,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.block.IllumarLampBlock;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.Direction;
@@ -44,7 +45,7 @@ public class IllumarLampMicroMaterial extends BlockMicroMaterial {
 
             // Provide RenderDynamic implementation
             @Override
-            public void renderDynamic(MicroblockPart part, @Nullable ItemDisplayContext transform, PoseStack pStack, MultiBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+            public void renderDynamic(MicroblockPart part, @Nullable ItemDisplayContext transform, PoseStack pStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
                 CCRenderState ccrs = CCRenderState.instance();
                 Cuboid6 cuboid = part.getBounds().copy().expand(0.025D);
 
@@ -58,7 +59,7 @@ public class IllumarLampMicroMaterial extends BlockMicroMaterial {
 
             @Override
             public RenderType getItemRenderLayer() {
-                return RenderType.cutout();
+                return RenderTypes.cutoutMovingBlock();
             }
 
             // Delegate the rest to super material

@@ -1,5 +1,7 @@
 package mrtjp.projectred.fabrication.engine.gates;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;

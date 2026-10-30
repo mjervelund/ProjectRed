@@ -18,7 +18,7 @@ import mrtjp.projectred.redui.AbstractCheckboxNode;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -242,7 +242,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
     }
 
     @Override
-    public void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         for (ICompileOverlayRenderer overlay : overlays) {
             overlay.renderOverlay(renderNode, mousePosition, isFirstHit, ccrs, getter, matrixStack);
         }

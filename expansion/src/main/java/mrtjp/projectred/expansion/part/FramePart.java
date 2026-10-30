@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.part;
 
+import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.VoxelShapeCache;
@@ -38,7 +39,7 @@ import java.util.Collections;
 
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.FRAME_BLOCK;
 
-public class FramePart extends BaseMultipart implements NormalOcclusionPart, IconHitEffectsPart, Frame, ModelRenderPart {
+public class FramePart extends ProjectRedPart implements NormalOcclusionPart, IconHitEffectsPart, Frame, ModelRenderPart {
 
     public static final Cuboid6[] oBounds = new Cuboid6[6];
     public static final VoxelShape[] oShapes = new VoxelShape[6];
@@ -68,7 +69,7 @@ public class FramePart extends BaseMultipart implements NormalOcclusionPart, Ico
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        occludedSidesMask = tag.getByte("omask");
+        occludedSidesMask = tag.getByteOr("omask", (byte) 0);
     }
 
     @Override
@@ -210,7 +211,7 @@ public class FramePart extends BaseMultipart implements NormalOcclusionPart, Ico
         sideOccludeTest = -1;
 
         if (oldMask != occludedSidesMask) {
-            sendUpdate(this::writeDesc);
+            sendUpdateData(this::writeDesc);
         }
     }
    //endregion

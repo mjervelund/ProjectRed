@@ -109,7 +109,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        connMap = tag.getInt("connMap");
+        connMap = tag.getIntOr("connMap", 0);
         material = tag.contains("mat") ? MicroMaterialRegistry.getMaterial(tag.getString("mat")) : null;
     }
 
@@ -154,14 +154,14 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     //endregion
 
     protected void sendConnUpdate() {
-        sendUpdate(KEY_CONN_MAP, p -> p.writeByte(packedConnMap()));
+        sendUpdateData(KEY_CONN_MAP, p -> p.writeByte(packedConnMap()));
     }
 
     protected void sendMaterialUpdate() {
         if (material == null) {
-            sendUpdate(KEY_REMOVE_MATERIAL, p -> {});
+            sendUpdateData(KEY_REMOVE_MATERIAL, p -> {});
         } else {
-            sendUpdate(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
+            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
         }
     }
 

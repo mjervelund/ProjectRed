@@ -6,7 +6,7 @@ import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.editor.tools.IICEditorTool;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -198,7 +198,7 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
     }
 
     @Override
-    public void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void onRenderOverlay(ICRenderNode renderNode, Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         lastMousePosition.set(mousePosition); // Used to pass mouse position to tool key press events
         selectedTool.renderOverlay(mousePosition, isFirstHit, ccrs, getter, matrixStack);
     }

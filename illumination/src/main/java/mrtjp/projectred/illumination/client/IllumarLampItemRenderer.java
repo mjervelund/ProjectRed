@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.model.bakedmodels.WrappedItemModel;
 import codechicken.lib.render.BlockRenderer;
@@ -12,7 +13,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.block.IllumarLampBlock;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -35,7 +36,7 @@ public class IllumarLampItemRenderer extends WrappedItemModel implements IItemRe
     }
 
     @Override
-    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, MultiBufferSource getter, int packedLight, int packedOverlay) {
+    public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, RecordingBufferSource getter, int packedLight, int packedOverlay) {
         Item item = stack.getItem();
         if (!(item instanceof BlockItem blockItem)) return;
 
@@ -59,7 +60,7 @@ public class IllumarLampItemRenderer extends WrappedItemModel implements IItemRe
         ccrs.reset();
         ccrs.brightness = packedLight;
         ccrs.overlay = packedOverlay;
-        ccrs.bind(RenderType.cutout(), getter, mStack);
+        getter.bind(ccrs, RenderTypes.cutoutMovingBlock(), mStack);
 
         ccrs.setPipeline(new IconTransformation(icon));
         BlockRenderer.renderCuboid(ccrs, BLOCK_BOUNDS, 0);

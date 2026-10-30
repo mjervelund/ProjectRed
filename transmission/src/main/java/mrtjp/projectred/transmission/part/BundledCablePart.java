@@ -70,7 +70,7 @@ public class BundledCablePart extends BaseFaceWirePart implements IBundledCableP
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        setSignal(tag.getByteArray("signal"));
+        setSignal(tag.getByteArray("signal").orElseGet(() -> new byte[0]));
     }
     //endregion
 

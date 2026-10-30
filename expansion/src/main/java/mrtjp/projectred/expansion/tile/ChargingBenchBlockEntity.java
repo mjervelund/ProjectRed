@@ -57,8 +57,8 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
-        powerStored = tag.getInt("storage");
-        chargeSlot = tag.getByte("chargeSlot") & 0xFF;
+        powerStored = tag.getIntOr("storage", 0);
+        chargeSlot = tag.getByteOr("chargeSlot", (byte) 0) & 0xFF;
         inventory.loadFrom(tag, "inventory", lookupProvider);
     }
 

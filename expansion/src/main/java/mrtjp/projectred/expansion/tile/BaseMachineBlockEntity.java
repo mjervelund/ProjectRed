@@ -41,10 +41,10 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
-        remainingWork = tag.getInt("remaining_work");
-        totalWork = tag.getInt("total_work");
-        isWorking = tag.getBoolean("working");
-        isCharged = tag.getBoolean("charging");
+        remainingWork = tag.getIntOr("remaining_work", 0);
+        totalWork = tag.getIntOr("total_work", 0);
+        isWorking = tag.getBooleanOr("working", false);
+        isCharged = tag.getBooleanOr("charging", false);
     }
 
     @Override

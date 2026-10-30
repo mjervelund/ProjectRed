@@ -11,7 +11,7 @@ import codechicken.microblock.api.SlottedHollowConnect;
 import codechicken.microblock.item.ItemMicroBlock;
 import codechicken.microblock.util.MicroMaterialRegistry;
 import codechicken.multipart.api.MultipartType;
-import codechicken.multipart.api.part.BaseMultipart;
+import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.multipart.api.part.MultiPart;
 import codechicken.multipart.api.part.NormalOcclusionPart;
 import codechicken.multipart.api.part.SlottedPart;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public abstract class BaseTubePart extends BaseMultipart implements IConnectableCenterPart, NormalOcclusionPart, SlottedPart, SlottedHollowConnect {
+public abstract class BaseTubePart extends ProjectRedPart implements IConnectableCenterPart, NormalOcclusionPart, SlottedPart, SlottedHollowConnect {
 
     public static final Cuboid6[] fOBounds = new Cuboid6[7];
     public static final VoxelShape[] fOShapes = new VoxelShape[7];
@@ -117,7 +117,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
 
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
-        connMap = tag.getInt("connMap");
+        connMap = tag.getIntOr("connMap", 0);
         material = tag.contains("mat") ? MicroMaterialRegistry.getMaterial(tag.getString("mat")) : null;
     }
 
@@ -155,8 +155,8 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
 
     //region Packets
     @Override
-    public final void sendUpdate(Consumer<MCDataOutput> func) {
-        sendUpdate(KEY_UPDATE, func);
+    public final void sendUpdateData(Consumer<MCDataOutput> func) {
+        sendUpdateData(KEY_UPDATE, func);
     }
 
     @Override
@@ -164,8 +164,8 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
         read(packet, packet.readUByte());
     }
 
-    protected final void sendUpdate(int key, Consumer<MCDataOutput> func) {
-        super.sendUpdate(p -> {
+    protected final void sendUpdateData(int key, Consumer<MCDataOutput> func) {
+        super.sendUpdateData(p -> {
             p.writeByte(key);
             func.accept(p);
         });
@@ -194,14 +194,14 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     }
 
     protected void sendConnUpdate() {
-        sendUpdate(KEY_CONN_MAP, p -> p.writeByte(packedConnMap()));
+        sendUpdateData(KEY_CONN_MAP, p -> p.writeByte(packedConnMap()));
     }
 
     protected void sendMaterialUpdate() {
         if (material == null) {
-            sendUpdate(KEY_REMOVE_MATERIAL, p -> {});
+            sendUpdateData(KEY_REMOVE_MATERIAL, p -> {});
         } else {
-            sendUpdate(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
+            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
         }
     }
     //endregion

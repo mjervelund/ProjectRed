@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.Colour;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.model.PerspectiveModelState;
@@ -20,7 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.item.MultipartLightPartItem;
 import mrtjp.projectred.illumination.part.MultipartLightPart;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
@@ -158,7 +159,7 @@ public abstract class MultipartLightProperties {
         }
 
         @Override
-        public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, MultiBufferSource getter, int packedLight, int packedOverlay) {
+        public void renderItem(ItemStack stack, ItemDisplayContext transformType, PoseStack mStack, RecordingBufferSource getter, int packedLight, int packedOverlay) {
             if (!(stack.getItem() instanceof MultipartLightPartItem lightItem)) return;
 
             var props = lightItem.getLightProperties();
@@ -167,7 +168,7 @@ public abstract class MultipartLightProperties {
             ccrs.reset();
             ccrs.brightness = packedLight;
             ccrs.overlay = packedOverlay;
-            ccrs.bind(RenderType.cutout(), getter, mStack);
+            getter.bind(ccrs, RenderTypes.cutoutMovingBlock(), mStack);
             props.renderInventory(lightItem.getColor(), lightItem.isInverted(), Vector3.ZERO, ccrs);
 
             if (lightItem.isInverted()) {

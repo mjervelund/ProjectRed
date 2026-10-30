@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
@@ -11,7 +12,7 @@ import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -116,7 +117,7 @@ public class EraseTool extends BaseICEditorTool {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, MultiBufferSource getter, PoseStack matrixStack) {
+    public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
         if (!isFirstHit) return;
 

@@ -86,8 +86,8 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
-        connMap = tag.getInt("connMap");
-        side = tag.getByte("side");
+        connMap = tag.getIntOr("connMap", 0);
+        side = tag.getByteOr("side", (byte) 0);
     }
 
     @Override
@@ -119,7 +119,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     }
 
     protected void sendConnUpdate() {
-        sendUpdate(KEY_CONN_MAP, p -> p.writeInt(connMap));
+        sendUpdateData(KEY_CONN_MAP, p -> p.writeInt(connMap));
     }
 
     @Override
