@@ -127,7 +127,7 @@ public abstract class BaseDeviceBlockEntity extends ProjectRedBlockEntity {
                     pushBlockState();
                     setChanged();
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return InteractionResult.SUCCESS;
             }
             return InteractionResult.FAIL;
         }

@@ -1,6 +1,6 @@
 package mrtjp.projectred.exploration.inventory.container;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.exploration.init.ExplorationMenus;
 import mrtjp.projectred.exploration.inventory.BackpackInventory;
 import mrtjp.projectred.exploration.item.BackpackItem;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class BackpackMenu extends AbstractContainerMenu {
 
-    public static final CCLMenuType<BackpackMenu> FACTORY = (windowId, playerInv, packet) -> new BackpackMenu(windowId, playerInv);
+    public static final ProjectRedMenuType<BackpackMenu> FACTORY = (windowId, playerInv, packet) -> new BackpackMenu(windowId, playerInv);
 
     private final BackpackInventory inventory;// = new BackpackInventory(27);
 

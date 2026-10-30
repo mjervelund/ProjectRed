@@ -1,6 +1,6 @@
 package mrtjp.projectred.expansion.inventory.container;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.expansion.init.ExpansionMenus;
 import mrtjp.projectred.expansion.item.RecipePlanItem;
 import mrtjp.projectred.expansion.tile.ProjectBenchBlockEntity;
@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class ProjectBenchMenu extends AbstractContainerMenu {
 
-    public static final CCLMenuType<ProjectBenchMenu> FACTORY = (windowId, playerInv, packet) -> {
+    public static final ProjectRedMenuType<ProjectBenchMenu> FACTORY = (windowId, playerInv, packet) -> {
         BlockEntity tile = playerInv.player.level().getBlockEntity(Objects.requireNonNull(packet).readPos());
         if (!(tile instanceof ProjectBenchBlockEntity)) return null;
         return new ProjectBenchMenu(playerInv, (ProjectBenchBlockEntity) tile, windowId);

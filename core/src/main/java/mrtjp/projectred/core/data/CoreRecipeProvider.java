@@ -1,11 +1,14 @@
 package mrtjp.projectred.core.data;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.core.component.DataComponentPatch;
+import codechicken.microblock.item.MicroMaterialComponent;
+import codechicken.microblock.api.MicroMaterial;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.datagen.recipe.RecipeProvider;
 import codechicken.microblock.api.BlockMicroMaterial;
 import codechicken.microblock.init.CBMicroblockModContent;
-import codechicken.microblock.item.ItemMicroBlock;
-import codechicken.microblock.util.MicroMaterialRegistry;
 import mrtjp.projectred.core.ProjectRedCore;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -25,8 +28,8 @@ import static net.neoforged.neoforge.common.Tags.Items.*;
 
 public class CoreRecipeProvider extends RecipeProvider {
 
-    public CoreRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, ProjectRedCore.MOD_ID);
+    public CoreRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, ProjectRedCore.MOD_ID);
     }
 
     @Override
@@ -199,8 +202,8 @@ public class CoreRecipeProvider extends RecipeProvider {
         }
 
         shapedRecipe(DRAW_PLATE_ITEM.get())
-                .key('I', DataComponentIngredient.of(true, ItemMicroBlock.create(3, 2, Objects.requireNonNull(MicroMaterialRegistry.getMaterial(BlockMicroMaterial.makeMaterialKey(Blocks.IRON_BLOCK.defaultBlockState()))))))
-                .key('D', DataComponentIngredient.of(true, ItemMicroBlock.create(0, 2, Objects.requireNonNull(MicroMaterialRegistry.getMaterial(BlockMicroMaterial.makeMaterialKey(Blocks.DIAMOND_BLOCK.defaultBlockState()))))))
+                .key('I', microblockIngredient(3, 2, BlockMicroMaterial.makeMaterialKey(Blocks.IRON_BLOCK.defaultBlockState())))
+                .key('D', microblockIngredient(0, 2, BlockMicroMaterial.makeMaterialKey(Blocks.DIAMOND_BLOCK.defaultBlockState())))
                 .patternLine(" I ")
                 .patternLine("IDI")
                 .patternLine(" I ");
@@ -229,4 +232,12 @@ public class CoreRecipeProvider extends RecipeProvider {
                 .addIngredient(ItemTags.create(color.getDyeTagName()), 2);
     }
 
+
+    // Item stacks can't be created during datagen ("Components not bound yet"): match the component directly.
+    private static Ingredient microblockIngredient(int factoryId, int size, Identifier materialKey) {
+        MicroMaterial material = Objects.requireNonNull(MicroMaterial.REGISTRY.getValue(materialKey));
+        return DataComponentIngredient.of(true,
+                DataComponentPatch.builder().set(CBMicroblockModContent.MICRO_MATERIAL_COMPONENT.get(), new MicroMaterialComponent(factoryId, size, material)).build(),
+                CBMicroblockModContent.MICRO_BLOCK_ITEM.get());
+    }
 }

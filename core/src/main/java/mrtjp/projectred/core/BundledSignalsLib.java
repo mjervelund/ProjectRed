@@ -171,7 +171,7 @@ public class BundledSignalsLib {
     }
 
     public static @Nullable byte[] loadSignal(CompoundTag tag, String key) {
-        if (tag.contains(key)) return tag.getByteArray(key).clone();
+        if (tag.contains(key)) return tag.getByteArray(key).map(byte[]::clone).orElse(null);
         return null;
     }
 

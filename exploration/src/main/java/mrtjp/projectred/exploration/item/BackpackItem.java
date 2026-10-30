@@ -1,6 +1,6 @@
 package mrtjp.projectred.exploration.item;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.exploration.init.ExplorationDataComponents;
 import mrtjp.projectred.exploration.init.ExplorationTags;
 import mrtjp.projectred.exploration.inventory.container.BackpackMenu;
@@ -40,7 +40,7 @@ public class BackpackItem extends Item {
                 openGui(player);
             }
         }
-        return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class BackpackItem extends Item {
     }
 
     private void openGui(ServerPlayer player) {
-        CCLMenuType.openMenu(player,
+        ProjectRedMenuType.openMenu(player,
                 new SimpleMenuProvider((windowId, playerInventory, playerEntity) -> new BackpackMenu(windowId, playerInventory),
                         Component.translatable(this.getDescriptionId())));
     }

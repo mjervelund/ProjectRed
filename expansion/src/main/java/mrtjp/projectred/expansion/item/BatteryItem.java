@@ -7,8 +7,7 @@ public class BatteryItem extends Item implements IRechargableBattery {
 
     public BatteryItem() {
         super(new Item.Properties()
-                .durability(1600)
-                .setNoRepair());
+                .durability(1600));
     }
 
     @Override

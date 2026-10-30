@@ -120,7 +120,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
             }
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override

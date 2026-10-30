@@ -104,7 +104,7 @@ public class FrameBlock extends Block implements Frame {
         // Clients will use verts directly from parsed OBJ.
         // Server will use data-pack JSON file with verts from OBJ
         Vertex5[] verts;
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             verts = FrameModelRenderer.getQuadsForMask(mask);
         } else {
             verts = getQuadsForMask(mask);

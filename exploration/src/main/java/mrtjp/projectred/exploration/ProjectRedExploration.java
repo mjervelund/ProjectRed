@@ -70,7 +70,7 @@ public class ProjectRedExploration {
         modEventBus.addListener(this::onGatherDataEvent);
         modEventBus.addListener(ExplorationBlocks::onRegisterMicroMaterials);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             ExplorationClientInit.init(modEventBus);
         }
 

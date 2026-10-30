@@ -7,8 +7,6 @@ import mrtjp.projectred.core.init.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.PackOutput;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -23,9 +21,8 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,7 +62,7 @@ public class ProjectRedCore {
         ProjectRedCore.container = container;
 
         // Register config
-        container.registerConfig(ModConfig.Type.SERVER, Configurator.serverSpec, "projectred-server.toml");
+        container.registerConfig(ModConfig.Type.SYNCED, Configurator.serverSpec, "projectred-server.toml");
         container.registerConfig(ModConfig.Type.CLIENT, Configurator.clientSpec, "projectred-client.toml");
 
         // Register config event handlers
@@ -73,9 +70,10 @@ public class ProjectRedCore {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
+        modEventBus.addListener(this::onGatherDataRegistryEntries);
         modEventBus.addListener(this::onRegisterCaps);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             CoreClientInit.init(container, modEventBus);
         }
 
@@ -101,23 +99,17 @@ public class ProjectRedCore {
                 .ifPresent(mod -> ComputerCraftCompatibility.init(mod));
     }
 
-    private void onGatherDataEvent(final GatherDataEvent event) {
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(CoreModelProvider::new);
+        event.createProvider(CoreLanguageProvider::new);
 
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> registries = event.getLookupProvider();
+        event.createProvider(CoreRecipeProvider::new);
+        event.createProvider(CoreBlockTagsProvider::new);
+        event.createProvider(CoreItemTagsProvider::new);
+    }
 
-        generator.addProvider(event.includeClient(), new CoreBlockStateModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new CoreItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new CoreLanguageProvider(output));
-
-        generator.addProvider(event.includeServer(), new CoreRecipeProvider(registries, output));
-        generator.addProvider(event.includeServer(), new CoreLootTableProvider(output, registries));
-
-        BlockTagsProvider blockTagsProvider = new CoreBlockTagsProvider(output, registries, fileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new CoreItemTagsProvider(output, registries, blockTagsProvider.contentsGetter(), fileHelper));
+    private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
+        event.add(Registries.LOOT_TABLE, new CoreLootTableProvider());
     }
 
     public void onRegisterCaps(RegisterCapabilitiesEvent event) {

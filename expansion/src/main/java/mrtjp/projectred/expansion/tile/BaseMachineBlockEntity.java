@@ -1,6 +1,6 @@
 package mrtjp.projectred.expansion.tile;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.api.IScrewdriver;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import net.minecraft.core.BlockPos;
@@ -106,7 +106,7 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
                     rotateBlock();
                     screwdriver.damageScrewdriver(player, hand);
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -114,7 +114,7 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
         if (!level.isClientSide()) {
             openGui(player);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private void rotateBlock() {
@@ -125,7 +125,7 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
     }
 
     private void openGui(Player player) {
-        CCLMenuType.openMenu(
+        ProjectRedMenuType.openMenu(
                 (ServerPlayer) player,
                 new SimpleMenuProvider(
                         this::createMenu,

@@ -3,6 +3,7 @@ package mrtjp.projectred.core;
 import codechicken.lib.vec.Vector3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +58,7 @@ public class PlacementLib {
 
     public static void dropTowardsPlayer(Level world, BlockPos pos, ItemStack stack, Player player) {
 
-        if (world.isClientSide() || !world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        if (!(world instanceof ServerLevel serverLevel) || !serverLevel.getGameRules().get(GameRules.BLOCK_DROPS)) {
             return;
         }
 

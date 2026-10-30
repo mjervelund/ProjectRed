@@ -2,7 +2,7 @@ package mrtjp.projectred.core.inventory;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.entity.player.StackedItemContents;
 import net.minecraft.world.inventory.StackedContentsCompatible;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -121,7 +121,7 @@ public class OverlayContainer implements Container, StackedContentsCompatible {
 
     //region StackedContentsCompatible
     @Override
-    public void fillStackedContents(StackedContents contents) {
+    public void fillStackedContents(StackedItemContents contents) {
         for (OverlayItem overlay : items) {
             contents.accountStack(overlay.getItemNoCopy());
         }

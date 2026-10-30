@@ -15,8 +15,7 @@ public class ScrewdriverItem extends Item implements IScrewdriver {
     public ScrewdriverItem() {
         super(new Item.Properties()
                 .stacksTo(1)
-                .durability(128)
-                .setNoRepair());
+                .durability(128));
     }
 
     @Override
@@ -32,7 +31,7 @@ public class ScrewdriverItem extends Item implements IScrewdriver {
     @Override
     public void damageScrewdriver(Player player, InteractionHand hand) {
         if (!Configurator.SERVER.unbreakableScrewdriver.get()) {
-            player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+            player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
         }
     }
 }

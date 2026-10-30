@@ -22,15 +22,15 @@ public class FabricationBlockTagsProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.Provider lookup) {
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(IC_WORKBENCH_BLOCK.get())
-                .add(PLOTTING_TABLE_BLOCK.get())
-                .add(LITHOGRAPHY_TABLE_BLOCK.get())
-                .add(PACKAGING_TABLE_BLOCK.get());
+                .add(IC_WORKBENCH_BLOCK.get().builtInRegistryHolder().key())
+                .add(PLOTTING_TABLE_BLOCK.get().builtInRegistryHolder().key())
+                .add(LITHOGRAPHY_TABLE_BLOCK.get().builtInRegistryHolder().key())
+                .add(PACKAGING_TABLE_BLOCK.get().builtInRegistryHolder().key());
 
         tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(IC_WORKBENCH_BLOCK.get())
-                .add(PLOTTING_TABLE_BLOCK.get())
-                .add(LITHOGRAPHY_TABLE_BLOCK.get())
-                .add(PACKAGING_TABLE_BLOCK.get());
+                .add(IC_WORKBENCH_BLOCK.get().builtInRegistryHolder().key())
+                .add(PLOTTING_TABLE_BLOCK.get().builtInRegistryHolder().key())
+                .add(LITHOGRAPHY_TABLE_BLOCK.get().builtInRegistryHolder().key())
+                .add(PACKAGING_TABLE_BLOCK.get().builtInRegistryHolder().key());
     }
 }

@@ -181,6 +181,6 @@ public interface IConnectableCenterPart extends MultiPart, IConnectablePart {
 
     default void notifyStraight(int r) {
         BlockPos pos = posOfStraight(r);
-        level().neighborChanged(pos, tile().getBlockState().getBlock(), pos);
+        level().neighborChanged(pos, tile().getBlockState().getBlock(), null);
     }
 }

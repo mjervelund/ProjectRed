@@ -53,7 +53,7 @@ public class ProjectRedIntegration {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             IntegrationClientInit.init(modEventBus);
         }
 

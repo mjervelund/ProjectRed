@@ -110,7 +110,7 @@ public class RedstoneTubePart extends BaseTubePart implements IRedstonePropagati
                 tile().notifyPartChange(null);
                 sendSignalUpdate();
             }
-            return InteractionResult.sidedSuccess(level().isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         // Right click with red alloy adds redstone wiring to pipe
@@ -130,7 +130,7 @@ public class RedstoneTubePart extends BaseTubePart implements IRedstonePropagati
                     held.shrink(1);
                 }
             }
-            return InteractionResult.sidedSuccess(level().isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.TRY_WITH_EMPTY_HAND;

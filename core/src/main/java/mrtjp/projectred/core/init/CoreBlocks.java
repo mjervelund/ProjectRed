@@ -34,10 +34,10 @@ public class CoreBlocks {
         ITEMS.register(ID_ELECTROTINE_GENERATOR, () -> new BlockItem(ELECTROTINE_GENERATOR_BLOCK.get(), new Item.Properties()));
 
         // Tiles
-        ELECTROTINE_GENERATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ELECTROTINE_GENERATOR, () -> BlockEntityType.Builder.of(ElectrotineGeneratorBlockEntity::new, ELECTROTINE_GENERATOR_BLOCK.get()).build(null));
+        ELECTROTINE_GENERATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ELECTROTINE_GENERATOR, () -> new BlockEntityType<>(ElectrotineGeneratorBlockEntity::new, ELECTROTINE_GENERATOR_BLOCK.get()));
     }
 
     public static void registerCaps(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ELECTROTINE_GENERATOR_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, ELECTROTINE_GENERATOR_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
     }
 }

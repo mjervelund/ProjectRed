@@ -63,7 +63,13 @@ public class BaseContainer extends SimpleContainer {
         // Check if list-format tags are present
         ListTag itemList = parent.getListOrEmpty(key);
         if (!itemList.isEmpty()) {
-            fromTag(itemList, lookupProvider);
+            // Legacy list format (pre-1.20.5 saves): stacks in order, without slot numbers.
+            clearContent();
+            var ops = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
+            for (int i = 0; i < itemList.size() && i < getContainerSize(); i++) {
+                int slot = i;
+                ItemStack.CODEC.parse(ops, itemList.get(i)).ifSuccess(stack -> setItem(slot, stack));
+            }
             ProjectRedCore.LOGGER.warn("Inventory {} loaded from non-ordered data. Its contents may have shuffled", this);
         } else {
             // Otherwise, use new compound format

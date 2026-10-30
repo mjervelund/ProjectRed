@@ -9,7 +9,7 @@ import net.minecraft.world.level.LevelReader;
 public class MultimeterItem extends Item {
 
     public MultimeterItem() {
-        super(new Item.Properties().stacksTo(1).durability(256).setNoRepair());
+        super(new Item.Properties().stacksTo(1).durability(256));
     }
 
     @Override

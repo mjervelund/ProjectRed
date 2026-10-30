@@ -15,8 +15,7 @@ public class ElectricScrewdriverItem extends Item implements IScrewdriver, IChar
 
     public ElectricScrewdriverItem() {
         super(new Item.Properties()
-                .durability(400)
-                .setNoRepair());
+                .durability(400));
     }
 
     @Override

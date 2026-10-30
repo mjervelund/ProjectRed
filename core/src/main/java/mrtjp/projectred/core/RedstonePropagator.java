@@ -174,7 +174,7 @@ public class RedstonePropagator {
                 Level world = entry.getKey();
                 Collection<BlockPos> positions = entry.getValue();
                 for (BlockPos pos : positions) {
-                    world.neighborChanged(pos, CBMultipartModContent.MULTIPART_BLOCK.get(), neighborChangeSources.get(pos));
+                    world.neighborChanged(pos, CBMultipartModContent.MULTIPART_BLOCK.get(), null);
                 }
             }
 

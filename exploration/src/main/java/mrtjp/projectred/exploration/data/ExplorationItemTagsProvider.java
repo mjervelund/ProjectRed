@@ -81,10 +81,10 @@ public class ExplorationItemTagsProvider extends ItemTagsProvider {
         /* Attach items to tags */
 
         //Note: Defined in Core
-        tag(TIN_INGOT_TAG).add(TIN_INGOT_ITEM.get());
-        tag(SILVER_INGOT_TAG).add(SILVER_INGOT_ITEM.get());
-        tag(RAW_TIN_TAG).add(RAW_TIN_ITEM.get());
-        tag(RAW_SILVER_TAG).add(RAW_SILVER_ITEM.get());
+        tag(TIN_INGOT_TAG).add(TIN_INGOT_ITEM.get().builtInRegistryHolder().key());
+        tag(SILVER_INGOT_TAG).add(SILVER_INGOT_ITEM.get().builtInRegistryHolder().key());
+        tag(RAW_TIN_TAG).add(RAW_TIN_ITEM.get().builtInRegistryHolder().key());
+        tag(RAW_SILVER_TAG).add(RAW_SILVER_ITEM.get().builtInRegistryHolder().key());
 
         tag(RUBY_ORES_BLOCK_ITEM_TAG).add(RUBY_ORE_BLOCK.get().asItem()).add(DEEPSLATE_RUBY_ORE_BLOCK.get().asItem());
         tag(SAPPHIRE_ORES_BLOCK_ITEM_TAG).add(SAPPHIRE_ORE_BLOCK.get().asItem()).add(DEEPSLATE_SAPPHIRE_ORE_BLOCK.get().asItem());
@@ -104,27 +104,27 @@ public class ExplorationItemTagsProvider extends ItemTagsProvider {
         tag(SILVER_STORAGE_BLOCK_ITEM_TAG).add(SILVER_BLOCK.get().asItem());
         tag(RAW_SILVER_STORAGE_BLOCK_ITEM_TAG).add(RAW_SILVER_BLOCK.get().asItem());
 
-        tag(WHITE_BACKPACK_TAG).add(WHITE_BACKPACK.get());
-        tag(ORANGE_BACKPACK_TAG).add(ORANGE_BACKPACK.get());
-        tag(MAGENTA_BACKPACK_TAG).add(MAGENTA_BACKPACK.get());
-        tag(LIGHT_BLUE_BACKPACK_TAG).add(LIGHT_BLUE_BACKPACK.get());
-        tag(YELLOW_BACKPACK_TAG).add(YELLOW_BACKPACK.get());
-        tag(LIME_BACKPACK_TAG).add(LIME_BACKPACK.get());
-        tag(PINK_BACKPACK_TAG).add(PINK_BACKPACK.get());
-        tag(GRAY_BACKPACK_TAG).add(GRAY_BACKPACK.get());
-        tag(LIGHT_GRAY_BACKPACK_TAG).add(LIGHT_GRAY_BACKPACK.get());
-        tag(CYAN_BACKPACK_TAG).add(CYAN_BACKPACK.get());
-        tag(PURPLE_BACKPACK_TAG).add(PURPLE_BACKPACK.get());
-        tag(BLUE_BACKPACK_TAG).add(BLUE_BACKPACK.get());
-        tag(BROWN_BACKPACK_TAG).add(BROWN_BACKPACK.get());
-        tag(GREEN_BACKPACK_TAG).add(GREEN_BACKPACK.get());
-        tag(RED_BACKPACK_TAG).add(RED_BACKPACK.get());
-        tag(BLACK_BACKPACK_TAG).add(BLACK_BACKPACK.get());
+        tag(WHITE_BACKPACK_TAG).add(WHITE_BACKPACK.get().builtInRegistryHolder().key());
+        tag(ORANGE_BACKPACK_TAG).add(ORANGE_BACKPACK.get().builtInRegistryHolder().key());
+        tag(MAGENTA_BACKPACK_TAG).add(MAGENTA_BACKPACK.get().builtInRegistryHolder().key());
+        tag(LIGHT_BLUE_BACKPACK_TAG).add(LIGHT_BLUE_BACKPACK.get().builtInRegistryHolder().key());
+        tag(YELLOW_BACKPACK_TAG).add(YELLOW_BACKPACK.get().builtInRegistryHolder().key());
+        tag(LIME_BACKPACK_TAG).add(LIME_BACKPACK.get().builtInRegistryHolder().key());
+        tag(PINK_BACKPACK_TAG).add(PINK_BACKPACK.get().builtInRegistryHolder().key());
+        tag(GRAY_BACKPACK_TAG).add(GRAY_BACKPACK.get().builtInRegistryHolder().key());
+        tag(LIGHT_GRAY_BACKPACK_TAG).add(LIGHT_GRAY_BACKPACK.get().builtInRegistryHolder().key());
+        tag(CYAN_BACKPACK_TAG).add(CYAN_BACKPACK.get().builtInRegistryHolder().key());
+        tag(PURPLE_BACKPACK_TAG).add(PURPLE_BACKPACK.get().builtInRegistryHolder().key());
+        tag(BLUE_BACKPACK_TAG).add(BLUE_BACKPACK.get().builtInRegistryHolder().key());
+        tag(BROWN_BACKPACK_TAG).add(BROWN_BACKPACK.get().builtInRegistryHolder().key());
+        tag(GREEN_BACKPACK_TAG).add(GREEN_BACKPACK.get().builtInRegistryHolder().key());
+        tag(RED_BACKPACK_TAG).add(RED_BACKPACK.get().builtInRegistryHolder().key());
+        tag(BLACK_BACKPACK_TAG).add(BLACK_BACKPACK.get().builtInRegistryHolder().key());
 
         tag(CBMicroblockTags.Items.TOOL_SAW)
-                .add(GOLD_SAW.get())
-                .add(RUBY_SAW.get())
-                .add(SAPPHIRE_SAW.get())
-                .add(PERIDOT_SAW.get());
+                .add(GOLD_SAW.get().builtInRegistryHolder().key())
+                .add(RUBY_SAW.get().builtInRegistryHolder().key())
+                .add(SAPPHIRE_SAW.get().builtInRegistryHolder().key())
+                .add(PERIDOT_SAW.get().builtInRegistryHolder().key());
     }
 }

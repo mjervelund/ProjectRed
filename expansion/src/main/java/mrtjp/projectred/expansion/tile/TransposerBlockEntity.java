@@ -60,7 +60,7 @@ public class TransposerBlockEntity extends BasePneumaticDeviceBlockEntity implem
 
         // Import from Item Handler capability
         var level = Objects.requireNonNull(lookup.tile.getLevel());
-        var itemCap = level.getCapability(Capabilities.ItemHandler.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
+        var itemCap = level.getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
 
             for (int s = 0; s < itemCap.getSlots(); s++) {

@@ -38,6 +38,6 @@ public class IlluminationBlocks {
         ITEMS.register(ID_ILLUMAR_SMART_LAMP, () -> new BlockItem(ILLUMAR_SMART_LAMP.get(), new Item.Properties()));
 
         // Block Entities
-        ILLUMAR_SMART_LAMP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ILLUMAR_SMART_LAMP, () -> BlockEntityType.Builder.of(IllumarSmartLampBlockEntity::new, ILLUMAR_SMART_LAMP.get()).build(null));
+        ILLUMAR_SMART_LAMP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ILLUMAR_SMART_LAMP, () -> new BlockEntityType<>(IllumarSmartLampBlockEntity::new, ILLUMAR_SMART_LAMP.get()));
     }
 }

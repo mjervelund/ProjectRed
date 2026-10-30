@@ -1,5 +1,8 @@
 package mrtjp.projectred.lib;
 
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
@@ -7,7 +10,6 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -129,22 +131,18 @@ public class InventoryLib {
         return false; // Entire stack was not inserted
     }
 
-    public static boolean injectItemHandler(IItemHandler handler, ItemStack stack, boolean simulate) {
-        for (int s = 0; s < handler.getSlots(); s++) {
-            if (!handler.isItemValid(s, stack)) continue;
-
-            //Note: Bug in InvWrapper.insertItem, L136. It keeps the input stack instead of copying it
-            //      So we copy it here instead.
-            var remainingStack = handler.insertItem(s, stack.copy(), simulate);
-            if (remainingStack.isEmpty()) {
-                stack.setCount(0);
-                return true;
-            } else {
-                stack.setCount(remainingStack.getCount());
+    public static boolean injectItemHandler(ResourceHandler<ItemResource> handler, ItemStack stack, boolean simulate) {
+        if (stack.isEmpty()) return true;
+        ItemResource resource = ItemResource.of(stack);
+        int remaining = stack.getCount();
+        try (var tx = Transaction.openRoot()) {
+            for (int s = 0; s < handler.size() && remaining > 0; s++) {
+                remaining -= handler.insert(s, resource, remaining, tx);
             }
+            if (!simulate) tx.commit();
         }
-
-        return false; // Entire stack was not inserted
+        stack.setCount(remaining);
+        return remaining == 0;
     }
 
     //endregion

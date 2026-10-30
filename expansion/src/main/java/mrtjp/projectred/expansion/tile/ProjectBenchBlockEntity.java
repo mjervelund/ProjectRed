@@ -1,8 +1,11 @@
 package mrtjp.projectred.expansion.tile;
 
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import codechicken.lib.vec.Vector3;
 import mrtjp.projectred.core.inventory.BaseContainer;
 import mrtjp.projectred.core.tile.IPacketReceiverBlockEntity;
@@ -27,8 +30,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IPacketReceiverBlockEntity, CraftingHelper.InventorySource {
 
@@ -46,7 +47,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
     private final BaseContainer planCraftingGrid = new BaseContainer(9);
 
     private final CraftingHelper craftingHelper = new CraftingHelper(this);
-    private final IItemHandler handler = new InvWrapper(storageInventory);
+    private final ResourceHandler<ItemResource> handler = VanillaContainerWrapper.of(storageInventory);
 
     private boolean isPlanRecipe = false;
     private boolean recipeNeedsUpdate = true;
@@ -113,7 +114,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
     @Override
     public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
-            CCLMenuType.openMenu(
+            ProjectRedMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
                             (id, inv, p) -> new ProjectBenchMenu(inv, this, id),
@@ -121,7 +122,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -263,7 +264,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
     //endregion
 
     //region Capabilities
-    public IItemHandler getHandler() {
+    public ResourceHandler<ItemResource> getHandler() {
         return handler;
     }
     //endregion

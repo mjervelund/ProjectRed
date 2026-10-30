@@ -93,7 +93,7 @@ public abstract class ProjectRedBlockEntity extends BlockEntity implements IBloc
 
     public static void dropItem(ItemStack stack, Level world, Vector3 pos) {
         ItemEntity item = new ItemEntity(world, pos.x, pos.y, pos.z, stack);
-        item.setDeltaMovement(world.random.nextGaussian() * 0.05, world.random.nextGaussian() * 0.05 + 0.2, world.random.nextGaussian() * 0.05);
+        item.setDeltaMovement(world.getRandom().nextGaussian() * 0.05, world.getRandom().nextGaussian() * 0.05 + 0.2, world.getRandom().nextGaussian() * 0.05);
         item.setPickUpDelay(10);
         world.addFreshEntity(item);
     }

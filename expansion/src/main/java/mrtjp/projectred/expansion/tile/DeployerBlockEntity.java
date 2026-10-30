@@ -1,6 +1,9 @@
 package mrtjp.projectred.expansion.tile;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import codechicken.lib.vec.Vector3;
 import com.mojang.authlib.GameProfile;
 import mrtjp.projectred.core.inventory.BaseContainer;
@@ -28,8 +31,6 @@ import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import net.minecraft.util.TriState;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
 
     private final BaseContainer inventory = new BaseContainer(9);
 
-    private final IItemHandler handler = new InvWrapper(inventory);
+    private final ResourceHandler<ItemResource> handler = VanillaContainerWrapper.of(inventory);
 
     public DeployerBlockEntity(BlockPos pos, BlockState state) {
         super(ExpansionBlocks.DEPLOYER_BLOCK_ENTITY.get(), pos, state);
@@ -74,14 +75,14 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
     @Override
     public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
-            CCLMenuType.openMenu(
+            ProjectRedMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
                             (id, inv, p) -> new DeployerMenu(inv, this, id),
                             getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
-        return InteractionResult.sidedSuccess(getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -257,7 +258,7 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
     }
 
     //region Capabilities
-    public IItemHandler getHandler() {
+    public ResourceHandler<ItemResource> getHandler() {
         return handler;
     }
     //endregion

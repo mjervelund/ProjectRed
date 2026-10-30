@@ -74,7 +74,7 @@ public class ProjectRedExpansion {
         modEventBus.addListener(this::onGatherDataEvent);
         modEventBus.addListener(this::onRegisterCaps);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             ExpansionClientInit.init(modEventBus);
         }
 

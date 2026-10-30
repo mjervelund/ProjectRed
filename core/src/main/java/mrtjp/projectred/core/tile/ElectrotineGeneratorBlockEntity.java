@@ -1,6 +1,9 @@
 package mrtjp.projectred.core.tile;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import codechicken.lib.vec.Vector3;
 import mrtjp.projectred.api.IConnectable;
 import mrtjp.projectred.core.block.ProjectRedBlock;
@@ -21,8 +24,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 import static mrtjp.projectred.core.init.CoreBlocks.ELECTROTINE_GENERATOR_BLOCK_ENTITY;
 import static mrtjp.projectred.core.init.CoreItems.ELECTROTINE_DUST_ITEM;
@@ -34,7 +35,7 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
     private int chargeFlow = 0;
 
     private final ElectrotineGeneratorInventory inventory = new ElectrotineGeneratorInventory();
-    private final IItemHandler handler = new InvWrapper(inventory);
+    private final ResourceHandler<ItemResource> handler = VanillaContainerWrapper.of(inventory);
 
     private int burnTimeRemaining = 0;
     private int powerStored = 0;
@@ -71,13 +72,13 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
     @Override
     public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
-            CCLMenuType.openMenu((ServerPlayer) player, new SimpleMenuProvider(
+            ProjectRedMenuType.openMenu((ServerPlayer) player, new SimpleMenuProvider(
                             (id, inv, p) -> new ElectrotineGeneratorMenu(inv, this, id),
                             getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -200,7 +201,7 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
     }
 
     //region Capabilities
-    public IItemHandler getHandler() {
+    public ResourceHandler<ItemResource> getHandler() {
         return handler;
     }
     //endregion

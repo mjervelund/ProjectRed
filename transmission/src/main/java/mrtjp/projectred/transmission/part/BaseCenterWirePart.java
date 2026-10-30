@@ -278,7 +278,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
                 material = null;
                 sendMaterialUpdate();
             }
-            return InteractionResult.sidedSuccess(level().isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         // Retrieve micro material from held item
@@ -314,7 +314,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
                         held.shrink(1);
                     }
                 }
-                return InteractionResult.sidedSuccess(level().isClientSide());
+                return InteractionResult.SUCCESS;
             }
         }
 

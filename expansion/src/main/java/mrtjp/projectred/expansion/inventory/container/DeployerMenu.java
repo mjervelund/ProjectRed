@@ -1,6 +1,6 @@
 package mrtjp.projectred.expansion.inventory.container;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.expansion.init.ExpansionMenus;
 import mrtjp.projectred.expansion.tile.DeployerBlockEntity;
 import mrtjp.projectred.lib.InventoryLib;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class DeployerMenu extends AbstractContainerMenu {
 
-    public static final CCLMenuType<DeployerMenu> FACTORY = (windowId, playerInv, packet) -> {
+    public static final ProjectRedMenuType<DeployerMenu> FACTORY = (windowId, playerInv, packet) -> {
         BlockEntity tile = playerInv.player.level().getBlockEntity(Objects.requireNonNull(packet).readPos());
         if (!(tile instanceof DeployerBlockEntity dbe)) return null;
         return new DeployerMenu(playerInv, dbe, windowId);

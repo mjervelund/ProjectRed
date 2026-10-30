@@ -6,7 +6,6 @@ import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -17,8 +16,8 @@ import static mrtjp.projectred.core.init.CoreTags.*;
 
 public class CoreItemTagsProvider extends ItemTagsProvider {
 
-    public CoreItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, @Nullable ExistingFileHelper helper) {
-        super(output, lookupProvider, blockTags, MOD_ID, helper);
+    public CoreItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, MOD_ID);
     }
 
     @Override
@@ -36,28 +35,28 @@ public class CoreItemTagsProvider extends ItemTagsProvider {
         tag(Tags.Items.DUSTS)
                 .addTag(ELECTROTINE_DUST_TAG);
 
-        tag(RED_ALLOY_INGOT_TAG).add(RED_ALLOY_INGOT_ITEM.get());
-        tag(ELECTROTINE_ALLOY_INGOT_TAG).add(ELECTROTINE_ALLOY_INGOT_ITEM.get());
-        tag(RUBY_GEM_TAG).add(RUBY_ITEM.get());
-        tag(SAPPHIRE_GEM_TAG).add(SAPPHIRE_ITEM.get());
-        tag(PERIDOT_GEM_TAG).add(PERIDOT_ITEM.get());
-        tag(ELECTROTINE_DUST_TAG).add(ELECTROTINE_DUST_ITEM.get());
+        tag(RED_ALLOY_INGOT_TAG).add(RED_ALLOY_INGOT_ITEM.get().builtInRegistryHolder().key());
+        tag(ELECTROTINE_ALLOY_INGOT_TAG).add(ELECTROTINE_ALLOY_INGOT_ITEM.get().builtInRegistryHolder().key());
+        tag(RUBY_GEM_TAG).add(RUBY_ITEM.get().builtInRegistryHolder().key());
+        tag(SAPPHIRE_GEM_TAG).add(SAPPHIRE_ITEM.get().builtInRegistryHolder().key());
+        tag(PERIDOT_GEM_TAG).add(PERIDOT_ITEM.get().builtInRegistryHolder().key());
+        tag(ELECTROTINE_DUST_TAG).add(ELECTROTINE_DUST_ITEM.get().builtInRegistryHolder().key());
         tag(ILLUMAR_TAG)
-                .add(WHITE_ILLUMAR_ITEM.get())
-                .add(ORANGE_ILLUMAR_ITEM.get())
-                .add(MAGENTA_ILLUMAR_ITEM.get())
-                .add(LIGHT_BLUE_ILLUMAR_ITEM.get())
-                .add(YELLOW_ILLUMAR_ITEM.get())
-                .add(LIME_ILLUMAR_ITEM.get())
-                .add(PINK_ILLUMAR_ITEM.get())
-                .add(GRAY_ILLUMAR_ITEM.get())
-                .add(LIGHT_GRAY_ILLUMAR_ITEM.get())
-                .add(CYAN_ILLUMAR_ITEM.get())
-                .add(PURPLE_ILLUMAR_ITEM.get())
-                .add(BLUE_ILLUMAR_ITEM.get())
-                .add(BROWN_ILLUMAR_ITEM.get())
-                .add(GREEN_ILLUMAR_ITEM.get())
-                .add(RED_ILLUMAR_ITEM.get())
-                .add(BLACK_ILLUMAR_ITEM.get());
+                .add(WHITE_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(ORANGE_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(MAGENTA_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(LIGHT_BLUE_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(YELLOW_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(LIME_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(PINK_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(GRAY_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(LIGHT_GRAY_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(CYAN_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(PURPLE_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(BLUE_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(BROWN_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(GREEN_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(RED_ILLUMAR_ITEM.get().builtInRegistryHolder().key())
+                .add(BLACK_ILLUMAR_ITEM.get().builtInRegistryHolder().key());
     }
 }

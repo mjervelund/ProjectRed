@@ -56,7 +56,7 @@ public class ProjectRedTransmission {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             TransmissionClientInit.init(modEventBus);
         }
 

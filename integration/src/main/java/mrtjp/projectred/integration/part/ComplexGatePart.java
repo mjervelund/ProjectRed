@@ -174,7 +174,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
                     scheduleTick(2);
                     return 0;
                 }
-                stateInput = input == 0 ? level().random.nextBoolean() ? 2 : 8 : input;
+                stateInput = input == 0 ? level().getRandom().nextBoolean() ? 2 : 8 : input;
                 setState2((shape() & 1) != 0 ? flipMaskZ(stateInput) : stateInput);
             }
 

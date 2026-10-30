@@ -84,16 +84,16 @@ public class ExpansionBlocks {
         ITEMS.register(ID_DEPLOYER, () -> new BlockItem(DEPLOYER_BLOCK.get(), new Item.Properties()));
 
         // Tiles
-        PROJECT_BENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_PROJECT_BENCH, () -> BlockEntityType.Builder.of(ProjectBenchBlockEntity::new, PROJECT_BENCH_BLOCK.get()).build(null));
-        BATTERY_BOX_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_BATTERY_BOX, () -> BlockEntityType.Builder.of(BatteryBoxBlockEntity::new, BATTERY_BOX_BLOCK.get()).build(null));
-        CHARGING_BENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_CHARGING_BENCH, () -> BlockEntityType.Builder.of(ChargingBenchBlockEntity::new, CHARGING_BENCH_BLOCK.get()).build(null));
-        AUTO_CRAFTER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_AUTO_CRAFTER, () -> BlockEntityType.Builder.of(AutoCrafterBlockEntity::new, AUTO_CRAFTER_BLOCK.get()).build(null));
-        FIRE_STARTER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FIRE_STARTER, () -> BlockEntityType.Builder.of(FireStarterBlockEntity::new, FIRE_STARTER_BLOCK.get()).build(null));
-        FRAME_MOTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FRAME_MOTOR, () -> BlockEntityType.Builder.of(FrameMotorBlockEntity::new, FRAME_MOTOR_BLOCK.get()).build(null));
-        FRAME_ACTUATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FRAME_ACTUATOR, () -> BlockEntityType.Builder.of(FrameActuatorBlockEntity::new, FRAME_ACTUATOR_BLOCK.get()).build(null));
-        TRANSPOSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_TRANSPOSER, () -> BlockEntityType.Builder.of(TransposerBlockEntity::new, TRANSPOSER_BLOCK.get()).build(null));
-        BLOCK_BREAKER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_BLOCK_BREAKER, () -> BlockEntityType.Builder.of(BlockBreakerBlockEntity::new, BLOCK_BREAKER_BLOCK.get()).build(null));
-        DEPLOYER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_DEPLOYER, () -> BlockEntityType.Builder.of(DeployerBlockEntity::new, DEPLOYER_BLOCK.get()).build(null));
+        PROJECT_BENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_PROJECT_BENCH, () -> new BlockEntityType<>(ProjectBenchBlockEntity::new, PROJECT_BENCH_BLOCK.get()));
+        BATTERY_BOX_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_BATTERY_BOX, () -> new BlockEntityType<>(BatteryBoxBlockEntity::new, BATTERY_BOX_BLOCK.get()));
+        CHARGING_BENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_CHARGING_BENCH, () -> new BlockEntityType<>(ChargingBenchBlockEntity::new, CHARGING_BENCH_BLOCK.get()));
+        AUTO_CRAFTER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_AUTO_CRAFTER, () -> new BlockEntityType<>(AutoCrafterBlockEntity::new, AUTO_CRAFTER_BLOCK.get()));
+        FIRE_STARTER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FIRE_STARTER, () -> new BlockEntityType<>(FireStarterBlockEntity::new, FIRE_STARTER_BLOCK.get()));
+        FRAME_MOTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FRAME_MOTOR, () -> new BlockEntityType<>(FrameMotorBlockEntity::new, FRAME_MOTOR_BLOCK.get()));
+        FRAME_ACTUATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_FRAME_ACTUATOR, () -> new BlockEntityType<>(FrameActuatorBlockEntity::new, FRAME_ACTUATOR_BLOCK.get()));
+        TRANSPOSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_TRANSPOSER, () -> new BlockEntityType<>(TransposerBlockEntity::new, TRANSPOSER_BLOCK.get()));
+        BLOCK_BREAKER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_BLOCK_BREAKER, () -> new BlockEntityType<>(BlockBreakerBlockEntity::new, BLOCK_BREAKER_BLOCK.get()));
+        DEPLOYER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_DEPLOYER, () -> new BlockEntityType<>(DeployerBlockEntity::new, DEPLOYER_BLOCK.get()));
 
         /* Blocks */
         FRAME_BLOCK = BLOCKS.register(ID_FRAME, FrameBlock::new);
@@ -102,10 +102,10 @@ public class ExpansionBlocks {
     }
 
     public static void registerCaps(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, PROJECT_BENCH_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, BATTERY_BOX_BLOCK_ENTITY.get(), BatteryBoxBlockEntity::getHandler);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CHARGING_BENCH_BLOCK_ENTITY.get(), ChargingBenchBlockEntity::getHandler);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AUTO_CRAFTER_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, DEPLOYER_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, PROJECT_BENCH_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, BATTERY_BOX_BLOCK_ENTITY.get(), BatteryBoxBlockEntity::getHandler);
+        event.registerBlockEntity(Capabilities.Item.BLOCK, CHARGING_BENCH_BLOCK_ENTITY.get(), ChargingBenchBlockEntity::getHandler);
+        event.registerBlockEntity(Capabilities.Item.BLOCK, AUTO_CRAFTER_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
+        event.registerBlockEntity(Capabilities.Item.BLOCK, DEPLOYER_BLOCK_ENTITY.get(), (tile, ctx) -> tile.getHandler());
     }
 }

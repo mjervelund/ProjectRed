@@ -1,5 +1,8 @@
 package mrtjp.projectred.expansion.tile;
 
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Vector3;
@@ -20,8 +23,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class AutoCrafterBlockEntity extends BaseMachineBlockEntity implements CraftingHelper.InventorySource {
 
@@ -37,7 +38,7 @@ public class AutoCrafterBlockEntity extends BaseMachineBlockEntity implements Cr
     private final BaseContainer storageInventory = new BaseContainer(18);
     private final BaseContainer craftingGrid = new BaseContainer(9);
 
-    private final IItemHandler handler = new InvWrapper(storageInventory);
+    private final ResourceHandler<ItemResource> handler = VanillaContainerWrapper.of(storageInventory);
 
     private final CraftingHelper craftingHelper = new CraftingHelper(this);
 
@@ -227,7 +228,7 @@ public class AutoCrafterBlockEntity extends BaseMachineBlockEntity implements Cr
     //endregion
 
     //region Capabilities
-    public IItemHandler getHandler() {
+    public ResourceHandler<ItemResource> getHandler() {
         return handler;
     }
     //endregion

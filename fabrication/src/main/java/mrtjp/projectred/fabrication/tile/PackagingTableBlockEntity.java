@@ -2,7 +2,7 @@ package mrtjp.projectred.fabrication.tile;
 
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import codechicken.lib.vec.Vector3;
 import mrtjp.projectred.core.init.CoreItems;
 import mrtjp.projectred.core.inventory.BaseContainer;
@@ -77,12 +77,12 @@ public class PackagingTableBlockEntity extends FabricationMachineBlockEntity imp
     @Override
     public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
-            CCLMenuType.openMenu((ServerPlayer) player,
+            ProjectRedMenuType.openMenu((ServerPlayer) player,
                     new SimpleMenuProvider((id, inv, p) -> new PackagingTableMenu(inv, this, id), getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override

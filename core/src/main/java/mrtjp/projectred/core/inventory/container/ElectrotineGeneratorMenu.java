@@ -1,6 +1,6 @@
 package mrtjp.projectred.core.inventory.container;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.core.tile.ElectrotineGeneratorBlockEntity;
 import mrtjp.projectred.lib.InventoryLib;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,7 +16,7 @@ import static mrtjp.projectred.core.init.CoreMenus.ELECTROTINE_GENERATOR_MENU;
 
 public class ElectrotineGeneratorMenu extends BasePoweredBlockEntityMenu {
 
-    public static final CCLMenuType<ElectrotineGeneratorMenu> FACTORY = (windowId, inventory, packet) -> {
+    public static final ProjectRedMenuType<ElectrotineGeneratorMenu> FACTORY = (windowId, inventory, packet) -> {
         var pos = Objects.requireNonNull(packet).readPos();
         BlockEntity tile = inventory.player.level().getBlockEntity(pos);
         if (!(tile instanceof ElectrotineGeneratorBlockEntity)) {

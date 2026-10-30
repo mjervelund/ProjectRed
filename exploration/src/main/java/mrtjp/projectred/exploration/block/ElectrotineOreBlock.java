@@ -91,7 +91,7 @@ public class ElectrotineOreBlock extends DropExperienceBlock {
 
     private static void spawnParticles(Level world, BlockPos pos) {
         double d0 = 0.5625D;
-        RandomSource random = world.random;
+        RandomSource random = world.getRandom();
 
         for (Direction direction : Direction.values()) {
             BlockPos blockpos = pos.relative(direction);

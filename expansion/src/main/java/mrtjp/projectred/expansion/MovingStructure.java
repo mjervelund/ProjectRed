@@ -262,7 +262,7 @@ public class MovingStructure implements MovingStructureInfo {
 
     @OnlyIn(Dist.CLIENT)
     private void markChunksForRender() {
-        FastStream.of(renderChunks.get()).forEach(p -> Minecraft.getInstance().levelRenderer.setSectionDirty(p.x(), p.y(), p.z(), true));
+        FastStream.of(renderChunks.get()).forEach(p -> Minecraft.getInstance().levelExtractor.setSectionDirty(p.x(), p.y(), p.z(), true));
     }
 
     private void markBlocksForLightUpdate(Level level) {

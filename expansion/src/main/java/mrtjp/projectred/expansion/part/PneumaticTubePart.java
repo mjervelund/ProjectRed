@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.part;
 
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Vector3;
@@ -51,7 +53,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
 
     public PneumaticTubePart(TubeType pipeType) {
         super(pipeType);
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             linkCache.setRemovedCallback(this::onLinksRemoved);
             linkCache.setAddedCallback(this::onLinksAdded);
         }
@@ -257,7 +259,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
             return wc.getSlotsForFace(Direction.values()[lookup.otherDirection]).length > 0;
         }
 
-        var itemCap = level().getCapability(Capabilities.ItemHandler.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
+        var itemCap = level().getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
             return itemCap.getSlots() > 0;
         }
@@ -472,8 +474,8 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
             }
         }
 
-        // Pass to IItemHandler capability
-        var itemCap = level().getCapability(Capabilities.ItemHandler.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
+        // Pass to ResourceHandler<ItemResource> capability
+        var itemCap = level().getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
             if (InventoryLib.injectItemHandler(itemCap, payload.getItemStack(), false)) {
                 sendPayloadRemoved(Collections.singletonList(id));
@@ -513,8 +515,8 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
             }
         }
 
-        // Check IItemHandler cap
-        var itemCap = level().getCapability(Capabilities.ItemHandler.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
+        // Check ResourceHandler<ItemResource> cap
+        var itemCap = level().getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
             ItemStack copy = payload.getItemStack().copy();
             InventoryLib.injectItemHandler(itemCap, copy, true);

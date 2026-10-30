@@ -42,7 +42,7 @@ public interface IOrientableBlockEntity extends IBlockEventBlockEntity {
                     }
                     screwdriver.damageScrewdriver(player, hand);
                 }
-                return InteractionResult.sidedSuccess(getBlockLevel().isClientSide());
+                return InteractionResult.SUCCESS;
             }
             return InteractionResult.FAIL;
         }

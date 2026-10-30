@@ -48,10 +48,9 @@ public enum BlockLightType {
 
             blockSupplier.add(color, blockRegistry.register(registryID, () -> blockFactory.apply(colorFinal, false)));
             itemBlockSupplier.add(color, itemRegistry.register(registryID, () -> new BlockItem(getBlock(colorFinal, false), new Item.Properties())));
-            tileEntityTypeSupplier.add(color, tileRegistry.register(registryID, () -> BlockEntityType.Builder.of(
+            tileEntityTypeSupplier.add(color, tileRegistry.register(registryID, () -> new BlockEntityType<>(
                             (pos, state) -> tileFactory.create(colorFinal, false, pos, state),
-                            getBlock(colorFinal, false))
-                    .build(null)));
+                            getBlock(colorFinal, false))));
         }
 
         // Inverted
@@ -61,10 +60,9 @@ public enum BlockLightType {
 
             invertedBlockSupplier.add(color, blockRegistry.register(invertedRegistryID, () -> blockFactory.apply(colorFinal, true)));
             invertedItemBlockSupplier.add(color, itemRegistry.register(invertedRegistryID, () -> new BlockItem(getBlock(colorFinal, true), new Item.Properties())));
-            invertedTileEntityTypeSupplier.add(color, tileRegistry.register(invertedRegistryID, () -> BlockEntityType.Builder.of(
+            invertedTileEntityTypeSupplier.add(color, tileRegistry.register(invertedRegistryID, () -> new BlockEntityType<>(
                             (pos, state) -> tileFactory.create(colorFinal, true, pos, state),
-                            getBlock(colorFinal, true))
-                    .build(null)));
+                            getBlock(colorFinal, true))));
         }
     }
 

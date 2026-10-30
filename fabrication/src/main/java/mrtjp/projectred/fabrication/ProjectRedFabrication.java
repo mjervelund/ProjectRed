@@ -59,7 +59,7 @@ public class ProjectRedFabrication {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
 
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.getDist().isClient()) {
             FabricationClientInit.init(modEventBus);
         }
 

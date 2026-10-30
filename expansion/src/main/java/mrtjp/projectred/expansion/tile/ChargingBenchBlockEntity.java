@@ -1,8 +1,11 @@
 package mrtjp.projectred.expansion.tile;
 
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.ResourceHandler;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import codechicken.lib.util.ServerUtils;
 import codechicken.lib.vec.Vector3;
 import mrtjp.projectred.core.block.ProjectRedBlock;
@@ -22,8 +25,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nullable;
 
@@ -31,9 +32,9 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
 
     private final ChargingBenchInventory inventory = new ChargingBenchInventory();
 
-    private final IItemHandler[] handlers = {
-            new SidedInvWrapper(inventory, Direction.DOWN),
-            new SidedInvWrapper(inventory, Direction.UP)
+    private final ResourceHandler<ItemResource>[] handlers = {
+            new WorldlyContainerWrapper(inventory, Direction.DOWN),
+            new WorldlyContainerWrapper(inventory, Direction.UP)
     };
 
     private boolean isCharged = false;
@@ -74,7 +75,7 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
     @Override
     public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
-            CCLMenuType.openMenu(
+            ProjectRedMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
                             (id, inv, p) -> new ChargingBenchMenu(inv, this, id),
@@ -82,7 +83,7 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -176,7 +177,7 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
     }
 
     //region Capabilities
-    public IItemHandler getHandler(Direction side) {
+    public ResourceHandler<ItemResource> getHandler(Direction side) {
         return handlers[side == Direction.UP ? 1 : 0];
     }
     //endregion

@@ -1,6 +1,6 @@
 package mrtjp.projectred.expansion.inventory.container;
 
-import codechicken.lib.inventory.container.CCLMenuType;
+import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.core.inventory.container.SimpleDataSlot;
 import mrtjp.projectred.expansion.init.ExpansionMenus;
 import mrtjp.projectred.expansion.item.RecipePlanComponent;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class AutoCrafterMenu extends BaseMachineMenu {
 
-    public static final CCLMenuType<AutoCrafterMenu> FACTORY = (windowId, playerInv, packet) -> {
+    public static final ProjectRedMenuType<AutoCrafterMenu> FACTORY = (windowId, playerInv, packet) -> {
         BlockEntity tile = playerInv.player.level().getBlockEntity(packet.readPos());
         if (!(tile instanceof AutoCrafterBlockEntity)) return null;
         return new AutoCrafterMenu(playerInv, (AutoCrafterBlockEntity) tile, windowId);
