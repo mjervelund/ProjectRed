@@ -7,6 +7,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -30,16 +31,17 @@ import static mrtjp.projectred.exploration.init.ExplorationItems.RAW_TIN_ITEM;
 
 public class ExplorationLootTableProvider extends LootTableProvider {
 
-    public ExplorationLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, Set.of(), List.of(
+    /** Registered through {@code GatherDataRegistryEntriesEvent} (loot tables are a registry bootstrap in 26.x). */
+    public ExplorationLootTableProvider() {
+        super(Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(BlockLootTable::new, LootContextParamSets.BLOCK)
-        ), registries);
+        );
     }
 
     private static final class BlockLootTable extends BlockLootSubProvider {
 
         BlockLootTable(HolderLookup.Provider provider) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
         }
 
         @Override

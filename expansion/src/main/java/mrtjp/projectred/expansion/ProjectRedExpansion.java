@@ -25,8 +25,8 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -72,6 +72,7 @@ public class ProjectRedExpansion {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
+        modEventBus.addListener(this::onGatherDataRegistryEntries);
         modEventBus.addListener(this::onRegisterCaps);
 
         if (FMLEnvironment.getDist().isClient()) {
@@ -111,24 +112,19 @@ public class ProjectRedExpansion {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Register frame as Multipart tile passthrough interface
-        MultipartGenerator.INSTANCE.registerPassThroughInterface(Frame.class);
-
-        // Init Movement registry
-        MovementRegistry.init();
+        Multi    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(ExpansionBlockStateModelProvider::new);
+        event.createProvider(ExpansionItemModelProvider::new);
+        event.createProvider(ExpansionLanguageProvider::new);
+        event.createProvider(ExpansionSoundProvider::new);
+        event.createProvider(ExpansionBlockTagsProvider::new);
+        event.createProvider(ExpansionRecipeProvider::new);
     }
 
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-
-        generator.addProvider(event.includeClient(), new ExpansionBlockStateModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new ExpansionItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new ExpansionLanguageProvider(output));
-        generator.addProvider(event.includeClient(), new ExpansionSoundProvider(output, fileHelper));
-
-        generator.addProvider(event.includeServer(), new ExpansionBlockTagsProvider(output, event.getLookupProvider(), fileHelper));
-        generator.addProvider(event.includeServer(), new ExpansionRecipeProvider(event.getLookupProvider(), output));
+    private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
+        event.add(Registries.LOOT_TABLE, new ExpansionLootTableProvider());
+    }
+(), output));
         generator.addProvider(event.includeServer(), new ExpansionLootTableProvider(event.getLookupProvider(), output));
     }
 

@@ -1,19 +1,18 @@
 package mrtjp.projectred.fabrication.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.integration.client.GatePartItemRenderer;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.fabrication.ProjectRedFabrication.MOD_ID;
 import static mrtjp.projectred.fabrication.init.FabricationBlocks.*;
 import static mrtjp.projectred.fabrication.init.FabricationItems.*;
 import static mrtjp.projectred.fabrication.init.FabricationParts.FABRICATED_GATE_ITEM;
 
-public class FabricationItemModelProvider extends ItemModelProvider {
+public class FabricationItemModelProvider extends ProjectRedModelProvider {
 
-    public FabricationItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public FabricationItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.part;
 
+import net.minecraft.world.level.storage.loot.LootParams;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.multipart.api.RedstoneInteractions;
@@ -137,13 +138,13 @@ public class RedstoneTubePart extends BaseTubePart implements IRedstonePropagati
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         if (!hasRedstone) {
-            return super.getDrops();
+            return super.getDrops(builder);
         }
 
         LinkedList<ItemStack> drops = new LinkedList<>();
-        for (var drop : super.getDrops()) {
+        for (var drop : super.getDrops(builder)) {
             drops.add(drop);
         }
         drops.add(new ItemStack(CoreItems.RED_ALLOY_INGOT_ITEM.get()));

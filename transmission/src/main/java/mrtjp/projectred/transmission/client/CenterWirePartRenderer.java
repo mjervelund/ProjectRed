@@ -3,7 +3,7 @@ package mrtjp.projectred.transmission.client;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
-import codechicken.multipart.api.part.render.PartRenderer;
+import mrtjp.projectred.core.client.ProjectRedPartRenderer;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.transmission.part.BaseCenterWirePart;
@@ -12,11 +12,11 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 
 import javax.annotation.Nullable;
 
-public class CenterWirePartRenderer implements PartRenderer<BaseCenterWirePart> {
+public class CenterWirePartRenderer extends ProjectRedPartRenderer<BaseCenterWirePart> {
 
     public static final CenterWirePartRenderer INSTANCE = new CenterWirePartRenderer();
 
-    @Override
+    // 26.3 port: everything renders on the dynamic path (ProjectRedPartRenderer); the static (chunk) path isn't ported.
     public void renderStatic(BaseCenterWirePart part, @Nullable RenderType layer, CCRenderState ccrs) {
         if (layer == null || (layer == RenderTypes.cutoutMovingBlock() && part.useStaticRenderer())) {
             ccrs.brightness = 0;
@@ -26,7 +26,7 @@ public class CenterWirePartRenderer implements PartRenderer<BaseCenterWirePart> 
 
     @Override
     public void renderDynamic(BaseCenterWirePart part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
-        if (!part.useStaticRenderer()) {
+        {
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.brightness = packedLight;

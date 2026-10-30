@@ -1,6 +1,6 @@
 package mrtjp.projectred.expansion.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.expansion.TubeType;
 import mrtjp.projectred.expansion.client.TubePartItemRenderer;
 import net.minecraft.data.PackOutput;
@@ -8,7 +8,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.*;
@@ -16,10 +15,10 @@ import static mrtjp.projectred.expansion.init.ExpansionClientInit.ITEM_MODEL_PRO
 import static mrtjp.projectred.expansion.init.ExpansionClientInit.ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN;
 import static mrtjp.projectred.expansion.init.ExpansionItems.*;
 
-public class ExpansionItemModelProvider extends ItemModelProvider {
+public class ExpansionItemModelProvider extends ProjectRedModelProvider {
 
-    public ExpansionItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public ExpansionItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

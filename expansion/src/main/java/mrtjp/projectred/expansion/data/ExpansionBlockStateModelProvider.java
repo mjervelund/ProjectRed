@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.data;
 
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import codechicken.lib.datagen.ClassModelLoaderBuilder;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.expansion.block.BatteryBoxBlock;
@@ -10,26 +11,24 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.*;
 
 @SuppressWarnings("DataFlowIssue")
-public class ExpansionBlockStateModelProvider extends BlockStateProvider {
+public class ExpansionBlockStateModelProvider extends ProjectRedModelProvider {
 
     // XY rotations for non-rotatable sided devices
     private static final int[][] DEVICE_SIDED_ROTATIONS = { {0, 0}, {2, 2}, {1, 2}, {1, 0}, {1, 1}, {1, 3} };
 
-    public ExpansionBlockStateModelProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, MOD_ID, exFileHelper);
+    public ExpansionBlockStateModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override
-    protected void registerStatesAndModels() {
+    protected void registerModels() {
         addRotatableOppositeMatchingFacesBlock(PROJECT_BENCH_BLOCK.get());
         addBatteryBoxBlock(BATTERY_BOX_BLOCK.get());
         addTriStateFrontFacedPoweredMachineBlock(AUTO_CRAFTER_BLOCK.get());

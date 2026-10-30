@@ -23,8 +23,8 @@ import static mrtjp.projectred.transmission.init.TransmissionTags.*;
 
 public class TransmissionRecipeProvider extends RecipeProvider {
 
-    public TransmissionRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, MOD_ID);
+    public TransmissionRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, MOD_ID);
     }
 
     @Override

@@ -1,19 +1,18 @@
 package mrtjp.projectred.illumination.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.illumination.BlockLightType;
 import mrtjp.projectred.illumination.MultipartLightType;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.illumination.ProjectRedIllumination.MOD_ID;
 import static mrtjp.projectred.illumination.init.IlluminationBlocks.ILLUMAR_SMART_LAMP;
 
-public class IlluminationItemModelProvider extends ItemModelProvider {
+public class IlluminationItemModelProvider extends ProjectRedModelProvider {
 
-    public IlluminationItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public IlluminationItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

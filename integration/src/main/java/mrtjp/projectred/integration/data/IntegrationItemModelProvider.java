@@ -1,17 +1,16 @@
 package mrtjp.projectred.integration.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.integration.GateType;
 import mrtjp.projectred.integration.client.GatePartItemRenderer;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.integration.ProjectRedIntegration.MOD_ID;
 
-public class IntegrationItemModelProvider extends ItemModelProvider {
+public class IntegrationItemModelProvider extends ProjectRedModelProvider {
 
-    public IntegrationItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public IntegrationItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

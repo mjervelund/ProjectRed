@@ -2,6 +2,7 @@ package mrtjp.projectred.core.client;
 
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
+import codechicken.lib.vec.Transformation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
@@ -33,6 +34,10 @@ public final class RecordingBufferSource {
      */
     public void bind(CCRenderState ccrs, RenderType type, PoseStack stack) {
         ccrs.bind(new TransformingVertexConsumer(getBuffer(type), stack), type);
+    }
+
+    public void bind(CCRenderState ccrs, RenderType type, Transformation transform) {
+        ccrs.bind(new TransformingVertexConsumer(getBuffer(type), transform), type);
     }
 
     public boolean isEmpty() {

@@ -1,18 +1,17 @@
 package mrtjp.projectred.exploration.data;
 
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nonnull;
 
 import static mrtjp.projectred.exploration.ProjectRedExploration.MOD_ID;
 import static mrtjp.projectred.exploration.init.ExplorationBlocks.*;
 
-public class ExplorationBlockStateModelProvider extends BlockStateProvider {
+public class ExplorationBlockStateModelProvider extends ProjectRedModelProvider {
 
-    public ExplorationBlockStateModelProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, MOD_ID, exFileHelper);
+    public ExplorationBlockStateModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Nonnull
@@ -22,7 +21,7 @@ public class ExplorationBlockStateModelProvider extends BlockStateProvider {
     }
 
     @Override
-    protected void registerStatesAndModels() {
+    protected void registerModels() {
 
         // Ores
         simpleBlock(RUBY_ORE_BLOCK.get());

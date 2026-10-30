@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.Vector3;
-import codechicken.multipart.api.part.render.PartRenderer;
+import mrtjp.projectred.core.client.ProjectRedPartRenderer;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.expansion.part.BaseTubePart;
@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 import javax.annotation.Nullable;
 
-public class TubePartRenderer implements PartRenderer<BaseTubePart> {
+public class TubePartRenderer extends ProjectRedPartRenderer<BaseTubePart> {
 
     public static final TubePartRenderer INSTANCE = new TubePartRenderer();
 
@@ -31,7 +31,7 @@ public class TubePartRenderer implements PartRenderer<BaseTubePart> {
             new Vector3(1.0, 0.5, 0.5)  // East
     };
 
-    @Override
+    // 26.3 port: everything renders on the dynamic path (ProjectRedPartRenderer); the static (chunk) path isn't ported.
     public void renderStatic(BaseTubePart part, @Nullable RenderType layer, CCRenderState ccrs) {
         if (layer == null || (layer == RenderTypes.cutoutMovingBlock() && part.useStaticRenderer())) {
             ccrs.brightness = 0;
@@ -41,7 +41,7 @@ public class TubePartRenderer implements PartRenderer<BaseTubePart> {
 
     @Override
     public void renderDynamic(BaseTubePart part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
-        if (!part.useStaticRenderer()) {
+        {
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.brightness = packedLight;

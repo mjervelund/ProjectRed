@@ -1,5 +1,7 @@
 package mrtjp.projectred.transmission.part;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.storage.loot.LootParams;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.VoxelShapeCache;
@@ -110,7 +112,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         super.load(tag, registries);
         connMap = tag.getIntOr("connMap", 0);
-        material = tag.contains("mat") ? MicroMaterialRegistry.getMaterial(tag.getString("mat")) : null;
+        material = tag.contains("mat") ? tag.getString("mat").map(Identifier::tryParse).map(MicroMaterial.REGISTRY::getValue).orElse(null) : null;
     }
 
     @Override
@@ -119,7 +121,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
         packet.writeByte(packedConnMap());
         packet.writeBoolean(material != null);
         if (material != null) {
-            packet.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material);
+            packet.writeRegistryIdDirect(MicroMaterial.REGISTRY, material);
         }
     }
 
@@ -128,7 +130,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
         super.readDesc(packet);
         connMap = packet.readUByte();
         if (packet.readBoolean()) {
-            material = packet.readRegistryIdDirect(MicroMaterialRegistry.microMaterials());
+            material = packet.readRegistryIdDirect(MicroMaterial.REGISTRY);
         }
     }
 
@@ -140,7 +142,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
                 if (useStaticRenderer()) tile().markRender();
                 break;
             case KEY_MATERIAL:
-                material = packet.readRegistryIdDirect(MicroMaterialRegistry.microMaterials());
+                material = packet.readRegistryIdDirect(MicroMaterial.REGISTRY);
                 if (useStaticRenderer()) tile().markRender();
                 break;
             case KEY_REMOVE_MATERIAL:
@@ -161,7 +163,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
         if (material == null) {
             sendUpdateData(KEY_REMOVE_MATERIAL, p -> {});
         } else {
-            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
+            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterial.REGISTRY, material));
         }
     }
 
@@ -174,7 +176,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     }
 
     @Override
-    public SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(UseOnContext context) {
         return SoundType.GLASS;
     }
 
@@ -219,9 +221,9 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         List<ItemStack> list = new LinkedList<>();
-        for (ItemStack s : super.getDrops())
+        for (ItemStack s : super.getDrops(builder))
             list.add(s);
 
         if (material != null) {

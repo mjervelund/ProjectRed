@@ -18,7 +18,6 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
@@ -72,15 +71,9 @@ public class ProjectRedIntegration {
 
     }
 
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        var registries = event.getLookupProvider();
-
-        generator.addProvider(event.includeClient(), new IntegrationItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new IntegrationLanguageProvider(output));
-
-        generator.addProvider(event.includeServer(), new IntegrationRecipeProvider(registries, output));
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(IntegrationItemModelProvider::new);
+        event.createProvider(IntegrationLanguageProvider::new);
+        event.createProvider(IntegrationRecipeProvider::new);
     }
 }

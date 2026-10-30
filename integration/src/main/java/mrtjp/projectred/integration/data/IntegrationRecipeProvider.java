@@ -15,8 +15,8 @@ import static mrtjp.projectred.integration.ProjectRedIntegration.MOD_ID;
 
 public class IntegrationRecipeProvider extends RecipeProvider {
 
-    public IntegrationRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, MOD_ID);
+    public IntegrationRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, MOD_ID);
     }
 
     @Override

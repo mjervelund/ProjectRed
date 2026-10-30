@@ -1,18 +1,18 @@
 package mrtjp.projectred.transmission.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.transmission.init.TransmissionClientInit;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.transmission.WireType;
 import mrtjp.projectred.transmission.client.FramedWirePartItemRenderer;
 import mrtjp.projectred.transmission.client.WirePartItemRenderer;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.transmission.ProjectRedTransmission.MOD_ID;
 
-public class TransmissionItemModelProvider extends ItemModelProvider {
+public class TransmissionItemModelProvider extends ProjectRedModelProvider {
 
-    public TransmissionItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public TransmissionItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override
@@ -20,8 +20,7 @@ public class TransmissionItemModelProvider extends ItemModelProvider {
 
         // Wires and framed wires
         for (WireType type : WireType.values()) {
-            generated(type.getItem()).noTexture();
-            clazz(type.getItem(), type.isCenterPart() ? FramedWirePartItemRenderer.class : WirePartItemRenderer.class);
+            specialItem(type.getItem(), type.isCenterPart() ? TransmissionClientInit.FRAMED_WIRE_ITEM_RENDERER : TransmissionClientInit.WIRE_ITEM_RENDERER);
         }
     }
 }

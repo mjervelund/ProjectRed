@@ -20,8 +20,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +58,7 @@ public class ProjectRedIllumination {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
+        modEventBus.addListener(this::onGatherDataRegistryEntries);
 
         if (FMLEnvironment.getDist().isClient()) {
             IlluminationClientInit.init(modEventBus);
@@ -69,24 +70,17 @@ public class ProjectRedIllumination {
         PART_TYPES.register(modEventBus);
         CREATIVE_TABS.register(modEventBus);
 
-        modEventBus.register(new IlluminationMicroMaterials());
+      private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(IlluminationBlockStateModelProvider::new);
+        event.createProvider(IlluminationItemModelProvider::new);
+        event.createProvider(IlluminationLanguageProvider::new);
+        event.createProvider(IlluminationRecipeProvider::new);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-
+    private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
+        event.add(Registries.LOOT_TABLE, new IlluminationLootTableProvider());
     }
-
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-
-        generator.addProvider(event.includeClient(), new IlluminationBlockStateModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new IlluminationItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new IlluminationLanguageProvider(output));
-
-        generator.addProvider(event.includeServer(), new IlluminationLootTableProvider(output, provider));
+leProvider(output, provider));
         generator.addProvider(event.includeServer(), new IlluminationRecipeProvider(provider, output));
     }
 }

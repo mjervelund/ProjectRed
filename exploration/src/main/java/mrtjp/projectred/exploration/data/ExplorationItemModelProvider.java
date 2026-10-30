@@ -1,19 +1,18 @@
 package mrtjp.projectred.exploration.data;
 
-import codechicken.lib.datagen.ItemModelProvider;
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.exploration.ProjectRedExploration.MOD_ID;
 import static mrtjp.projectred.exploration.init.ExplorationBlocks.*;
 import static mrtjp.projectred.exploration.init.ExplorationItems.*;
 
-public class ExplorationItemModelProvider extends ItemModelProvider {
+public class ExplorationItemModelProvider extends ProjectRedModelProvider {
 
-    public ExplorationItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, MOD_ID, existingFileHelper);
+    public ExplorationItemModelProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

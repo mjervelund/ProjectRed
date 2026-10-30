@@ -3,7 +3,6 @@ package mrtjp.projectred.expansion.data;
 import mrtjp.projectred.expansion.init.ExpansionUnlocal;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
@@ -20,8 +19,8 @@ public class ExpansionSoundProvider extends SoundDefinitionsProvider {
     private static final Identifier DEPRESSURIZE_2 = Identifier.fromNamespaceAndPath(MOD_ID, "depressurize_2");
     private static final Identifier DEPRESSURIZE_3 = Identifier.fromNamespaceAndPath(MOD_ID, "depressurize_3");
 
-    public ExpansionSoundProvider(PackOutput output, ExistingFileHelper helper) {
-        super(output, MOD_ID, helper);
+    public ExpansionSoundProvider(PackOutput output) {
+        super(output, MOD_ID);
     }
 
     @Override

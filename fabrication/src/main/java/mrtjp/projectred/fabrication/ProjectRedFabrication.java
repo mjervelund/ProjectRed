@@ -18,8 +18,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +58,7 @@ public class ProjectRedFabrication {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
+        modEventBus.addListener(this::onGatherDataRegistryEntries);
 
         if (FMLEnvironment.getDist().isClient()) {
             FabricationClientInit.init(modEventBus);
@@ -68,25 +69,18 @@ public class ProjectRedFabrication {
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENU_TYPES.register(modEventBus);
         PARTS.register(modEventBus);
-        CREATIVE_TABS.register(modEventBus);
-        DATA_COMPONENT_TYPES.register(modEventBus);
+        CREATIVE_TABS.register(modE    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(FabricationBlockStateModelProvider::new);
+        event.createProvider(FabricationItemModelProvider::new);
+        event.createProvider(FabricationLanguageProvider::new);
+        event.createProvider(FabricationBlockTagsProvider::new);
+        event.createProvider(FabricationRecipeProvider::new);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-
+    private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
+        event.add(Registries.LOOT_TABLE, new FabricationLootTableProvider());
     }
-
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-
-        generator.addProvider(event.includeClient(), new FabricationBlockStateModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new FabricationItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new FabricationLanguageProvider(output));
-
-        generator.addProvider(event.includeServer(), new FabricationBlockTagsProvider(output, event.getLookupProvider(), fileHelper));
-        generator.addProvider(event.includeServer(), new FabricationLootTableProvider(output, event.getLookupProvider()));
+pProvider()));
         generator.addProvider(event.includeServer(), new FabricationRecipeProvider(event.getLookupProvider(), output));
     }
 }

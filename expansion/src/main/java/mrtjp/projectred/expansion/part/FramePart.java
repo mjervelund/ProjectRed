@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.part;
 
+import net.minecraft.world.level.storage.loot.LootParams;
+import mrtjp.projectred.core.part.IconHitEffectsPart;
 import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -137,17 +139,17 @@ public class FramePart extends ProjectRedPart implements NormalOcclusionPart, Ic
     }
 
     @Override
-    public @Nullable SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(@Nullable UseOnContext context) {
         return FRAME_BLOCK.get().defaultBlockState().getSoundType();
     }
 
     @Override
-    public ItemStack getCloneStack(PartRayTraceResult hit) {
+    public ItemStack getCloneStack(PartRayTraceResult hit, Player player) {
         return new ItemStack(FRAME_BLOCK.get());
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         return Collections.singleton(new ItemStack(FRAME_BLOCK.get()));
     }
     //endregion

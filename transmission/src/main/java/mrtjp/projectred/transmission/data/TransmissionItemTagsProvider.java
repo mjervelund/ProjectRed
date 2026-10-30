@@ -6,7 +6,6 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -16,8 +15,8 @@ import static mrtjp.projectred.transmission.init.TransmissionTags.*;
 
 public class TransmissionItemTagsProvider extends ItemTagsProvider {
 
-    public TransmissionItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, @Nullable ExistingFileHelper helper) {
-        super(output, lookupProvider, blockTags, MOD_ID, helper);
+    public TransmissionItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, MOD_ID);
     }
 
     @Override
@@ -30,27 +29,27 @@ public class TransmissionItemTagsProvider extends ItemTagsProvider {
         // Insulated wires
         var b = tag(INSULATED_WIRE_ITEM_TAG);
         for (WireType type : WireType.INSULATED_WIRES) {
-            b.add(type.getItem());
+            b.add(type.getItem().builtInRegistryHolder().key());
         }
 
         // Bundled cables
         b = tag(BUNDLED_WIRE_ITEM_TAG);
-        b.add(WireType.BUNDLED_NEUTRAL.getItem());
+        b.add(WireType.BUNDLED_NEUTRAL.getItem().builtInRegistryHolder().key());
         for (WireType type : WireType.COLOURED_BUNDLED_WIRES) {
-            b.add(type.getItem());
+            b.add(type.getItem().builtInRegistryHolder().key());
         }
 
         // Framed Insulated
         b = tag(FRAMED_INSULATED_WIRE_ITEM_TAG);
         for (WireType type : WireType.FRAMED_INSULATED_WIRES) {
-            b.add(type.getItem());
+            b.add(type.getItem().builtInRegistryHolder().key());
         }
 
         // Framed Bundled
         b = tag(FRAMED_BUNDLED_WIRE_ITEM_TAG);
-        b.add(WireType.FRAMED_BUNDLED_NEUTRAL.getItem());
+        b.add(WireType.FRAMED_BUNDLED_NEUTRAL.getItem().builtInRegistryHolder().key());
         for (WireType type : WireType.FRAMED_COLOURED_BUNDLED_WIRES) {
-            b.add(type.getItem());
+            b.add(type.getItem().builtInRegistryHolder().key());
         }
     }
 }

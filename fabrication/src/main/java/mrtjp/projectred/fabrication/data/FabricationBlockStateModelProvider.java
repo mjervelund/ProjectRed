@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.data;
 
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.fabrication.ProjectRedFabrication;
 import mrtjp.projectred.fabrication.block.FabricationMachineBlock;
@@ -8,20 +9,18 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nonnull;
 
 import static mrtjp.projectred.fabrication.init.FabricationBlocks.*;
 
 @SuppressWarnings("DataFlowIssue")
-public class FabricationBlockStateModelProvider extends BlockStateProvider {
+public class FabricationBlockStateModelProvider extends ProjectRedModelProvider {
 
-    public FabricationBlockStateModelProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, ProjectRedFabrication.MOD_ID, exFileHelper);
+    public FabricationBlockStateModelProvider(PackOutput output) {
+        super(output, ProjectRedFabrication.MOD_ID);
     }
 
     @Override
@@ -30,7 +29,7 @@ public class FabricationBlockStateModelProvider extends BlockStateProvider {
     }
 
     @Override
-    protected void registerStatesAndModels() {
+    protected void registerModels() {
 
         addICWorkbenchVariants(IC_WORKBENCH_BLOCK.get());
 

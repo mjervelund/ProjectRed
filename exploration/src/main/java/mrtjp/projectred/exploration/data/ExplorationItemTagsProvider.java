@@ -7,7 +7,6 @@ import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.CompletableFuture;
@@ -20,8 +19,8 @@ import static mrtjp.projectred.exploration.init.ExplorationTags.*;
 
 public class ExplorationItemTagsProvider extends ItemTagsProvider {
 
-    public ExplorationItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags, @Nullable ExistingFileHelper helper) {
-        super(output, lookupProvider, blockTags, MOD_ID, helper);
+    public ExplorationItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, MOD_ID);
     }
 
     @Override

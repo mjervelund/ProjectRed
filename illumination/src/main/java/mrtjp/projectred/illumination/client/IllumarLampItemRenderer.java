@@ -1,12 +1,10 @@
 package mrtjp.projectred.illumination.client;
 
+import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.model.bakedmodels.WrappedItemModel;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
@@ -25,7 +23,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class IllumarLampItemRenderer extends WrappedItemModel implements IItemRenderer {
+public class IllumarLampItemRenderer extends WrappedItemModel extends ProjectRedItemRenderer {
 
     private static final Cuboid6 BLOCK_BOUNDS = Cuboid6.full.copy().expand(-0.02D);
     private static final Cuboid6 GLOW_BOUNDS = Cuboid6.full.copy().expand(0.02D);
@@ -70,23 +68,4 @@ public class IllumarLampItemRenderer extends WrappedItemModel implements IItemRe
         HaloRenderer.addItemRendererBloom(transformType, mStack, Vector3.ZERO, GLOW_BOUNDS, block.getColor());
     }
 
-    @Override
-    public @Nullable PerspectiveModelState getModelState() {
-        return TransformUtils.DEFAULT_BLOCK;
-    }
-
-    @Override
-    public boolean useAmbientOcclusion() {
-        return true;
-    }
-
-    @Override
-    public boolean isGui3d() {
-        return true;
-    }
-
-    @Override
-    public boolean usesBlockLight() {
-        return true;
-    }
 }

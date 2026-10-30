@@ -17,8 +17,8 @@ import static mrtjp.projectred.illumination.init.IlluminationBlocks.ILLUMAR_SMAR
 
 public class IlluminationRecipeProvider extends RecipeProvider {
 
-    public IlluminationRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, MOD_ID);
+    public IlluminationRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, MOD_ID);
     }
 
     @Override

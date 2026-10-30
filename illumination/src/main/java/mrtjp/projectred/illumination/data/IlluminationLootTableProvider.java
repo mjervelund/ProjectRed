@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -19,8 +20,9 @@ import static mrtjp.projectred.illumination.init.IlluminationBlocks.ILLUMAR_SMAR
 
 public class IlluminationLootTableProvider extends LootTableProvider {
 
-    public IlluminationLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, Set.of(), List.of(
+    /** Registered through {@code GatherDataRegistryEntriesEvent} (loot tables are a registry bootstrap in 26.x). */
+    public IlluminationLootTableProvider() {
+        super(Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(BlockLootTable::new, LootContextParamSets.BLOCK)),
                 registries
         );
@@ -29,7 +31,7 @@ public class IlluminationLootTableProvider extends LootTableProvider {
     private static final class BlockLootTable extends BlockLootSubProvider {
 
         public BlockLootTable(HolderLookup.Provider provider) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
         }
 
         @Override

@@ -1,10 +1,8 @@
 package mrtjp.projectred.integration.client;
 
+import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.item.IItemRenderer;
-import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.RedundantTransformation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.integration.item.BaseGatePartItem;
@@ -14,29 +12,9 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class GatePartItemRenderer implements IItemRenderer {
+public class GatePartItemRenderer extends ProjectRedItemRenderer {
 
     public GatePartItemRenderer() {
-    }
-
-    @Override
-    public boolean useAmbientOcclusion() {
-        return false;
-    }
-
-    @Override
-    public boolean isGui3d() {
-        return true;
-    }
-
-    @Override
-    public boolean usesBlockLight() {
-        return false;
-    }
-
-    @Override
-    public @Nullable PerspectiveModelState getModelState() {
-        return TransformUtils.DEFAULT_BLOCK;
     }
 
     @Override

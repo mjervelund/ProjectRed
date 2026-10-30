@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -18,16 +19,17 @@ import static mrtjp.projectred.fabrication.init.FabricationBlocks.*;
 
 public class FabricationLootTableProvider extends LootTableProvider {
 
-    public FabricationLootTableProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        super(output, Set.of(), List.of(
+    /** Registered through {@code GatherDataRegistryEntriesEvent} (loot tables are a registry bootstrap in 26.x). */
+    public FabricationLootTableProvider() {
+        super(Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(BlockLootTables::new, LootContextParamSets.BLOCK)
-        ), registries);
+        );
     }
 
     private static final class BlockLootTables extends BlockLootSubProvider {
 
         BlockLootTables(HolderLookup.Provider registries) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
         }
 
         @Override

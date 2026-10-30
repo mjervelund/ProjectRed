@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.data;
 
+import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.illumination.BlockLightType;
 import mrtjp.projectred.illumination.ProjectRedIllumination;
@@ -9,24 +10,22 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static mrtjp.projectred.illumination.init.IlluminationBlocks.ILLUMAR_SMART_LAMP;
 
-public class IlluminationBlockStateModelProvider extends BlockStateProvider {
+public class IlluminationBlockStateModelProvider extends ProjectRedModelProvider {
 
     // XY rotations for non-rotatable sided devices
     private static final int[][] DEVICE_SIDED_ROTATIONS = { {0, 0}, {2, 2}, {1, 2}, {1, 0}, {1, 1}, {1, 3} };
 
-    public IlluminationBlockStateModelProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, ProjectRedIllumination.MOD_ID, exFileHelper);
+    public IlluminationBlockStateModelProvider(PackOutput output) {
+        super(output, ProjectRedIllumination.MOD_ID);
     }
 
     @Override
-    protected void registerStatesAndModels() {
+    protected void registerModels() {
         for (BlockLightType lampType : BlockLightType.values()) {
             for (int color = 0; color < 16; color++) {
                 addIllumarLampVariants(lampType.getBlock(color, true));

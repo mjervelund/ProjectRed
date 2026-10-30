@@ -1,5 +1,7 @@
 package mrtjp.projectred.illumination.part;
 
+import net.minecraft.world.level.storage.loot.LootParams;
+import mrtjp.projectred.core.part.IconHitEffectsPart;
 import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -218,12 +220,12 @@ public class MultipartLightPart extends ProjectRedPart implements SlottedPart, N
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         return Collections.singletonList(getItem());
     }
 
     @Override
-    public ItemStack getCloneStack(PartRayTraceResult hit) {
+    public ItemStack getCloneStack(PartRayTraceResult hit, Player player) {
         return getItem();
     }
 
@@ -243,7 +245,7 @@ public class MultipartLightPart extends ProjectRedPart implements SlottedPart, N
     }
 
     @Override
-    public SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(UseOnContext context) {
         return SoundType.GLASS;
     }
 

@@ -20,8 +20,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -75,19 +73,12 @@ public class ProjectRedTransmission {
 
     }
 
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-
-        generator.addProvider(event.includeClient(), new TransmissionItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new TransmissionLanguageProvider(output));
-
-        BlockTagsProvider blockTagsProvider = new TransmissionBlockTagsProvider(output, provider, fileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new TransmissionItemTagsProvider(output, provider, blockTagsProvider.contentsGetter(), fileHelper));
-        generator.addProvider(event.includeServer(), new TransmissionRecipeProvider(provider, output));
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(TransmissionItemModelProvider::new);
+        event.createProvider(TransmissionLanguageProvider::new);
+        event.createProvider(TransmissionBlockTagsProvider::new);
+        event.createProvider(TransmissionItemTagsProvider::new);
+        event.createProvider(TransmissionRecipeProvider::new);
     }
 
     private void onServerStartEvent(final ServerAboutToStartEvent event) {

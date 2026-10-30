@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.part;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.storage.loot.LootParams;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.raytracer.VoxelShapeCache;
@@ -118,7 +120,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider registries) {
         connMap = tag.getIntOr("connMap", 0);
-        material = tag.contains("mat") ? MicroMaterialRegistry.getMaterial(tag.getString("mat")) : null;
+        material = tag.contains("mat") ? tag.getString("mat").map(Identifier::tryParse).map(MicroMaterial.REGISTRY::getValue).orElse(null) : null;
     }
 
     @Override
@@ -126,7 +128,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
         packet.writeByte(packedConnMap());
         packet.writeBoolean(material != null);
         if (material != null) {
-            packet.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material);
+            packet.writeRegistryIdDirect(MicroMaterial.REGISTRY, material);
         }
     }
 
@@ -140,7 +142,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
     }
 
     @Override
-    public ItemStack getCloneStack(PartRayTraceResult hit) {
+    public ItemStack getCloneStack(PartRayTraceResult hit, Player player) {
         return getItem();
     }
 
@@ -148,7 +150,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
     public void readDesc(MCDataInput packet) {
         connMap = packet.readUByte();
         if (packet.readBoolean()) {
-            material = packet.readRegistryIdDirect(MicroMaterialRegistry.microMaterials());
+            material = packet.readRegistryIdDirect(MicroMaterial.REGISTRY);
         }
     }
     //endregion
@@ -180,7 +182,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
                 if (useStaticRenderer()) tile().markRender();
             }
             case KEY_MATERIAL -> {
-                material = packet.readRegistryIdDirect(MicroMaterialRegistry.microMaterials());
+                material = packet.readRegistryIdDirect(MicroMaterial.REGISTRY);
                 if (useStaticRenderer()) tile().markRender();
             }
             case KEY_REMOVE_MATERIAL -> {
@@ -201,7 +203,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
         if (material == null) {
             sendUpdateData(KEY_REMOVE_MATERIAL, p -> {});
         } else {
-            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterialRegistry.microMaterials(), material));
+            sendUpdateData(KEY_MATERIAL, p -> p.writeRegistryIdDirect(MicroMaterial.REGISTRY, material));
         }
     }
     //endregion
@@ -224,7 +226,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
     }
 
     @Override
-    public SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(UseOnContext context) {
         return SoundType.GLASS;
     }
 
@@ -269,7 +271,7 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         List<ItemStack> list = new LinkedList<>();
         list.add(getItem());
 

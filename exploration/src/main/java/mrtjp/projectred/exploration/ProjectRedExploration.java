@@ -22,10 +22,9 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
@@ -68,6 +67,7 @@ public class ProjectRedExploration {
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::onGatherDataEvent);
+        modEventBus.addListener(this::onGatherDataRegistryEntries);
         modEventBus.addListener(ExplorationBlocks::onRegisterMicroMaterials);
 
         if (FMLEnvironment.getDist().isClient()) {
@@ -82,30 +82,20 @@ public class ProjectRedExploration {
         RECIPE_SERIALIZERS.register(modEventBus);
         MICRO_MATERIALS.register(modEventBus);
         CREATIVE_TABS.register(modEventBus);
-        DATA_COMPONENT_TYPES.register(modEventBus);
-        ARMOR_MATERIALS.register(modEventBus);
+        DATA_COMPONENT_TYPES.register    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        event.createProvider(ExplorationBlockStateModelProvider::new);
+        event.createProvider(ExplorationItemModelProvider::new);
+        event.createProvider(ExplorationLanguageProvider::new);
+        event.createProvider(ExplorationBlockTagsProvider::new);
+        event.createProvider(ExplorationItemTagsProvider::new);
+        event.createProvider(ExplorationRecipeProvider::new);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
-
+    private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
+        event.add(Registries.LOOT_TABLE, new ExplorationLootTableProvider());
+        // TODO 26.3: worldgen entries (ExplorationBuiltInEntriesProvider) need porting to registry bootstraps
     }
-
-    private void onGatherDataEvent(final GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        PackOutput output = generator.getPackOutput();
-        ExistingFileHelper fileHelper = event.getExistingFileHelper();
-        CompletableFuture<HolderLookup.Provider> provider = event.getLookupProvider();
-
-        generator.addProvider(event.includeClient(), new ExplorationBlockStateModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new ExplorationItemModelProvider(output, fileHelper));
-        generator.addProvider(event.includeClient(), new ExplorationLanguageProvider(output));
-
-        ExplorationBuiltInEntriesProvider explorationProvider = new ExplorationBuiltInEntriesProvider(output, provider);
-        generator.addProvider(event.includeServer(), explorationProvider);
-        BlockTagsProvider blockTagsProvider = new ExplorationBlockTagsProvider(output, provider, fileHelper);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new ExplorationItemTagsProvider(output, provider, blockTagsProvider.contentsGetter(), fileHelper));
-        generator.addProvider(event.includeServer(), new ExplorationLootTableProvider(output, provider));
+bleProvider(output, provider));
         generator.addProvider(event.includeServer(), new ExplorationRecipeProvider(provider, output));
     }
 }

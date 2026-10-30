@@ -40,7 +40,7 @@ public abstract class ProjectRedPart extends BaseMultipart {
     }
 
     public void sendUpdateData(Consumer<MCDataOutput> func) {
-        sendUpdateData(buf -> func.accept(new MCDataByteBuf(buf)));
+        sendUpdate(buf -> func.accept(new MCDataByteBuf(buf)));
     }
     //endregion
 

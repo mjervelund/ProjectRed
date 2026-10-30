@@ -1,17 +1,15 @@
 package mrtjp.projectred.illumination;
 
+import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.Colour;
 import codechicken.lib.colour.EnumColour;
-import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.raytracer.VoxelShapeCache;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.render.lighting.LightModel;
 import codechicken.lib.render.model.OBJParser;
 import codechicken.lib.render.pipeline.ColourMultiplier;
-import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Translation;
@@ -153,7 +151,7 @@ public abstract class MultipartLightProperties {
     //endregion
 
     @OnlyIn(Dist.CLIENT)
-    public static final class DefaultMultipartLightItemRenderer implements IItemRenderer {
+    public static final class DefaultMultipartLightItemRenderer extends ProjectRedItemRenderer {
 
         public DefaultMultipartLightItemRenderer() {
         }

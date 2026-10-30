@@ -1,11 +1,13 @@
 package mrtjp.projectred.transmission.part;
 
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.loot.LootParams;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.multipart.api.MultipartType;
 import mrtjp.projectred.core.part.ProjectRedPart;
-import codechicken.multipart.api.part.IconHitEffectsPart;
+import mrtjp.projectred.core.part.IconHitEffectsPart;
 import codechicken.multipart.util.PartRayTraceResult;
 import mrtjp.projectred.core.Configurator;
 import mrtjp.projectred.transmission.WireType;
@@ -45,12 +47,12 @@ public abstract class BaseWirePart extends ProjectRedPart implements IconHitEffe
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         return Collections.singleton(getItem());
     }
 
     @Override
-    public ItemStack getCloneStack(PartRayTraceResult hit) {
+    public ItemStack getCloneStack(PartRayTraceResult hit, Player player) {
         return getItem();
     }
 

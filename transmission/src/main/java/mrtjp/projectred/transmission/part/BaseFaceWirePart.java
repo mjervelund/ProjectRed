@@ -129,7 +129,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     }
 
     @Override
-    public SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(UseOnContext context) {
         return SoundType.GLASS;
     }
 

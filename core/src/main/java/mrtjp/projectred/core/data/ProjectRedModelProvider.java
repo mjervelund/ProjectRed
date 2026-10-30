@@ -61,6 +61,12 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
 
     protected abstract void registerModels();
 
+    // Modules have a block state and an item model provider for the same mod id: keep provider names unique.
+    @Override
+    public String getName() {
+        return "Model Definitions - " + modId + " (" + getClass().getSimpleName() + ")";
+    }
+
     // Modules share one mod namespace per module but not every block/item gets a JSON model here (parts and
     // gates render through their own renderers), so don't fail on the ones we leave out.
     @Override

@@ -1,5 +1,6 @@
 package mrtjp.projectred.transmission.client;
 
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
@@ -95,7 +96,7 @@ public class FramedWireModelRenderer {
         mat.apply(new Scale(1.002, 1.002, 1.002).at(Vector3.CENTER));
 
         ccrs.reset();
-        getter.bind(ccrs, MicroblockRender.HIGHLIGHT_RENDER_TYPE, mat);
+        getter.bind(ccrs, RenderTypes.translucentMovingBlock(), mat);
         ccrs.alphaOverride = 127;
         getOrGenerateJacketModel(modelKey(wire)).renderHighlight(ccrs, material, true);
     }

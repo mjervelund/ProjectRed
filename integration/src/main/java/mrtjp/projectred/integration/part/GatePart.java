@@ -1,5 +1,7 @@
 package mrtjp.projectred.integration.part;
 
+import net.minecraft.world.level.storage.loot.LootParams;
+import mrtjp.projectred.core.part.IconHitEffectsPart;
 import mrtjp.projectred.core.part.ProjectRedPart;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -367,12 +369,12 @@ public abstract class GatePart extends ProjectRedPart implements IConnectableFac
 
     //region Items and drops
     @Override
-    public ItemStack getCloneStack(PartRayTraceResult hit) {
+    public ItemStack getCloneStack(PartRayTraceResult hit, Player player) {
         return getItem();
     }
 
     @Override
-    public Iterable<ItemStack> getDrops() {
+    public Iterable<ItemStack> getDrops(LootParams.Builder builder) {
         return Collections.singleton(getItem());
     }
 
@@ -409,7 +411,7 @@ public abstract class GatePart extends ProjectRedPart implements IConnectableFac
     }
 
     @Override
-    public SoundType getPlacementSound(UseOnContext context) {
+    public SoundType getSound(UseOnContext context) {
         return SoundType.GLASS;
     }
 

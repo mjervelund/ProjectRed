@@ -20,8 +20,8 @@ import static mrtjp.projectred.fabrication.init.FabricationItems.*;
 
 public class FabricationRecipeProvider extends RecipeProvider {
 
-    public FabricationRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, MOD_ID);
+    public FabricationRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, MOD_ID);
     }
 
     @Override

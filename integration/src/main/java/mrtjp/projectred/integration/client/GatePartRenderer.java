@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.RedundantTransformation;
-import codechicken.multipart.api.part.render.PartRenderer;
+import mrtjp.projectred.core.client.ProjectRedPartRenderer;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.Configurator;
@@ -14,14 +14,14 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 
 import javax.annotation.Nullable;
 
-public class GatePartRenderer implements PartRenderer<GatePart> {
+public class GatePartRenderer extends ProjectRedPartRenderer<GatePart> {
 
-    public static final PartRenderer<GatePart> INSTANCE = new GatePartRenderer();
+    public static final GatePartRenderer INSTANCE = new GatePartRenderer();
 
     private GatePartRenderer() {
     }
 
-    @Override
+    // 26.3 port: everything renders on the dynamic path (ProjectRedPartRenderer); the static (chunk) path isn't ported.
     public void renderStatic(GatePart part, @Nullable RenderType layer, CCRenderState ccrs) {
         if (layer == null || (layer == RenderTypes.cutoutMovingBlock() && Configurator.CLIENT.staticGates.get())) {
             ccrs.brightness = 0;
@@ -36,6 +36,7 @@ public class GatePartRenderer implements PartRenderer<GatePart> {
         ccrs.brightness = packedLight;
         ccrs.overlay = packedOverlay;
         ccrs.bind(new TransformingVertexConsumer(buffers.getBuffer(RenderTypes.cutoutMovingBlock()), mStack), DefaultVertexFormat.BLOCK);
+        GateModelRenderer.instance().renderStatic(ccrs, part, RedundantTransformation.INSTANCE);
         GateModelRenderer.instance().renderDynamic(ccrs, part, RedundantTransformation.INSTANCE, mStack, buffers, packedLight, packedOverlay, partialTicks);
     }
 }

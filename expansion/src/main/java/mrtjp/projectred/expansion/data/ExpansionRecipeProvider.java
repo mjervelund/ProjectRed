@@ -21,8 +21,8 @@ import static mrtjp.projectred.expansion.init.ExpansionItems.*;
 
 public class ExpansionRecipeProvider extends RecipeProvider {
 
-    public ExpansionRecipeProvider(CompletableFuture<HolderLookup.Provider> registries, PackOutput output) {
-        super(registries, output, MOD_ID);
+    public ExpansionRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries, MOD_ID);
     }
 
     @Override
