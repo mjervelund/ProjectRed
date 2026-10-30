@@ -1,16 +1,17 @@
 package mrtjp.projectred.exploration.init;
 
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.item.equipment.ArmorMaterial;
+import net.minecraft.world.item.ToolMaterial;
 import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.microblock.item.SawItem;
 import mrtjp.projectred.exploration.item.AthameItem;
 import mrtjp.projectred.exploration.item.BackpackItem;
 import mrtjp.projectred.exploration.item.SickleItem;
 import mrtjp.projectred.exploration.item.WoolGinItem;
-import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.common.SimpleTier;
 
 import java.util.function.Supplier;
 
@@ -175,41 +176,12 @@ public class ExplorationItems {
     public static Supplier<Item> RED_BACKPACK;
     public static Supplier<Item> BLACK_BACKPACK;
 
-    public static final SimpleTier ATHAME_ITEM_TIER = new SimpleTier(
-            BlockTags.INCORRECT_FOR_IRON_TOOL,
-            100,
-            Tiers.DIAMOND.getSpeed(),
-            Tiers.DIAMOND.getAttackDamageBonus(),
-            30,
-            () -> Ingredient.of(SILVER_INGOT_TAG)
-    );
-
-    public static final SimpleTier RUBY_ITEM_TIER = new SimpleTier(
-            BlockTags.INCORRECT_FOR_IRON_TOOL,
-            512,
-            8.00F,
-            3.00F,
-            10,
-            () -> Ingredient.of(RUBY_GEM_TAG)
-    );
-
-    public static final SimpleTier SAPPHIRE_ITEM_TIER = new SimpleTier(
-            BlockTags.INCORRECT_FOR_IRON_TOOL,
-            512,
-            8.00F,
-            3.00F,
-            10,
-            () -> Ingredient.of(SAPPHIRE_GEM_TAG)
-    );
-
-    public static final SimpleTier PERIDOT_ITEM_TIER = new SimpleTier(
-            BlockTags.INCORRECT_FOR_IRON_TOOL,
-            512,
-            7.75F,
-            2.75F,
-            14,
-            () -> Ingredient.of(PERIDOT_GEM_TAG)
-    );
+    // Tool materials (repair items are tags since 1.21.2)
+    public static final ToolMaterial ATHAME_ITEM_TIER = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 100, ToolMaterial.DIAMOND.speed(), ToolMaterial.DIAMOND.attackDamageBonus(), 30, SILVER_INGOT_TAG);
+    public static final ToolMaterial RUBY_ITEM_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 512, 8.00F, 3.00F, 10, RUBY_GEM_TAG);
+    public static final ToolMaterial SAPPHIRE_ITEM_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 512, 8.00F, 3.00F, 10, SAPPHIRE_GEM_TAG);
+    public static final ToolMaterial PERIDOT_ITEM_TIER = new ToolMaterial(BlockTags.INCORRECT_FOR_IRON_TOOL, 512, 7.75F, 2.75F, 14, PERIDOT_GEM_TAG);
 
     public static void register() {
 
@@ -244,37 +216,37 @@ public class ExplorationItems {
         SAPPHIRE_SWORD   = ITEMS.register(ID_SAPPHIRE_SWORD, RegistryIds.item(() -> createSwordItem(SAPPHIRE_ITEM_TIER, 3, -2.4F)));
         PERIDOT_SWORD    = ITEMS.register(ID_PERIDOT_SWORD, RegistryIds.item(() -> createSwordItem(PERIDOT_ITEM_TIER, 3, -2.4F)));
 
-        GOLD_SAW         = ITEMS.register(ID_GOLD_SAW, RegistryIds.item(() -> createSawItem(Tiers.GOLD)));
+        GOLD_SAW         = ITEMS.register(ID_GOLD_SAW, RegistryIds.item(() -> createSawItem(ToolMaterial.GOLD)));
         RUBY_SAW         = ITEMS.register(ID_RUBY_SAW, RegistryIds.item(() -> createSawItem(RUBY_ITEM_TIER)));
         SAPPHIRE_SAW     = ITEMS.register(ID_SAPPHIRE_SAW, RegistryIds.item(() -> createSawItem(SAPPHIRE_ITEM_TIER)));
         PERIDOT_SAW      = ITEMS.register(ID_PERIDOT_SAW, RegistryIds.item(() -> createSawItem(PERIDOT_ITEM_TIER)));
 
-        WOOD_SICKLE      = ITEMS.register(ID_WOOD_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.WOOD, 1, -2.8F)));
-        STONE_SICKLE     = ITEMS.register(ID_STONE_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.STONE, 1, -2.8F)));
-        IRON_SICKLE      = ITEMS.register(ID_IRON_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.IRON, 1, -2.8F)));
-        GOLD_SICKLE      = ITEMS.register(ID_GOLD_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.GOLD, 1, -2.8F)));
-        DIAMOND_SICKLE   = ITEMS.register(ID_DIAMOND_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.DIAMOND, 1, -2.8F)));
+        WOOD_SICKLE      = ITEMS.register(ID_WOOD_SICKLE, RegistryIds.item(() -> createSickleItem(ToolMaterial.WOOD, 1, -2.8F)));
+        STONE_SICKLE     = ITEMS.register(ID_STONE_SICKLE, RegistryIds.item(() -> createSickleItem(ToolMaterial.STONE, 1, -2.8F)));
+        IRON_SICKLE      = ITEMS.register(ID_IRON_SICKLE, RegistryIds.item(() -> createSickleItem(ToolMaterial.IRON, 1, -2.8F)));
+        GOLD_SICKLE      = ITEMS.register(ID_GOLD_SICKLE, RegistryIds.item(() -> createSickleItem(ToolMaterial.GOLD, 1, -2.8F)));
+        DIAMOND_SICKLE   = ITEMS.register(ID_DIAMOND_SICKLE, RegistryIds.item(() -> createSickleItem(ToolMaterial.DIAMOND, 1, -2.8F)));
         RUBY_SICKLE      = ITEMS.register(ID_RUBY_SICKLE, RegistryIds.item(() -> createSickleItem(RUBY_ITEM_TIER, 1, -2.8F)));
         SAPPHIRE_SICKLE  = ITEMS.register(ID_SAPPHIRE_SICKLE, RegistryIds.item(() -> createSickleItem(SAPPHIRE_ITEM_TIER, 1, -2.8F)));
         PERIDOT_SICKLE   = ITEMS.register(ID_PERIDOT_SICKLE, RegistryIds.item(() -> createSickleItem(PERIDOT_ITEM_TIER, 1, -2.8F)));
 
         /* Armor */
 
-        RUBY_HELMET         = ITEMS.register(ID_RUBY_HELMET, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16)));
-        SAPPHIRE_HELMET     = ITEMS.register(ID_SAPPHIRE_HELMET, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16)));
-        PERIDOT_HELMET      = ITEMS.register(ID_PERIDOT_HELMET, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 14)));
+        RUBY_HELMET         = ITEMS.register(ID_RUBY_HELMET, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorType.HELMET, 16)));
+        SAPPHIRE_HELMET     = ITEMS.register(ID_SAPPHIRE_HELMET, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorType.HELMET, 16)));
+        PERIDOT_HELMET      = ITEMS.register(ID_PERIDOT_HELMET, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorType.HELMET, 14)));
 
-        RUBY_CHESTPLATE     = ITEMS.register(ID_RUBY_CHESTPLATE, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16)));
-        SAPPHIRE_CHESTPLATE = ITEMS.register(ID_SAPPHIRE_CHESTPLATE, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16)));
-        PERIDOT_CHESTPLATE  = ITEMS.register(ID_PERIDOT_CHESTPLATE, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 14)));
+        RUBY_CHESTPLATE     = ITEMS.register(ID_RUBY_CHESTPLATE, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorType.CHESTPLATE, 16)));
+        SAPPHIRE_CHESTPLATE = ITEMS.register(ID_SAPPHIRE_CHESTPLATE, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorType.CHESTPLATE, 16)));
+        PERIDOT_CHESTPLATE  = ITEMS.register(ID_PERIDOT_CHESTPLATE, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorType.CHESTPLATE, 14)));
 
-        RUBY_LEGGINGS       = ITEMS.register(ID_RUBY_LEGGINGS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16)));
-        SAPPHIRE_LEGGINGS   = ITEMS.register(ID_SAPPHIRE_LEGGINGS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16)));
-        PERIDOT_LEGGINGS    = ITEMS.register(ID_PERIDOT_LEGGINGS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 14)));
+        RUBY_LEGGINGS       = ITEMS.register(ID_RUBY_LEGGINGS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorType.LEGGINGS, 16)));
+        SAPPHIRE_LEGGINGS   = ITEMS.register(ID_SAPPHIRE_LEGGINGS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorType.LEGGINGS, 16)));
+        PERIDOT_LEGGINGS    = ITEMS.register(ID_PERIDOT_LEGGINGS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorType.LEGGINGS, 14)));
 
-        RUBY_BOOTS          = ITEMS.register(ID_RUBY_BOOTS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16)));
-        SAPPHIRE_BOOTS      = ITEMS.register(ID_SAPPHIRE_BOOTS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16)));
-        PERIDOT_BOOTS       = ITEMS.register(ID_PERIDOT_BOOTS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 14)));
+        RUBY_BOOTS          = ITEMS.register(ID_RUBY_BOOTS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorType.BOOTS, 16)));
+        SAPPHIRE_BOOTS      = ITEMS.register(ID_SAPPHIRE_BOOTS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorType.BOOTS, 16)));
+        PERIDOT_BOOTS       = ITEMS.register(ID_PERIDOT_BOOTS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorType.BOOTS, 14)));
 
         /* Backpacks */
 
@@ -300,36 +272,37 @@ public class ExplorationItems {
         return () -> new Item(RegistryIds.itemProps());
     }
 
-    private static Item createAxeItem(Tier tier, float attackDamage, float attackSpeed) {
-        return new AxeItem(tier, RegistryIds.itemProps().attributes(AxeItem.createAttributes(tier, attackDamage, attackSpeed)));
+    // Axes, shovels, hoes and swords are plain items configured through their properties since 1.21.5
+    private static Item createAxeItem(ToolMaterial tier, float attackDamage, float attackSpeed) {
+        return new Item(RegistryIds.itemProps().axe(tier, attackDamage, attackSpeed));
     }
 
-    private static Item createPickaxeItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new PickaxeItem(tier, RegistryIds.itemProps().attributes(PickaxeItem.createAttributes(tier, attackDamage, attackSpeed)));
+    private static Item createPickaxeItem(ToolMaterial tier, int attackDamage, float attackSpeed) {
+        return new Item(RegistryIds.itemProps().pickaxe(tier, attackDamage, attackSpeed));
     }
 
-    private static Item createShovelItem(Tier tier, float attackDamage, float attackSpeed) {
-        return new ShovelItem(tier, RegistryIds.itemProps().attributes(ShovelItem.createAttributes(tier, attackDamage, attackSpeed)));
+    private static Item createShovelItem(ToolMaterial tier, float attackDamage, float attackSpeed) {
+        return new Item(RegistryIds.itemProps().shovel(tier, attackDamage, attackSpeed));
     }
 
-    private static Item createHoeItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new HoeItem(tier, RegistryIds.itemProps().attributes(HoeItem.createAttributes(tier, attackDamage, attackSpeed)));
+    private static Item createHoeItem(ToolMaterial tier, int attackDamage, float attackSpeed) {
+        return new Item(RegistryIds.itemProps().hoe(tier, attackDamage, attackSpeed));
     }
 
-    private static Item createSwordItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new SwordItem(tier, RegistryIds.itemProps().attributes(SwordItem.createAttributes(tier, attackDamage, attackSpeed)));
+    private static Item createSwordItem(ToolMaterial tier, int attackDamage, float attackSpeed) {
+        return new Item(RegistryIds.itemProps().sword(tier, attackDamage, attackSpeed));
     }
 
-    private static Item createSawItem(Tier tier) {
+    private static Item createSawItem(ToolMaterial tier) {
         return new SawItem(tier, RegistryIds.itemProps());
     }
 
-    private static Item createSickleItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new SickleItem(tier, RegistryIds.itemProps().attributes(SickleItem.createAttributes(tier, attackDamage, attackSpeed)));
+    private static Item createSickleItem(ToolMaterial tier, int attackDamage, float attackSpeed) {
+        return new SickleItem(tier, attackDamage, attackSpeed, RegistryIds.itemProps());
     }
 
-    private static Item createArmorItem(Holder<ArmorMaterial> material, ArmorItem.Type slot, int durabilityMultiplier) {
-        return new ArmorItem(material, slot, RegistryIds.itemProps().durability(slot.getDurability(durabilityMultiplier)));
+    private static Item createArmorItem(ArmorMaterial material, ArmorType slot, int durabilityMultiplier) {
+        return new Item(RegistryIds.itemProps().humanoidArmor(material, slot));
     }
 
     //region Utilities

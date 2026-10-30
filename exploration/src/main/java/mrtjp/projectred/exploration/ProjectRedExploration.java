@@ -47,7 +47,6 @@ public class ProjectRedExploration {
     public static final DeferredRegister<MicroMaterial> MICRO_MATERIALS = DeferredRegister.create(MicroMaterial.REGISTRY, MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, MOD_ID);
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, MOD_ID);
 
     private static @Nullable ModContainer container;
 
@@ -59,7 +58,6 @@ public class ProjectRedExploration {
         ExplorationRecipeSerializers.register();
         ExplorationCreativeModeTabs.register();
         ExplorationDataComponents.register();
-        ExplorationArmorMaterials.register();
     }
 
     public ProjectRedExploration(ModContainer container, IEventBus modEventBus) {
@@ -83,7 +81,6 @@ public class ProjectRedExploration {
         MICRO_MATERIALS.register(modEventBus);
         CREATIVE_TABS.register(modEventBus);
         DATA_COMPONENT_TYPES.register(modEventBus);
-        ARMOR_MATERIALS.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

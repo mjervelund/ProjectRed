@@ -1,32 +1,13 @@
 package mrtjp.projectred.exploration.item;
 
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.Item;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 
-public class SickleItem extends DiggerItem {
+public class SickleItem extends Item {
 
-    public SickleItem(Tier tier, Properties properties) {
-        //TODO fix tag, or create our own sickle-able tag
-        super(tier, BlockTags.REPLACEABLE, properties);
+    //TODO fix tag, or create our own sickle-able tag
+    public SickleItem(ToolMaterial tier, float attackDamage, float attackSpeed, Properties properties) {
+        super(properties.tool(tier, BlockTags.REPLACEABLE, attackDamage, attackSpeed, 0.0F));
     }
-
-    //TODO !!!!
-
-    @Override
-    public boolean mineBlock(ItemStack p_179218_1_, Level p_179218_2_, BlockState p_179218_3_, BlockPos p_179218_4_, LivingEntity p_179218_5_) {
-        return super.mineBlock(p_179218_1_, p_179218_2_, p_179218_3_, p_179218_4_, p_179218_5_);
-    }
-
-    @Override
-    public float getDestroySpeed(ItemStack p_150893_1_, BlockState p_150893_2_) {
-        return super.getDestroySpeed(p_150893_1_, p_150893_2_);
-    }
-
-
 }

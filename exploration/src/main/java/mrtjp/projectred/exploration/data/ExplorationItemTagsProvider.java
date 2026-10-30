@@ -85,23 +85,23 @@ public class ExplorationItemTagsProvider extends ItemTagsProvider {
         tag(RAW_TIN_TAG).add(RAW_TIN_ITEM.get().builtInRegistryHolder().key());
         tag(RAW_SILVER_TAG).add(RAW_SILVER_ITEM.get().builtInRegistryHolder().key());
 
-        tag(RUBY_ORES_BLOCK_ITEM_TAG).add(RUBY_ORE_BLOCK.get().asItem()).add(DEEPSLATE_RUBY_ORE_BLOCK.get().asItem());
-        tag(SAPPHIRE_ORES_BLOCK_ITEM_TAG).add(SAPPHIRE_ORE_BLOCK.get().asItem()).add(DEEPSLATE_SAPPHIRE_ORE_BLOCK.get().asItem());
-        tag(PERIDOT_ORES_BLOCK_ITEM_TAG).add(PERIDOT_ORE_BLOCK.get().asItem()).add(DEEPSLATE_PERIDOT_ORE_BLOCK.get().asItem());
-        tag(TIN_ORES_BLOCK_ITEM_TAG).add(TIN_ORE_BLOCK.get().asItem()).add(DEEPSLATE_TIN_ORE_BLOCK.get().asItem());
-        tag(SILVER_ORES_BLOCK_ITEM_TAG).add(SILVER_ORE_BLOCK.get().asItem()).add(DEEPSLATE_SILVER_ORE_BLOCK.get().asItem());
-        tag(ELECTROTINE_ORES_BLOCK_ITEM_TAG).add(ELECTROTINE_ORE_BLOCK.get().asItem()).add(DEEPSLATE_ELECTROTINE_ORE_BLOCK.get().asItem());
+        tag(RUBY_ORES_BLOCK_ITEM_TAG).add(RUBY_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_RUBY_ORE_BLOCK.get().asItem());
+        tag(SAPPHIRE_ORES_BLOCK_ITEM_TAG).add(SAPPHIRE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_SAPPHIRE_ORE_BLOCK.get().asItem());
+        tag(PERIDOT_ORES_BLOCK_ITEM_TAG).add(PERIDOT_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_PERIDOT_ORE_BLOCK.get().asItem());
+        tag(TIN_ORES_BLOCK_ITEM_TAG).add(TIN_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_TIN_ORE_BLOCK.get().asItem());
+        tag(SILVER_ORES_BLOCK_ITEM_TAG).add(SILVER_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_SILVER_ORE_BLOCK.get().asItem());
+        tag(ELECTROTINE_ORES_BLOCK_ITEM_TAG).add(ELECTROTINE_ORE_BLOCK.get().asItem().builtInRegistryHolder().key().builtInRegistryHolder().key()).add(DEEPSLATE_ELECTROTINE_ORE_BLOCK.get().asItem());
 
-        tag(MARBLE_BLOCK_ITEM_TAG).add(MARBLE_BLOCK.get().asItem());
-        tag(BASALT_BLOCK_ITEM_TAG).add(BASALT_BLOCK.get().asItem());
-        tag(RUBY_STORAGE_BLOCK_ITEM_TAG).add(RUBY_BLOCK.get().asItem());
-        tag(SAPPHIRE_STORAGE_BLOCK_ITEM_TAG).add(SAPPHIRE_BLOCK.get().asItem());
-        tag(PERIDOT_STORAGE_BLOCK_ITEM_TAG).add(PERIDOT_BLOCK.get().asItem());
-        tag(ELECTROTINE_STORAGE_BLOCK_ITEM_TAG).add(ELECTROTINE_BLOCK.get().asItem());
-        tag(TIN_STORAGE_BLOCK_ITEM_TAG).add(TIN_BLOCK.get().asItem());
-        tag(RAW_TIN_STORAGE_BLOCK_ITEM_TAG).add(RAW_TIN_BLOCK.get().asItem());
-        tag(SILVER_STORAGE_BLOCK_ITEM_TAG).add(SILVER_BLOCK.get().asItem());
-        tag(RAW_SILVER_STORAGE_BLOCK_ITEM_TAG).add(RAW_SILVER_BLOCK.get().asItem());
+        tag(MARBLE_BLOCK_ITEM_TAG).add(MARBLE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(BASALT_BLOCK_ITEM_TAG).add(BASALT_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(RUBY_STORAGE_BLOCK_ITEM_TAG).add(RUBY_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(SAPPHIRE_STORAGE_BLOCK_ITEM_TAG).add(SAPPHIRE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(PERIDOT_STORAGE_BLOCK_ITEM_TAG).add(PERIDOT_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(ELECTROTINE_STORAGE_BLOCK_ITEM_TAG).add(ELECTROTINE_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(TIN_STORAGE_BLOCK_ITEM_TAG).add(TIN_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(RAW_TIN_STORAGE_BLOCK_ITEM_TAG).add(RAW_TIN_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(SILVER_STORAGE_BLOCK_ITEM_TAG).add(SILVER_BLOCK.get().asItem().builtInRegistryHolder().key());
+        tag(RAW_SILVER_STORAGE_BLOCK_ITEM_TAG).add(RAW_SILVER_BLOCK.get().asItem().builtInRegistryHolder().key());
 
         tag(WHITE_BACKPACK_TAG).add(WHITE_BACKPACK.get().builtInRegistryHolder().key());
         tag(ORANGE_BACKPACK_TAG).add(ORANGE_BACKPACK.get().builtInRegistryHolder().key());

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "projectred_exploration:ruby"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "projectred_exploration:ruby"
+      }
+    ]
+  }
+}
