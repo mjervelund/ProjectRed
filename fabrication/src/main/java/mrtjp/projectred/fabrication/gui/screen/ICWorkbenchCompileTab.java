@@ -1,10 +1,10 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.ProjectRedFabrication;
@@ -100,18 +100,16 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-        RenderSystem.setShaderTexture(0, TAB_BACKGROUND);
-        graphics.blit(TAB_BACKGROUND, getFrame().x(), getFrame().y(), 0, 0, getFrame().width(), getFrame().height(), 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TAB_BACKGROUND, getFrame().x(), getFrame().y(), (float) (0), (float) (0), getFrame().width(), getFrame().height(), 512, 512);
 
         // Blueprint name in top left corner
         graphics.text(getRoot().getFontRenderer(), editor.getIcName(), getFrame().x() + 8, getFrame().y() + 6, EnumColour.GRAY.argb(), false);
 
         // Progress bar
-        RenderSystem.setShaderTexture(0, TAB_BACKGROUND);
         int barWidth = 91;
         int progress = editor.getStateMachine().getCompilerLog().getProgressScaled(barWidth);
-        graphics.blit(TAB_BACKGROUND, getFrame().x() + 208, getFrame().y() + 36, 304, 0, barWidth, 5, 512, 512);
-        graphics.blit(TAB_BACKGROUND, getFrame().x() + 208, getFrame().y() + 36, 304, 5, progress, 5, 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TAB_BACKGROUND, getFrame().x() + 208, getFrame().y() + 36, (float) (304), (float) (0), barWidth, 5, 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TAB_BACKGROUND, getFrame().x() + 208, getFrame().y() + 36, (float) (304), (float) (5), progress, 5, 512, 512);
 
         // Progress text
         ICCompilerLog log = editor.getStateMachine().getCompilerLog();
@@ -302,10 +300,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
         }
 
         private void blitCentered(GuiGraphicsExtractor graphics, Identifier background, int u, int v, int width, int height) {
-            graphics.blit(background,
-                    getFrame().x() + (getFrame().width() - width) / 2,
-                    getFrame().y() + (getFrame().height() - height) / 2, u, v,
-                    width, height, 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, background, getFrame().x() + (getFrame().width() - width) / 2, getFrame().y() + (getFrame().height() - height) / 2, (float) (u), (float) (v), width, height, 512, 512);
         }
 
         @Override

@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
@@ -83,7 +84,7 @@ public class SelectionGridNode extends AbstractGuiNode {
             int u = BUTTON_U;
             int v = BUTTON_V + BUTTON_V_SHIFT * state;
 
-            graphics.blit(ICWorkbenchScreen.BACKGROUND, x, y, u, v, w, h, 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, x, y, (float) (u), (float) (v), w, h, 512, 512);
 
         }
 

@@ -67,7 +67,7 @@ public class BlueprintDataComponent implements TooltipProvider {
     //region Tooltip
     @Override
     public void addToTooltip(Item.TooltipContext context, Consumer<Component> component, TooltipFlag flag, DataComponentGetter components) {
-        designData.addToTooltip(context, component, flag);
+        designData.addToTooltip(context, component, flag, components);
     }
     //endregion
 

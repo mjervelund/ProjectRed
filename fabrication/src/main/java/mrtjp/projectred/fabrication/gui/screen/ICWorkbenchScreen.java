@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.fabrication.ProjectRedFabrication;
@@ -160,7 +161,7 @@ public class ICWorkbenchScreen extends RedUIScreen {
 
         @Override
         public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-            graphics.blit(BACKGROUND, getFrame().x(), getFrame().y(), 0, 222, getFrame().width(), getFrame().height(), 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, getFrame().x(), getFrame().y(), (float) (0), (float) (222), getFrame().width(), getFrame().height(), 512, 512);
 
             Font fontRenderer = getRoot().getFontRenderer();
             Component text = Component.translatable(UL_PLACE_BLUEPRINT);

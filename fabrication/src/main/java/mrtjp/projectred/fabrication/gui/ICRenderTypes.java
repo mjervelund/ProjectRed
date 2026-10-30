@@ -202,12 +202,10 @@ public class ICRenderTypes {
         stack.pushPose();
         stack.translate(x, y, z);
         stack.scale(s, 1.0F, s);
-        stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+        stack.rotate(Axis.XP.rotationDegrees(90.0F));
 
         // Render text
-        RecordingBufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        fontRenderer.drawInBatch(text, 0, 0, EnumColour.WHITE.rgba(), false, stack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
-        buffer.endBatch();
+        getter.text(stack, 0, 0, text.getVisualOrderText(), EnumColour.WHITE.argb(), 0xF000F0);
 
         stack.popPose();
     }
@@ -221,12 +219,10 @@ public class ICRenderTypes {
         stack.pushPose();
         stack.translate(x, y, z);
         stack.scale(s, 1.0F, s);
-        stack.mulPose(Axis.XP.rotationDegrees(90.0F));
+        stack.rotate(Axis.XP.rotationDegrees(90.0F));
 
         // Render text ceneterd at desired position
-        RecordingBufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        fontRenderer.drawInBatch(text, (float) (-fontRenderer.width(text) / 2), (float) (-fontRenderer.lineHeight / 2), EnumColour.WHITE.rgba(), false, stack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
-        buffer.endBatch();
+        getter.text(stack, (float) (-fontRenderer.width(text) / 2), (float) (-fontRenderer.lineHeight / 2), text.getVisualOrderText(), EnumColour.WHITE.argb(), 0xF000F0);
 
         stack.popPose();
     }

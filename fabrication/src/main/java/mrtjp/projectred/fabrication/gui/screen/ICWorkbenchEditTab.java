@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
@@ -78,7 +79,7 @@ public class ICWorkbenchEditTab extends AbstractGuiNode {
         Rect frame = getFrame();
         Font fontRenderer = getRoot().getFontRenderer();
 
-        graphics.blit(ICWorkbenchScreen.BACKGROUND, frame.x(), frame.y(), 0, 0, frame.width(), frame.height(), 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, frame.x(), frame.y(), (float) (0), (float) (0), frame.width(), frame.height(), 512, 512);
 
         // Blueprint name in top left corner
         graphics.text(fontRenderer, editor.getIcName(), frame.x() + 8, frame.y() + 6, EnumColour.GRAY.argb(), false);

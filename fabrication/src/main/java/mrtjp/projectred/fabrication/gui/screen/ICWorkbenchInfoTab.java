@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.ProjectRedFabrication;
@@ -85,7 +86,7 @@ public class ICWorkbenchInfoTab extends AbstractGuiNode {
         ScrollBarNode scrollBarNode = new ScrollBarNode(ScrollBarNode.ScrollAxis.VERTICAL) {
             @Override
             protected void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame) {
-                graphics.blit(TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), 305, 58, sliderFrame.width(), sliderFrame.height(), 512, 512);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), (float) (305), (float) (58), sliderFrame.width(), sliderFrame.height(), 512, 512);
             }
 
             @Override
@@ -115,7 +116,7 @@ public class ICWorkbenchInfoTab extends AbstractGuiNode {
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-        graphics.blit(TAB_BACKGROUND, getFrame().x(), getFrame().y(), 0, 0, getFrame().width(), getFrame().height(), 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, TAB_BACKGROUND, getFrame().x(), getFrame().y(), (float) (0), (float) (0), getFrame().width(), getFrame().height(), 512, 512);
 
         // Blueprint name in top left corner
         graphics.text(getRoot().getFontRenderer(), editor.getIcName(), getFrame().x() + 8, getFrame().y() + 6, EnumColour.GRAY.argb(), false);

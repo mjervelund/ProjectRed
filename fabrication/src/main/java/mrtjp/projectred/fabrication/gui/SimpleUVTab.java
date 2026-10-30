@@ -1,6 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
@@ -73,12 +73,11 @@ public class SimpleUVTab implements TabControllerNode.IToolbarTab {
         return new TabButtonNode(this, tabSide) {
             @Override
             public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-                graphics.blit(texture, getFrame().x() + 3, getFrame().y() + 3, u, v, 14, 14, 512, 512);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, texture, getFrame().x() + 3, getFrame().y() + 3, (float) (u), (float) (v), 14, 14, 512, 512);
 
                 StatusDot statusDot = SimpleUVTab.this.getStatusDot();
                 if (statusDot != StatusDot.NONE) {
-                    RenderSystem.setShaderTexture(0, ICWorkbenchScreen.BACKGROUND);
-                    graphics.blit(texture, getFrame().x() + 3 + 7, getFrame().y() + 3, 7, 7, statusDot.u, statusDot.v, 14, 14, 512, 512);
+                    graphics.blit(RenderPipelines.GUI_TEXTURED, texture, getFrame().x() + 3 + 7, getFrame().y() + 3, (float) (statusDot.u), (float) (statusDot.v), 7, 7, 14, 14, 512, 512);
                 }
             }
 

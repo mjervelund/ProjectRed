@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchInfoTab;
 import mrtjp.projectred.fabrication.lithography.LithographyPipeline;
 import mrtjp.projectred.fabrication.lithography.YieldCalculator;
@@ -82,7 +83,7 @@ public class PipelineDiagramNode extends AbstractGuiNode {
         @Override
         public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             // Draw the diagram centered in this node
-            graphics.blit(ICWorkbenchInfoTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 1, 223, 280, 56, 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchInfoTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), (float) (1), (float) (223), 280, 56, 512, 512);
         }
 
         @Override

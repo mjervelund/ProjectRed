@@ -1,5 +1,7 @@
 package mrtjp.projectred.fabrication.gui;
 
+import mrtjp.projectred.redui.GuiModelIcon;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.CCRenderState;
@@ -12,7 +14,6 @@ import mrtjp.projectred.fabrication.engine.gates.ICGateTileType;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.integration.client.GateModelRenderer;
 import mrtjp.projectred.lib.Point;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -41,24 +42,26 @@ public class GatePlacerToolTab extends ICEditorToolTab {
 
             @Override
             public void renderIcon(GuiGraphicsExtractor graphics, Point absPos, float partialFrame) {
-                RecordingBufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
-                CCRenderState ccrs = CCRenderState.instance();
-                ccrs.reset();
-                ccrs.bind(RenderTypes.cutoutMovingBlock(), getter, graphics.pose());
-                ccrs.overlay = OverlayTexture.NO_OVERLAY;
-                ccrs.brightness = 0xF000F0;
+                GuiModelIcon.submit(graphics, absPos.x, absPos.y, 16, 16, (pose, collector) -> {
+                    RecordingBufferSource getter = new RecordingBufferSource();
+                    CCRenderState ccrs = CCRenderState.instance();
+                    ccrs.reset();
+                    getter.bind(ccrs, RenderTypes.cutoutMovingBlock(), pose);
+                    ccrs.overlay = OverlayTexture.NO_OVERLAY;
+                    ccrs.brightness = 0xF000F0;
 
-                double scale = 10/16D;
-                TransformationList t = new TransformationList(
-                        new Rotation(90.0F * MathHelper.torad, 1.0F, 0.0F, 0.0F),
-                        new Scale(16.0F * scale, -16.0F * scale, 16.0F * scale),
-                        new Translation(absPos.x + 8 - scale*8, absPos.y + 8 - scale*8, 0.0F)
-                );
+                    double scale = 10/16D;
+                    TransformationList t = new TransformationList(
+                            new Rotation(90.0F * MathHelper.torad, 1.0F, 0.0F, 0.0F),
+                            new Scale(16.0F * scale, -16.0F * scale, 16.0F * scale),
+                            new Translation(8 - scale*8, 8 - scale*8, 0.0F)
+                    );
 
-                //TODO dont use null?
-                GateModelRenderer.instance().renderInventory(ccrs, null, type.renderIndex, 0, t);
+                    //TODO dont use null?
+                    GateModelRenderer.instance().renderInventory(ccrs, null, type.renderIndex, 0, t);
 
-                getter.endBatch();
+                    getter.submit(collector);
+                });
             }
         };
 
@@ -105,7 +108,7 @@ public class GatePlacerToolTab extends ICEditorToolTab {
         return new TabButtonNode(this, TabButtonNode.TabSide.LEFT) {
             @Override
             public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-                graphics.blit(ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, 390, 31, 14, 14, 512, 512);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, (float) (390), (float) (31), 14, 14, 512, 512);
             }
 
             @Override

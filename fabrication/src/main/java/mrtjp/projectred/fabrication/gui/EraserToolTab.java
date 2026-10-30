@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.editor.tools.EraseTool;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
@@ -29,7 +30,7 @@ public class EraserToolTab extends ICEditorToolTab {
         return new TabButtonNode(this, TabButtonNode.TabSide.LEFT) {
             @Override
             public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-                graphics.blit(ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, 390, 16, 14, 14, 512, 512);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, (float) (390), (float) (16), 14, 14, 512, 512);
             }
 
             @Override

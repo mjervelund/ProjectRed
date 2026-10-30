@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
@@ -131,7 +132,7 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-        graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 92, 223, getFrame().width(), getFrame().height(), 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), (float) (92), (float) (223), getFrame().width(), getFrame().height(), 512, 512);
 
         // Title of current node
         if (currentNode != null) {
@@ -323,7 +324,7 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
 
         @Override
         protected void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame) {
-            graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), 305, 58, sliderFrame.width(), sliderFrame.height(), 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), (float) (305), (float) (58), sliderFrame.width(), sliderFrame.height(), 512, 512);
         }
 
         @Override

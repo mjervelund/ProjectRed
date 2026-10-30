@@ -15,8 +15,6 @@ import mrtjp.projectred.fabrication.engine.wires.ICWireTileType;
 import mrtjp.projectred.fabrication.engine.wires.WireTile;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
 import mrtjp.projectred.transmission.client.WireModelRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.neoforged.api.distmarker.Dist;
 
@@ -191,9 +189,9 @@ public class WirePlacerTool extends BaseICEditorTool {
         if (!isFirstHit && selectedPositionsList.isEmpty()) return;
 
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.layersRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
+        getter.bind(ccrs, ICRenderTypes.layersRenderType, matrixStack);
         ccrs.alphaOverride = leftMouseDown ? 128 : 64;
-        ccrs.brightness = LightTexture.pack(15, 15);
+        ccrs.brightness = 0xF000F0;
 
         for (TileCoord pos : selectedPositionsList) {
             int rmask = 0;

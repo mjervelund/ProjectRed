@@ -11,7 +11,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
-import net.minecraft.client.Minecraft;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.neoforged.api.distmarker.Dist;
 
@@ -123,7 +122,7 @@ public class EraseTool extends BaseICEditorTool {
         Vector3 b = mousePosition;
 
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.selectionRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
+        getter.bind(ccrs, ICRenderTypes.selectionRenderType, matrixStack);
         ccrs.baseColour = EnumColour.PINK.rgba(leftMouseDown ? 200 : 32);
 
         ICRenderTypes.renderSelection(ccrs, a, b, 3 / 16D, 2 / 16D);

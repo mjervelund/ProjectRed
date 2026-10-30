@@ -1,6 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.editor.tools.IICEditorTool;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
@@ -95,7 +95,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-        graphics.blit(ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, 305, 0, 84, 222, 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, (float) (305), (float) (0), 84, 222, 512, 512);
 
         //TODO: Render tool name on header
     }
@@ -155,7 +155,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         @Override
         public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
-            graphics.blit(ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, GROUP_U, GROUP_V, getFrame().width(), getFrame().height(), 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, (float) (GROUP_U), (float) (GROUP_V), getFrame().width(), getFrame().height(), 512, 512);
 
             Font fontRenderer = getRoot().getFontRenderer();
             graphics.text(fontRenderer, title, getPosition().x + 2, getPosition().y + GROUP_HEIGHT / 2 - fontRenderer.lineHeight / 2, 0xFFFFFF);
@@ -179,7 +179,6 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
 
         @Override
         public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-            RenderSystem.enableBlend();
 
             boolean mouseover = getFrame().contains(mouse) && isFirstHit(mouse);
             boolean selected = controller.isSelected();
@@ -192,16 +191,15 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
             // Background
             int uBackground = uvBg.x + (selected ? uvBgSelectedShift.x : 0);
             int vBackground = uvBg.y + (selected ? uvBgSelectedShift.y : 0);
-            graphics.blit(ICWorkbenchScreen.BACKGROUND, x, y, uBackground, vBackground, w, h, 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, x, y, (float) (uBackground), (float) (vBackground), w, h, 512, 512);
 
             // Mouseover layer
             if (selected || mouseover) {
                 int uMouseOver = uvBg.x + uvMouseOverShift.x;
                 int vMouseOver = uvBg.y + uvMouseOverShift.y;
-                graphics.blit(ICWorkbenchScreen.BACKGROUND, x, y, uMouseOver, vMouseOver, w, h, 512, 512);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, x, y, (float) (uMouseOver), (float) (vMouseOver), w, h, 512, 512);
             }
 
-            RenderSystem.disableBlend();
 
             // Icon
             controller.renderIcon(graphics, getPosition(), partialFrame);

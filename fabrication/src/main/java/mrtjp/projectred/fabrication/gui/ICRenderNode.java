@@ -12,8 +12,7 @@ import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Vec2;
 import mrtjp.projectred.redui.ViewportRenderNode;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 
@@ -165,10 +164,10 @@ public class ICRenderNode extends ViewportRenderNode {
     }
 
     @Override
-    protected void renderInViewport(PoseStack renderStack, Vec2 ndcMouse, float partialFrame, boolean isFirstHit) {
+    protected void renderInViewport(PoseStack renderStack, SubmitNodeCollector collector, Vec2 ndcMouse, float partialFrame, boolean isFirstHit) {
 
         CCRenderState ccrs = CCRenderState.instance();
-        RecordingBufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
+        RecordingBufferSource getter = new RecordingBufferSource();
 
         Vector3 worldPos = ndcMouseToWorld(ndcMouse);
 
@@ -178,7 +177,7 @@ public class ICRenderNode extends ViewportRenderNode {
             ccrs.reset();
             // Linearly ramp down alpha as we move away from the current layer
             ccrs.alphaOverride = 255 - (int) (255 * Math.min(Math.abs(y - cameraLayerAnimator.vector.y), 1));
-            ccrs.brightness = LightTexture.pack(15, 15);
+            ccrs.brightness = 0xF000F0; // full block + sky light
 
             // Render grid
             renderStack.pushPose();
@@ -217,8 +216,7 @@ public class ICRenderNode extends ViewportRenderNode {
             ICRenderTypes.renderGridInBounds(renderStack, getter, bounds, 0x7);
         }
 
-        // Force-end the batch to make sure it happens before the custom viewport is altered
-        getter.endBatch();
+        getter.submit(collector);
     }
 
     @Override

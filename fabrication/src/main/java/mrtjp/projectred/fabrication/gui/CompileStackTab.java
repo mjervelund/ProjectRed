@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
@@ -13,7 +14,6 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ScrollBarNode;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
@@ -51,7 +51,7 @@ public class CompileStackTab extends AbstractGuiNode implements ICompileOverlayR
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-        graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 0, 223, getFrame().width(), getFrame().height(), 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), (float) (0), (float) (223), getFrame().width(), getFrame().height(), 512, 512);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class CompileStackTab extends AbstractGuiNode implements ICompileOverlayR
 
     private void renderCompileTreeNode(ICCompilerLog.CompileTreeNode node, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
         ccrs.reset();
-        ccrs.bind(ICRenderTypes.selectionRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
+        getter.bind(ccrs, ICRenderTypes.selectionRenderType, matrixStack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba(200);
 
         for (TileCoord pos : node.tileCoords) {
@@ -98,7 +98,7 @@ public class CompileStackTab extends AbstractGuiNode implements ICompileOverlayR
 
         @Override
         protected void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame) {
-            graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), 305, 58, sliderFrame.width(), sliderFrame.height(), 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), (float) (305), (float) (58), sliderFrame.width(), sliderFrame.height(), 512, 512);
         }
 
         @Override

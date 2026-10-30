@@ -1,6 +1,5 @@
 package mrtjp.projectred.fabrication.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import mrtjp.projectred.fabrication.engine.log.CompileProblem;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchCompileTab;
@@ -69,18 +68,15 @@ public class ProblemListNode extends AbstractGuiNode {
     }
 
     @Override
-    public void onSubTreePreDrawBack() {
-        // This node's frame converted to GL11 window coordinates
-        Rect gl11Rect = calculateGL11Frame();
-
-        // Enable scissor using the calculated rect
-        RenderSystem.enableScissor(gl11Rect.x(), gl11Rect.y(), gl11Rect.width(), gl11Rect.height());
+    public void onSubTreePreDrawBack(GuiGraphicsExtractor graphics) {
+        // Clip children to this node's frame. The context is translated to the parent, as the frame is.
+        Rect frame = getFrame();
+        graphics.enableScissor(frame.x(), frame.y(), frame.x() + frame.width(), frame.y() + frame.height());
     }
 
     @Override
-    public void onSubTreePostDrawBack() {
-        // Disable scissor
-        RenderSystem.disableScissor();
+    public void onSubTreePostDrawBack(GuiGraphicsExtractor graphics) {
+        graphics.disableScissor();
     }
 
     private class IssueListItemNode extends AbstractGuiNode {

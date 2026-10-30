@@ -16,8 +16,6 @@ import mrtjp.projectred.fabrication.engine.gates.GateTile;
 import mrtjp.projectred.fabrication.engine.gates.ICGateTileType;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
 import mrtjp.projectred.integration.client.GateModelRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
@@ -160,8 +158,8 @@ public class GatePlacerTool extends BaseICEditorTool {
         if (!isFirstHit) return;
 
         ccrs.reset();
-        ccrs.brightness = LightTexture.pack(15, 15);
-        ccrs.bind(ICRenderTypes.layersRenderType, Minecraft.getInstance().renderBuffers().bufferSource(), matrixStack);
+        ccrs.brightness = 0xF000F0;
+        getter.bind(ccrs, ICRenderTypes.layersRenderType, matrixStack);
 
         if (!leftMouseDown) {
             ccrs.alphaOverride = 64;

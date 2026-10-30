@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
@@ -69,11 +70,11 @@ public abstract class TabButtonNode extends AbstractGuiNode {
             ev += side.inactiveOffsetV;
         }
 
-        graphics.blit(ICWorkbenchScreen.BACKGROUND, x, y, u, v, w, h, 512, 512);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, x, y, (float) (u), (float) (v), w, h, 512, 512);
 
         // Render extension if needed
         if (renderState == TabState.CLOSED || renderState == TabState.OPEN) {
-            graphics.blit(ICWorkbenchScreen.BACKGROUND, ex, ey, eu, ev, ew, eh, 512, 512);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ICWorkbenchScreen.BACKGROUND, ex, ey, (float) (eu), (float) (ev), ew, eh, 512, 512);
         }
 
         renderIcon(graphics, mouse, partialFrame);
