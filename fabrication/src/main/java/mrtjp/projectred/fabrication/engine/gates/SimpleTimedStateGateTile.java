@@ -5,7 +5,6 @@ import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import mrtjp.projectred.fabrication.editor.tools.InteractionZone;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -31,7 +30,6 @@ public abstract class SimpleTimedStateGateTile extends TimedStateGateTile {
         addDeadSidesInteractions(zones, interactMask(), this::getBoundsForIOToggleZone, this::toggleDeadSide, this::getDeadSideToolTip);
     }
 
-    @OnlyIn(Dist.CLIENT)
     protected Component getDeadSideToolTip(int r) {
         boolean isEnabled = (getShape() & rotationToDeadSideBit(r)) == 0;
         return Component.translatable(isEnabled ? UL_SIDE_ENABLED : UL_SIDE_DISABLED).withStyle(ICWorkbenchEditor.UNIFORM_GRAY);

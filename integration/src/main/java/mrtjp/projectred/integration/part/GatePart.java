@@ -41,7 +41,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -473,13 +472,11 @@ public abstract class GatePart extends ProjectRedPart implements IConnectableFac
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getBreakingIcon(PartRayTraceResult hit) {
         return GateComponentModels.baseIcon.icon;
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getBrokenIcon(int side) {
         return GateComponentModels.baseIcon.icon;
     }

@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -18,10 +17,8 @@ public interface InteractionZone {
 
     void onRightClick();
 
-    @OnlyIn(Dist.CLIENT)
     void renderZone(CCRenderState ccrs, RecordingBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver);
 
-    @OnlyIn(Dist.CLIENT)
     void buildToolTip(List<Component> tooltip);
 
     /**

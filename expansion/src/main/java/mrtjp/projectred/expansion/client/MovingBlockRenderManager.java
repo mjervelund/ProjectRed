@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderHighlightEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.model.data.ModelData;
@@ -46,7 +45,6 @@ public class MovingBlockRenderManager {
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
@@ -109,7 +107,6 @@ public class MovingBlockRenderManager {
         stack.popPose(); //cam
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void onDrawHighlight(RenderHighlightEvent.Block event) {
         // Check for movement. Return if not moving
         MovementManager manager = MovementManager.getClientInstanceNullable();

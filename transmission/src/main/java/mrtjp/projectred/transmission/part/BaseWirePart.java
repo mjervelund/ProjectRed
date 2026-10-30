@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.Collections;
 import java.util.function.Consumer;
@@ -87,12 +86,10 @@ public abstract class BaseWirePart extends ProjectRedPart implements IconHitEffe
     //endregion
 
     //region Render stuff
-    @OnlyIn(Dist.CLIENT)
     public int getRenderHue() {
         return -1;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getIcon() {
         return getWireType().getTextures().get(0);
     }
@@ -107,13 +104,11 @@ public abstract class BaseWirePart extends ProjectRedPart implements IconHitEffe
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getBreakingIcon(PartRayTraceResult hit) {
         return getIcon();
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getBrokenIcon(int side) {
         return getIcon();
     }

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -260,7 +259,6 @@ public class MovingStructure implements MovingStructureInfo {
         status = CANCELLED;
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void markChunksForRender() {
         FastStream.of(renderChunks.get()).forEach(p -> Minecraft.getInstance().levelExtractor.setSectionDirty(p.x(), p.y(), p.z(), true));
     }

@@ -12,7 +12,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -39,7 +38,6 @@ public enum TubeType {
     private @Nullable Supplier<Item> itemSupplier;
     private @Nullable Supplier<MultipartType<BaseTubePart>> partSupplier;
 
-    @OnlyIn(Dist.CLIENT)
     private @Nullable List<TextureAtlasSprite> textures;
 
     TubeType(String unlocalName, Function<TubeType, BaseTubePart> partFactory, String... textures) {
@@ -72,12 +70,10 @@ public enum TubeType {
         return partFactory.apply(this);
     }
 
-    @OnlyIn (Dist.CLIENT)
     public List<TextureAtlasSprite> getTextures() {
         return Objects.requireNonNull(textures);
     }
 
-    @OnlyIn (Dist.CLIENT)
     public void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
         if (textureNames.isEmpty()) return;

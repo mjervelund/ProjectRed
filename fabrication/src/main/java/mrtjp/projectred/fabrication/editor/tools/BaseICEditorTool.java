@@ -5,7 +5,6 @@ import mrtjp.fengine.TileCoord;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -25,7 +24,6 @@ public abstract class BaseICEditorTool implements IICEditorTool {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void buildTooltip(Vector3 mousePosition, boolean isFirstHit, List<Component> tooltip) {
 
         if (!isFirstHit) return;

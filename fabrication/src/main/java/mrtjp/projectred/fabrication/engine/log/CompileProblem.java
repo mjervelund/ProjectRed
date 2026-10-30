@@ -10,7 +10,6 @@ import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -38,6 +37,5 @@ public abstract class CompileProblem {
 
     public abstract void buildToolTip(List<Component> tooltip);
 
-    @OnlyIn(Dist.CLIENT)
     public abstract void renderOverlay(Vector3 mousePosition, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack);
 }

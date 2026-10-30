@@ -11,7 +11,6 @@ import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 
@@ -47,10 +46,8 @@ public interface IICEditorTool {
         return false;
     }
 
-    @OnlyIn(Dist.CLIENT)
     void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack);
 
-    @OnlyIn(Dist.CLIENT)
     void buildTooltip(Vector3 mousePosition, boolean isFirstHit, List<Component> tooltip);
 
     static TileCoord toNearestPosition(Vector3 v) {

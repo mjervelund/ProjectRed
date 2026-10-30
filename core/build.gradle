@@ -39,6 +39,9 @@ dependencies {
 
     // ProjectRed API
     compileOnly project(":api") // Not on runtime bc already included via JarJar
+    // Dev runs: moddev 2.0.148 no longer puts jar-in-jar'd projects on the run classpath. api is a GAMELIBRARY
+    // (see its dev manifest), so it must stay its own classpath entry.
+    runtimeOnly project(":api")
     jarJar(project(":api")) // Use JarJar to bake within Core jar
 
     // JEI
@@ -49,7 +52,8 @@ dependencies {
     // CCTweaked
     compileOnly("cc.tweaked:cc-tweaked-${mc_version}-core-api:${cct_version}")
     compileOnly("cc.tweaked:cc-tweaked-${mc_version}-forge-api:${cct_version}")
-    runtimeOnly("cc.tweaked:cc-tweaked-${mc_version}-forge:${cct_version}")
+    // CC: Tweaked 1.120.3 on Maven predates FML 12 (ModConfig.Type.SERVER is gone) and fails to load in dev runs.
+    // runtimeOnly("cc.tweaked:cc-tweaked-${mc_version}-forge:${cct_version}")
 
     testRuntimeOnly project(":api") // api is compileOnly (JarJar'd into jar), but needed at test runtime since we run from source classes
 

@@ -38,7 +38,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -216,7 +215,6 @@ public abstract class BaseTubePart extends ProjectRedPart implements IConnectabl
         return Configurator.CLIENT.staticWires.get();
     }
 
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getIcon() {
         return getPipeType().getTextures().get(0);
     }

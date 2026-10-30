@@ -11,7 +11,6 @@ import mrtjp.projectred.fabrication.editor.tools.InteractionZone;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -110,6 +109,5 @@ public abstract class BaseTile implements FETile {
         toolTip.add(Component.translatable(tileType.getUnlocalizedName()));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void renderTile(CCRenderState ccrs, Transformation t, float partialFrame) { }
 }

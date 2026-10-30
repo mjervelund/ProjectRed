@@ -13,7 +13,6 @@ import net.covers1624.quack.collection.FastStream;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -190,7 +189,6 @@ public class InteractTool extends BaseICEditorTool {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void buildTooltip(Vector3 mousePosition, boolean isFirstHit, List<Component> tooltip) {
         super.buildTooltip(mousePosition, isFirstHit, tooltip);
 
@@ -205,7 +203,6 @@ public class InteractTool extends BaseICEditorTool {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void renderOverlay(Vector3 mousePosition, boolean isFirstHit, CCRenderState ccrs, RecordingBufferSource getter, PoseStack matrixStack) {
 
         if (!isFirstHit) return;

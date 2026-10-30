@@ -12,7 +12,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
@@ -40,7 +39,6 @@ public class ModelVoxelShape extends VoxelShape {
         this.tris = tris;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public ModelVoxelShape(VoxelShape parent, CCModel model) {
         this(parent, trisFromCCModel(model));
     }
@@ -90,7 +88,6 @@ public class ModelVoxelShape extends VoxelShape {
         return new ModelVoxelShape(parent, trisFromQuads(verts));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static List<Tri> trisFromCCModel(CCModel model) {
         return model.vertexMode == PrimitiveTopology.QUADS ? trisFromQuads(model.verts) : trisFromTriangles(model.verts);
     }

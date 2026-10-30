@@ -13,7 +13,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
 import javax.annotation.Nullable;
@@ -52,14 +51,12 @@ public class LanternLightProperties extends MultipartLightProperties {
 
     //region Rendering
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
         icon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/lantern"));
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public TextureAtlasSprite getIcon(int color) {
         assert icon != null;
         return icon;

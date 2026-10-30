@@ -18,7 +18,6 @@ import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +61,6 @@ public class HotKeyInteractionZone implements InteractionZone {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void renderZone(CCRenderState ccrs, RecordingBufferSource getter, PoseStack poseStack, boolean isSelected, boolean isMouseOver) {
 
         // Transparent box
@@ -86,7 +84,6 @@ public class HotKeyInteractionZone implements InteractionZone {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void buildToolTip(List<Component> tooltip) {
         String keyName = Objects.requireNonNullElse(GLFW.glfwGetKeyName(keyCode, 0), "???");
         tooltip.add(Component.literal("[" + keyName + "] ").append(text).withStyle(ICWorkbenchEditor.UNIFORM_GRAY));

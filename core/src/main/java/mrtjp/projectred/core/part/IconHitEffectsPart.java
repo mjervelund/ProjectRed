@@ -6,7 +6,6 @@ import codechicken.multipart.api.part.render.StandardPartParticleHandler;
 import codechicken.multipart.util.PartRayTraceResult;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -20,10 +19,8 @@ public interface IconHitEffectsPart extends MultiPart {
 
     Cuboid6 getBounds();
 
-    @OnlyIn (Dist.CLIENT)
     TextureAtlasSprite getBreakingIcon(PartRayTraceResult hit);
 
-    @OnlyIn (Dist.CLIENT)
     TextureAtlasSprite getBrokenIcon(int side);
 
     StandardPartParticleHandler<MultiPart> HANDLER = new StandardPartParticleHandler<>() {

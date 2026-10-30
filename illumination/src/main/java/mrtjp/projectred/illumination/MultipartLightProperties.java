@@ -27,7 +27,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
 import java.util.Arrays;
@@ -55,12 +54,10 @@ public abstract class MultipartLightProperties {
     //endregion
 
     //region Client Registration
-    @OnlyIn(Dist.CLIENT)
     public abstract void onTextureStitchEvent(TextureAtlasStitchedEvent event);
     //endregion
 
     //region Rendering
-    @OnlyIn(Dist.CLIENT)
     public abstract TextureAtlasSprite getIcon(int color);
     public abstract CCModel getBulbModel(int side);
     public abstract CCModel getChasisModel(int side);
@@ -75,7 +72,6 @@ public abstract class MultipartLightProperties {
         return getGlowBounds(0);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void render(MultipartLightPart part, Vector3 pos, CCRenderState ccrs) {
         IconTransformation icon = new IconTransformation(getIcon(part.getColor()));
         Translation t = pos.translation();
@@ -83,7 +79,6 @@ public abstract class MultipartLightProperties {
         getBulbModel(part.getSide()).render(ccrs, t, icon, getColourMultiplier(part.getColor(), part.isLightOn()));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public void renderInventory(int colour, boolean inverted, Vector3 pos, CCRenderState ccrs) {
         IconTransformation icon = new IconTransformation(getIcon(colour));
         Translation t = pos.translation();
@@ -100,12 +95,10 @@ public abstract class MultipartLightProperties {
         return new ColourMultiplier(c.rgba());
     }
 
-    @OnlyIn(Dist.CLIENT)
     public ProjectRedItemRenderer.Unbaked getItemRenderer() {
         return DEFAULT_ITEM_RENDERER;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static final ProjectRedItemRenderer.Unbaked DEFAULT_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(DefaultMultipartLightItemRenderer::new);
     //endregion
 
@@ -153,7 +146,6 @@ public abstract class MultipartLightProperties {
     }
     //endregion
 
-    @OnlyIn(Dist.CLIENT)
     public static final class DefaultMultipartLightItemRenderer extends ProjectRedItemRenderer {
 
         public DefaultMultipartLightItemRenderer() {

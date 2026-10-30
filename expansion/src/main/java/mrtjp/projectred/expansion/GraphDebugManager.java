@@ -29,7 +29,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -110,10 +109,8 @@ public class GraphDebugManager {
     //endregion
 
     //region Client-side rendering
-    @OnlyIn(Dist.CLIENT)
     private static class GraphDebugManagerClientRenderTypes {
 
-        @OnlyIn(Dist.CLIENT)
         private static RenderType DEBUG_CUBE_RENDER_TYPE = RenderType.create(MOD_ID + ":graph_debug_cube", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
@@ -130,7 +127,6 @@ public class GraphDebugManager {
                         .setLineState(RenderStateShard.DEFAULT_LINE)
                         .createCompositeState(true));
 
-        @OnlyIn(Dist.CLIENT)
         public static Function<Double, RenderType> DEBUG_LINES_RENDER_TYPE = Util.memoize(a -> RenderType.create(MOD_ID + ":graph_debug_lines", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
@@ -148,7 +144,6 @@ public class GraphDebugManager {
                         .createCompositeState(false)));
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         // Return if debug rendering is disabled. This can be toggled via command
         if (!enableRendering) return;
@@ -180,7 +175,6 @@ public class GraphDebugManager {
         renderLinks(stack, buffers, links);
     }
 
-    @OnlyIn(Dist.CLIENT)
     private static void renderLinks(PoseStack stack, RecordingBufferSource buffers, Map<BlockPos, ClientSideLinkCache> links) {
         CCRenderState ccrs = CCRenderState.instance();
         ccrs.reset();
@@ -242,7 +236,6 @@ public class GraphDebugManager {
         stack.popPose();
     }
 
-    @OnlyIn(Dist.CLIENT)
     private static void bufferLinePair(VertexConsumer builder, double x1, double y1, double z1, double x2, double y2, double z2, float r, float g, float b, float a) {
         Vector3 v1 = new Vector3(x1, y1, z1).subtract(x2, y2, z2);
         double d = v1.mag();

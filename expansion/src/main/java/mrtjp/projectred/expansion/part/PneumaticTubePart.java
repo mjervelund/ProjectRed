@@ -25,7 +25,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
@@ -268,7 +267,6 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     }
 
     //region Particles
-    @OnlyIn(Dist.CLIENT)
     private void onLinksRemoved(List<ClientSideLinkCache.ClientLink> removed) {
         for (var link : removed) {
             var points = link.getPointListFor(pos());
@@ -289,7 +287,6 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     private void onLinksAdded(List<ClientSideLinkCache.ClientLink> added) {
         for (var link : added) {
             var points = link.getPointListFor(pos());
