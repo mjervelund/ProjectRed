@@ -54,7 +54,9 @@ public class WirePlacerTool extends BaseICEditorTool {
     public void readPacket(MCDataInput in) {
 
         boolean overwrite = in.readBoolean();
-        ICWireTileType wireType = ICWireTileType.values()[in.readUByte()];
+        int wireTypeIndex = in.readUByte();
+        if (wireTypeIndex >= ICWireTileType.values().length) return;
+        ICWireTileType wireType = ICWireTileType.values()[wireTypeIndex];
         int numPositions = in.readUByte();
         int y = in.readByte();
 

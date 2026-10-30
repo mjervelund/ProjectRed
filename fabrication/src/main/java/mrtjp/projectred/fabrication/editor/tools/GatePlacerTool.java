@@ -51,7 +51,9 @@ public class GatePlacerTool extends BaseICEditorTool {
     public void readPacket(MCDataInput input) {
 
         boolean overwrite = input.readBoolean();
-        ICGateTileType gateType = ICGateTileType.values()[input.readUByte()];
+        int gateTypeIndex = input.readUByte();
+        if (gateTypeIndex >= ICGateTileType.values().length) return;
+        ICGateTileType gateType = ICGateTileType.values()[gateTypeIndex];
         int x = input.readByte();
         int y = input.readByte();
         int z = input.readByte();

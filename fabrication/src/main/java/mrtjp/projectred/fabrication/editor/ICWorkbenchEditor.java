@@ -45,6 +45,8 @@ public class ICWorkbenchEditor implements ICEditorStateMachine.StateMachineCallb
     private static final int KEY_TOOL = 10;
     private static final int KEY_CLIENT_SEND_IC_NAME = 11;
 
+    public static final int MAX_IC_NAME_LENGTH = 64;
+
     private final IICWorkbenchEditorNetwork network;
     private final BaseTileMap tileMap = new BaseTileMap(this);
     private final ICEditorStateMachine stateMachine = new ICEditorStateMachine(this, this);
@@ -185,6 +187,31 @@ public class ICWorkbenchEditor implements ICEditorStateMachine.StateMachineCallb
             default:
                 LOGGER.error("Unknown stream key " + streamKey);
         }
+    }
+
+    /**
+     * Server side: reads one frame of a client's stream. Only client -> server frames are accepted (tool actions, IC
+     * name, compile controls); tile updates and the server -> client keys are not. Returns false for a rejected frame.
+     */
+    public boolean readBufferedStreamFromClient(MCDataInput in, int streamKey, int frameKey) {
+        if (streamKey == STREAM_ID_GENERAL && frameKey == KEY_TOOL) {
+            int toolIndex = in.readUByte();
+            if (toolIndex < toolList.size()) {
+                toolList.get(toolIndex).readPacket(in);
+                return true;
+            }
+        } else if (streamKey == STREAM_ID_GENERAL && frameKey == KEY_CLIENT_SEND_IC_NAME) {
+            String name = in.readString();
+            icName = name.length() > MAX_IC_NAME_LENGTH ? name.substring(0, MAX_IC_NAME_LENGTH) : name;
+            network.getBufferedStream(STREAM_ID_GENERAL, KEY_SET_IC_NAME).writeString(icName);
+            return true;
+        } else if (streamKey == STREAM_ID_FSM && (frameKey == ICEditorStateMachine.KEY_CLIENT_COMPILE_CLICKED
+                || frameKey == ICEditorStateMachine.KEY_CLIENT_AUTO_COMPILE_TOGGLED)) {
+            stateMachine.readStateMachineStream(in, frameKey);
+            return true;
+        }
+        LOGGER.debug("Rejected IC editor frame {} on stream {} from client", frameKey, streamKey);
+        return false;
     }
 
     private void readTileStream(MCDataInput in, int frameKey) {

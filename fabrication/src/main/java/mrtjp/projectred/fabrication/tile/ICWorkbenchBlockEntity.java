@@ -190,10 +190,25 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
                 filterAndGetWatchers().remove(player);
                 break;
             case KEY_EDITOR_PACKET: // Some packet for the editor
-                receiveBufferedStream(input);
+                // Only players with the editor open, and still in reach, may edit the design.
+                if (!filterAndGetWatchers().contains(player) || !player.isWithinBlockInteractionRange(getBlockPos(), 4.0)) {
+                    LOGGER.debug("Ignoring IC editor packet from {}: editor not open or out of reach", player.getScoreboardName());
+                    break;
+                }
+                receiveBufferedStreamFromClient(input);
                 break;
             default:
                 LOGGER.error("Unknown packet key from client: " + key);
+        }
+    }
+
+    private void receiveBufferedStreamFromClient(MCDataInput in) {
+        int streamKey = in.readUByte();
+        int frameKey = in.readUByte();
+        while (frameKey != 255) {
+            // Frames carry no length, so nothing after a rejected frame can be read.
+            if (!editor.readBufferedStreamFromClient(in, streamKey, frameKey)) return;
+            frameKey = in.readUByte();
         }
     }
 

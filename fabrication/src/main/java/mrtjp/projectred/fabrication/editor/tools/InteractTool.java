@@ -52,7 +52,7 @@ public class InteractTool extends BaseICEditorTool {
         boolean leftClick = (b & 0x80) != 0;
 
         BaseTile tile = getEditor().getTileMap().getBaseTile(pos).orElse(null);
-        if (tile == null) return;
+        if (tile == null || z >= tile.getInteractionZones().length) return;
 
         var zone =  tile.getInteractionZones()[z];
 
