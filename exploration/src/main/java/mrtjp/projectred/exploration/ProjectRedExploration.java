@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration;
 
+import mrtjp.projectred.exploration.init.ExplorationWorldFeatures;
 import codechicken.microblock.api.MicroMaterial;
 import com.mojang.serialization.MapCodec;
 import mrtjp.projectred.exploration.data.*;
@@ -16,7 +17,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -41,7 +41,6 @@ public class ProjectRedExploration {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(BuiltInRegistries.BLOCK, MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, MOD_ID);
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, MOD_ID);
-    public static final DeferredRegister<WorldCarver<?>> WORLD_CARVERS = DeferredRegister.create(BuiltInRegistries.CARVER, MOD_ID);
     public static final DeferredRegister<MapCodec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(NeoForgeRegistries.BIOME_MODIFIER_SERIALIZERS, MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, MOD_ID);
     public static final DeferredRegister<MicroMaterial> MICRO_MATERIALS = DeferredRegister.create(MicroMaterial.REGISTRY, MOD_ID);
@@ -75,7 +74,6 @@ public class ProjectRedExploration {
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         MENU_TYPES.register(modEventBus);
-        WORLD_CARVERS.register(modEventBus);
         BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
         MICRO_MATERIALS.register(modEventBus);
@@ -98,6 +96,8 @@ public class ProjectRedExploration {
 
     private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
         event.add(Registries.LOOT_TABLE, new ExplorationLootTableProvider());
-        // TODO 26.3: worldgen entries (ExplorationBuiltInEntriesProvider) need porting to registry bootstraps
+        event.add(Registries.FEATURE, ExplorationWorldFeatures::bootstrapFeatures)
+                .add(Registries.PLACED_FEATURE, ExplorationWorldFeatures::bootstrapPlacements)
+                .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ExplorationWorldFeatures::bootstrapBiomeModifiers);
     }
 }

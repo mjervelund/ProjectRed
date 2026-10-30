@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration.world.gen;
 
+import net.minecraft.core.RegistryAccess;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -22,7 +23,7 @@ import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 public record ConfigFileControlledAddFeaturesBiomeModifier(HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step, String configKey) implements BiomeModifier {
 
     @Override
-    public void modify(Holder<Biome> biome, BiomeModifier.Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
+    public void modify(RegistryAccess registries, Holder<Biome> biome, BiomeModifier.Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
 
         if (isEnabled() && phase == Phase.ADD && this.biomes.contains(biome)) {
             BiomeGenerationSettingsBuilder generationSettings = builder.getGenerationSettings();
