@@ -2,7 +2,7 @@ package mrtjp.projectred.integration.init;
 
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
-import mrtjp.projectred.core.part.IconHitEffectsPart;
+import mrtjp.projectred.core.client.IconPartParticleHandler;
 import mrtjp.projectred.integration.client.GatePartItemRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -34,7 +34,7 @@ public class IntegrationClientInit {
         for (GateType type : GateType.values()) {
             if (type.isExternalGate()) continue;
             event.registerDynamicPartRenderer(type.getPartType(), () -> GatePartRenderer.INSTANCE);
-            event.registerParticleHandler(type.getPartType(), IconHitEffectsPart.HANDLER);
+            event.registerParticleHandler(type.getPartType(), IconPartParticleHandler.INSTANCE);
         }
     }
 

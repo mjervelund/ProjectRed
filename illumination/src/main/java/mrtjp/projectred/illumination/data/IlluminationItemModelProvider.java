@@ -30,8 +30,8 @@ public class IlluminationItemModelProvider extends ProjectRedModelProvider {
 
         for (MultipartLightType type : MultipartLightType.values()) {
             for (int color = 0; color < 16; color++) {
-                specialItem(type.getItem(color, false), type.getProperties().getItemRenderer());
-                specialItem(type.getItem(color, true), type.getProperties().getItemRenderer());
+                specialItem(type.getItem(color, false), IlluminationClientInit.LIGHT_ITEM_RENDERER);
+                specialItem(type.getItem(color, true), IlluminationClientInit.LIGHT_ITEM_RENDERER);
             }
         }
     }

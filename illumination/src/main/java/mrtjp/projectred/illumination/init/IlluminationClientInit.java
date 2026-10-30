@@ -2,7 +2,7 @@ package mrtjp.projectred.illumination.init;
 
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
-import mrtjp.projectred.core.part.IconHitEffectsPart;
+import mrtjp.projectred.core.client.IconPartParticleHandler;
 import mrtjp.projectred.illumination.MultipartLightProperties;
 import mrtjp.projectred.illumination.client.IllumarLampItemRenderer;
 import mrtjp.projectred.illumination.client.IllumarSmartLampItemRenderer;
@@ -51,18 +51,19 @@ public class IlluminationClientInit {
             for (int colour = 0; colour < 16; colour++) {
                 event.registerDynamicPartRenderer(type.getPartType(colour, false), () -> MultipartLightPartRenderer.INSTANCE);
                 event.registerDynamicPartRenderer(type.getPartType(colour, true), () -> MultipartLightPartRenderer.INSTANCE);
-                event.registerParticleHandler(type.getPartType(colour, false), IconHitEffectsPart.HANDLER);
-                event.registerParticleHandler(type.getPartType(colour, true), IconHitEffectsPart.HANDLER);
+                event.registerParticleHandler(type.getPartType(colour, false), IconPartParticleHandler.INSTANCE);
+                event.registerParticleHandler(type.getPartType(colour, true), IconPartParticleHandler.INSTANCE);
             }
         }
     }
 
     public static final ProjectRedItemRenderer.Unbaked LAMP_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(IllumarLampItemRenderer::new);
+    public static final ProjectRedItemRenderer.Unbaked LIGHT_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(MultipartLightProperties.DefaultMultipartLightItemRenderer::new);
     public static final ProjectRedItemRenderer.Unbaked SMART_LAMP_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(IllumarSmartLampItemRenderer::new);
 
     private static void onRegisterSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
         event.register(Identifier.fromNamespaceAndPath(MOD_ID, "lamp"), LAMP_ITEM_RENDERER.type());
         event.register(Identifier.fromNamespaceAndPath(MOD_ID, "smart_lamp"), SMART_LAMP_ITEM_RENDERER.type());
-        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "light"), MultipartLightProperties.DEFAULT_ITEM_RENDERER.type());
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "light"), LIGHT_ITEM_RENDERER.type());
     }
 }

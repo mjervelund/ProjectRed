@@ -95,11 +95,7 @@ public abstract class MultipartLightProperties {
         return new ColourMultiplier(c.rgba());
     }
 
-    public ProjectRedItemRenderer.Unbaked getItemRenderer() {
-        return DEFAULT_ITEM_RENDERER;
-    }
 
-    public static final ProjectRedItemRenderer.Unbaked DEFAULT_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(DefaultMultipartLightItemRenderer::new);
     //endregion
 
     //region Utils
