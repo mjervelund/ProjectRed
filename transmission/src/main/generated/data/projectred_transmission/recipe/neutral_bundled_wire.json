@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "S": {
-      "tag": "c:strings"
-    },
-    "W": {
-      "tag": "projectred_transmission:insulated_wire"
-    }
+    "S": "#c:strings",
+    "W": "#projectred_transmission:insulated_wire"
   },
   "pattern": [
     "SWS",
@@ -15,7 +10,6 @@
     "SWS"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_transmission:neutral_bundled_wire"
   }
 }

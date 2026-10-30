@@ -42,5 +42,5 @@ dependencies {
     accessTransformers "io.codechicken:CBMultipart:${mc_version}-${cbm_version}"
 
     compileOnly project(":api")
-    implementation project(":core")
+    implementation(project(":core")) { exclude group: "mrtjp", module: "api" } // api comes jar-in-jar through core
 }

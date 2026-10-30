@@ -9,6 +9,13 @@ neoForge {
 
     accessTransformers.from "../core/src/main/resources/META-INF/accesstransformer.cfg"
 
+    // FML 12 only loads the main source set in dev runs when it is declared as a mod
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+
     runs {
         data {
             clientData()
@@ -25,9 +32,9 @@ dependencies {
     accessTransformers "io.codechicken:CBMultipart:${mc_version}-${cbm_version}"
 
     compileOnly project(":api")
-    implementation project(":core")
-    implementation project(":integration")
-    implementation project(":transmission")
+    implementation(project(":core")) { exclude group: "mrtjp", module: "api" } // api comes jar-in-jar through core
+    implementation(project(":integration")) { exclude group: "mrtjp", module: "api" } // api comes jar-in-jar through core
+    implementation(project(":transmission")) { exclude group: "mrtjp", module: "api" } // api comes jar-in-jar through core
 
     // Dependencies to be packed into jar
     jarJar(implementation("io.github.mrtjp:fabrication-engine:${fabrication_version}") { transitive = false })

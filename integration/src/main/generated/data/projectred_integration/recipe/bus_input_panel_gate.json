@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "item": "projectred_core:bundled_plate"
-    },
-    "I": {
-      "tag": "projectred_core:illumars"
-    },
-    "R": {
-      "item": "projectred_core:conductive_plate"
-    }
+    "B": "projectred_core:bundled_plate",
+    "I": "#projectred_core:illumars",
+    "R": "projectred_core:conductive_plate"
   },
   "pattern": [
     "BRB",
@@ -18,7 +11,6 @@
     "BBB"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_integration:bus_input_panel_gate"
   }
 }

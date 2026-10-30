@@ -1,19 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "A": {
-      "item": "projectred_core:anode"
-    },
-    "C": {
-      "item": "projectred_core:cathode"
-    },
-    "P": {
-      "item": "projectred_core:plate"
-    },
-    "W": {
-      "item": "projectred_core:conductive_plate"
-    }
+    "A": "projectred_core:anode",
+    "C": "projectred_core:cathode",
+    "P": "projectred_core:plate",
+    "W": "projectred_core:conductive_plate"
   },
   "pattern": [
     "PCP",
@@ -21,7 +12,6 @@
     "PWP"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_integration:not_gate"
   }
 }

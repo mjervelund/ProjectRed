@@ -1,10 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "R": {
-      "tag": "c:ingots/red_alloy"
-    }
+    "R": "#c:ingots/red_alloy"
   },
   "pattern": [
     " R ",

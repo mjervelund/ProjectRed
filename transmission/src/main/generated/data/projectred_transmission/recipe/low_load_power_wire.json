@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:wools/blue"
-    },
-    "I": {
-      "tag": "c:ingots/electrotine_alloy"
-    },
-    "Y": {
-      "tag": "c:wools/yellow"
-    }
+    "B": "#c:wools/blue",
+    "I": "#c:ingots/electrotine_alloy",
+    "Y": "#c:wools/yellow"
   },
   "pattern": [
     "BIB",

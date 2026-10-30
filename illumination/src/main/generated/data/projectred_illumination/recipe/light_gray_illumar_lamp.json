@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "G": {
-      "tag": "c:glass_panes/colorless"
-    },
-    "I": {
-      "item": "projectred_core:light_gray_illumar"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "G": "#c:glass_panes/colorless",
+    "I": "projectred_core:light_gray_illumar",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "GIG",
@@ -18,7 +11,6 @@
     "GRG"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_illumination:light_gray_illumar_lamp"
   }
 }

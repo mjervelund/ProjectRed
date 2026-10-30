@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "R": {
-      "tag": "c:ingots/red_alloy"
-    },
-    "W": {
-      "tag": "c:wools/purple"
-    }
+    "R": "#c:ingots/red_alloy",
+    "W": "#c:wools/purple"
   },
   "pattern": [
     "WRW",

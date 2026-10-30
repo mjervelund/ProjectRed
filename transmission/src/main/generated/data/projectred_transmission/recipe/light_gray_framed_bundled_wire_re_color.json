@@ -1,16 +1,10 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
-    {
-      "tag": "projectred_transmission:framed_bundled_wire"
-    },
-    {
-      "tag": "c:dyes/light_gray"
-    }
+    "#projectred_transmission:framed_bundled_wire",
+    "#c:dyes/light_gray"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_transmission:light_gray_framed_bundled_wire"
   }
 }

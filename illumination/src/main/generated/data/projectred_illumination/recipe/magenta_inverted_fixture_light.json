@@ -1,19 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "C": {
-      "item": "projectred_core:cathode"
-    },
-    "G": {
-      "tag": "c:glass_panes/colorless"
-    },
-    "I": {
-      "item": "projectred_core:magenta_illumar"
-    },
-    "P": {
-      "item": "projectred_core:plate"
-    }
+    "C": "projectred_core:cathode",
+    "G": "#c:glass_panes/colorless",
+    "I": "projectred_core:magenta_illumar",
+    "P": "projectred_core:plate"
   },
   "pattern": [
     "GGG",
@@ -21,7 +12,6 @@
     "PCP"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_illumination:magenta_inverted_fixture_light"
   }
 }

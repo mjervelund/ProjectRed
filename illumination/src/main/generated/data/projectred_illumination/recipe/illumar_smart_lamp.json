@@ -1,22 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "item": "projectred_core:blue_illumar"
-    },
-    "C": {
-      "item": "projectred_core:bundled_plate"
-    },
-    "G": {
-      "item": "projectred_core:green_illumar"
-    },
-    "P": {
-      "tag": "c:glass_panes/colorless"
-    },
-    "R": {
-      "item": "projectred_core:red_illumar"
-    }
+    "B": "projectred_core:blue_illumar",
+    "C": "projectred_core:bundled_plate",
+    "G": "projectred_core:green_illumar",
+    "P": "#c:glass_panes/colorless",
+    "R": "projectred_core:red_illumar"
   },
   "pattern": [
     "PRP",
@@ -24,7 +13,6 @@
     "CBC"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_illumination:illumar_smart_lamp"
   }
 }

@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "P": {
-      "item": "projectred_core:plate"
-    },
-    "S": {
-      "tag": "c:slimeballs"
-    },
-    "W": {
-      "item": "projectred_core:conductive_plate"
-    }
+    "P": "projectred_core:plate",
+    "S": "#c:slime_balls",
+    "W": "projectred_core:conductive_plate"
   },
   "pattern": [
     "PPP",
@@ -18,7 +11,6 @@
     "PWP"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_integration:rain_sensor_gate"
   }
 }

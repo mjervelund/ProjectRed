@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "item": "projectred_core:bundled_plate"
-    },
-    "P": {
-      "item": "projectred_core:plate"
-    },
-    "S": {
-      "item": "projectred_core:silicon_chip"
-    }
+    "B": "projectred_core:bundled_plate",
+    "P": "projectred_core:plate",
+    "S": "projectred_core:silicon_chip"
   },
   "pattern": [
     "BBB",
@@ -18,7 +11,6 @@
     "BBB"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_integration:bus_transceiver_gate"
   }
 }

@@ -40,7 +40,7 @@ dependencies {
     // ProjectRed API
     compileOnly project(":api") // Not on runtime bc already included via JarJar
     // Dev runs: moddev 2.0.148 no longer puts jar-in-jar'd projects on the run classpath. api is a GAMELIBRARY
-    // (see its dev manifest), so it must stay its own classpath entry.
+    // (see its dev manifest), so it must stay its own classpath entry; dependent modules exclude it (they get the jar-in-jar copy through core).
     runtimeOnly project(":api")
     jarJar(project(":api")) // Use JarJar to bake within Core jar
 
