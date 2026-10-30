@@ -1,0 +1,5 @@
+// 26.3	2026-10-30T21:13:34.535111006	Registries for Reloadable (projectred_fabrication[0]): [projectred_fabrication]
+ec501bc018e565a4b2875469fdd8b1c26dcbfec0 data/projectred_fabrication/loot_table/blocks/ic_workbench.json
+0bef13f217e57f4b5e85d7ebf8dae7cdd517bba0 data/projectred_fabrication/loot_table/blocks/lithography_table.json
+3ebf1c34fdaa543899a5fbd0c0a307893bdc036d data/projectred_fabrication/loot_table/blocks/packaging_table.json
+17a3511254576c9675c08a0a9d63fc9552f3c53e data/projectred_fabrication/loot_table/blocks/plotting_table.json

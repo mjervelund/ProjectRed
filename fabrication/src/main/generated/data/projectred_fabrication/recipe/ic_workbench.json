@@ -1,16 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "b": {
-      "item": "projectred_fabrication:ic_blueprint"
-    },
-    "s": {
-      "item": "minecraft:stone"
-    },
-    "w": {
-      "tag": "minecraft:planks"
-    }
+    "b": "projectred_fabrication:ic_blueprint",
+    "s": "minecraft:stone",
+    "w": "#minecraft:planks"
   },
   "pattern": [
     "sss",
@@ -18,7 +11,6 @@
     "www"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_fabrication:ic_workbench"
   }
 }
