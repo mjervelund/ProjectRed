@@ -9,6 +9,9 @@ neoForge {
 
     accessTransformers.from "../core/src/main/resources/META-INF/accesstransformer.cfg"
 
+    // Minecraft/NeoForge classes for the plain JUnit tests
+    addModdingDependenciesTo(sourceSets.test)
+
     // FML 12 only loads the main source set in dev runs when it is declared as a mod
     mods {
         "${mod_id}" {
@@ -33,4 +36,18 @@ dependencies {
 
     compileOnly project(":api")
     implementation(project(":core")) { exclude group: "mrtjp", module: "api" } // api comes jar-in-jar through core
+
+    // Plain JUnit (no FML unit-test bootstrap): the tests only touch NBT and part fields
+    testImplementation project(":api")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.8.2'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
 }
