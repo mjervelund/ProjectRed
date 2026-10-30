@@ -1,5 +1,6 @@
 package mrtjp.projectred.redui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
@@ -570,7 +571,7 @@ public interface RedUINode {
     default void renderBackForSubtree(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         drawBack(graphics, mouse, partialFrame);
 
-        onSubTreePreDrawBack();
+        onSubTreePreDrawBack(graphics);
         for (RedUINode child : getZOrderedChildren(n -> !n.isHidden(), true)) {
             graphics.pose().pushMatrix();
 
@@ -583,7 +584,7 @@ public interface RedUINode {
 
             graphics.pose().popMatrix();
         }
-        onSubTreePostDrawBack();
+        onSubTreePostDrawBack(graphics);
     }
 
     /**
@@ -594,7 +595,7 @@ public interface RedUINode {
     default void renderFrontForSubtree(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         drawFront(graphics, mouse, partialFrame);
 
-        onSubTreePreDrawFront();
+        onSubTreePreDrawFront(graphics);
         for (RedUINode child : getZOrderedChildren(n -> !n.isHidden(), true)) {
             graphics.pose().pushMatrix();
 
@@ -607,7 +608,7 @@ public interface RedUINode {
 
             graphics.pose().popMatrix();
         }
-        onSubTreePostDrawFront();
+        onSubTreePostDrawFront(graphics);
     }
 
     /**
@@ -726,22 +727,22 @@ public interface RedUINode {
     /**
      * @see RedUINode#renderBackForSubtree(GuiGraphicsExtractor, Point, float)
      */
-    default void onSubTreePreDrawBack() { }
+    default void onSubTreePreDrawBack(GuiGraphicsExtractor graphics) { }
 
     /**
      * @see RedUINode#renderBackForSubtree(GuiGraphicsExtractor, Point, float)
      */
-    default void onSubTreePostDrawBack() { }
+    default void onSubTreePostDrawBack(GuiGraphicsExtractor graphics) { }
 
     /**
      * @see RedUINode#renderFrontForSubtree(GuiGraphicsExtractor, Point, float)
      */
-    default void onSubTreePreDrawFront() { }
+    default void onSubTreePreDrawFront(GuiGraphicsExtractor graphics) { }
 
     /**
      * @see RedUINode#renderFrontForSubtree(GuiGraphicsExtractor, Point, float)
      */
-    default void onSubTreePostDrawFront() { }
+    default void onSubTreePostDrawFront(GuiGraphicsExtractor graphics) { }
 
     /**
      * Draw call for the background layer, typically used to render the background. Drawing is done
@@ -812,7 +813,7 @@ public interface RedUINode {
 
     default void blitSpriteAt(GuiGraphicsExtractor graphics, RedUISprite sprite, Point pos) {
 //        RenderSystem.setShaderTexture(0, sprite.texture());
-        graphics.blit(sprite.texture(), pos.x, pos.y, sprite.u(), sprite.v(), sprite.w(), sprite.h(), sprite.textureWidth(), sprite.textureHeight());
+        graphics.blit(RenderPipelines.GUI_TEXTURED, sprite.texture(), pos.x, pos.y, (float) (sprite.u()), (float) (sprite.v()), sprite.w(), sprite.h(), sprite.textureWidth(), sprite.textureHeight());
     }
 
     default void blitSpriteCenteredAt(GuiGraphicsExtractor graphics, RedUISprite sprite, Point pos) {

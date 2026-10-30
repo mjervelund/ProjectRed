@@ -7,11 +7,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.util.FormattedCharSequence;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,11 +26,12 @@ import java.util.Map;
  * <p>
  * Vertices are recorded as written. Bind through {@link #bind(CCRenderState, RenderType, PoseStack)} (or wrap the
  * consumer yourself) so positions are already in the collector's pose space; batches are replayed with an identity
- * pose.
+ * pose. Text (no longer drawable into a buffer) is recorded with {@link #text} and submitted after the geometry.
  */
 public final class RecordingBufferSource {
 
     private final Map<Batch, Recorder> batches = new LinkedHashMap<>();
+    private final List<Text> texts = new ArrayList<>();
 
     public VertexConsumer getBuffer(RenderType type) {
         return getBuffer(type, 1);
@@ -52,15 +59,22 @@ public final class RecordingBufferSource {
         ccrs.bind(new TransformingVertexConsumer(getBuffer(type), transform), type);
     }
 
+    /**
+     * Records text drawn at {@code (x, y)} in the current pose of {@code stack}.
+     */
+    public void text(PoseStack stack, float x, float y, FormattedCharSequence text, int color, int light) {
+        PoseStack.Pose pose = stack.last();
+        texts.add(new Text(new Matrix4f(pose.pose()), new Matrix3f(pose.normal()), x, y, text, color, light));
+    }
+
     public boolean isEmpty() {
-        return batches.isEmpty();
+        return batches.isEmpty() && texts.isEmpty();
     }
 
     /**
      * Submits everything recorded so far and clears this source.
      */
     public void submit(SubmitNodeCollector collector) {
-        if (batches.isEmpty()) return;
         PoseStack identity = new PoseStack();
         for (var entry : batches.entrySet()) {
             Recorder recorder = entry.getValue();
@@ -68,9 +82,20 @@ public final class RecordingBufferSource {
             collector.submitCustomGeometry(identity, entry.getKey().type(), (pose, consumer) -> recorder.replay(consumer));
         }
         batches.clear();
+
+        for (Text t : texts) {
+            PoseStack stack = new PoseStack();
+            stack.last().pose().set(t.pose());
+            stack.last().normal().set(t.normal());
+            collector.submitText(stack, t.x(), t.y(), t.text(), false, Font.DisplayMode.NORMAL, t.light(), t.color(), 0, 0);
+        }
+        texts.clear();
     }
 
     private record Batch(RenderType type, float lineWidth) {
+    }
+
+    private record Text(Matrix4f pose, Matrix3f normal, float x, float y, FormattedCharSequence text, int color, int light) {
     }
 
     /**
