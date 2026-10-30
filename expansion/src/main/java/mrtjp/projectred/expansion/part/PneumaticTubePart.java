@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.part;
 
+import mrtjp.projectred.expansion.client.PneumaticTubeEffects;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import codechicken.lib.data.MCDataInput;
@@ -267,44 +268,13 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     }
 
     //region Particles
+    // Client-only code lives in PneumaticTubeEffects: dedicated servers no longer strip @OnlyIn members.
     private void onLinksRemoved(List<ClientSideLinkCache.ClientLink> removed) {
-        for (var link : removed) {
-            var points = link.getPointListFor(pos());
-            var p = new PneumaticSmokeParticle((ClientLevel) level(), points);
-            p.setAlpha(0.0F);
-            p.addAction(
-                    sequence(
-                            changeAlphaTo(0.7, 1),
-                            changeAlphaTo(0.0, 5),
-                            remove()
-                    )
-            );
-            Minecraft.getInstance().particleEngine.add(p);
-            level().playLocalSound(pos(), ExpansionSounds.DEPRESSURIZE.get(), SoundSource.BLOCKS,
-                    0.7F + level().getRandom().nextFloat() * 0.3F, //Volume
-                    1.0F,
-                    true);
-        }
+        PneumaticTubeEffects.onLinksRemoved(this, removed);
     }
 
     private void onLinksAdded(List<ClientSideLinkCache.ClientLink> added) {
-        for (var link : added) {
-            var points = link.getPointListFor(pos());
-            var p = new PneumaticSmokeParticle((ClientLevel) level(), points);
-            p.setAlpha(0.0F);
-            p.addAction(
-                    sequence(
-                            changeAlphaTo(0.7, 1),
-                            changeAlphaTo(0.0, 10),
-                            remove()
-                    )
-            );
-            Minecraft.getInstance().particleEngine.add(p);
-            level().playLocalSound(pos(), ExpansionSounds.PRESSURIZE.get(), SoundSource.BLOCKS,
-                    0.7F + level().getRandom().nextFloat() * 0.3F, //Volume
-                    1.0F,
-                    true);
-        }
+        PneumaticTubeEffects.onLinksAdded(this, added);
     }
     //endregion
 

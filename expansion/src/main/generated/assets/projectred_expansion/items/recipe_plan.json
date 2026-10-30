@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "projectred_expansion:item/recipe_plan"
+    },
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "projectred_expansion:item/recipe_plan_written"
+    },
+    "property": "projectred_expansion:written"
+  }
+}

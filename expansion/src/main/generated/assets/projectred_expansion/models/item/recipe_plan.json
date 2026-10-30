@@ -1,13 +1,5 @@
 {
   "parent": "minecraft:item/generated",
-  "overrides": [
-    {
-      "model": "projectred_expansion:item/recipe_plan_written",
-      "predicate": {
-        "projectred_expansion:written": 1.0
-      }
-    }
-  ],
   "textures": {
     "layer0": "projectred_expansion:item/recipe_plan"
   }

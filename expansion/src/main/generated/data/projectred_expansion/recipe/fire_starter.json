@@ -1,19 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "C": {
-      "item": "minecraft:cobblestone"
-    },
-    "F": {
-      "item": "minecraft:flint_and_steel"
-    },
-    "N": {
-      "item": "minecraft:netherrack"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "C": "minecraft:cobblestone",
+    "F": "minecraft:flint_and_steel",
+    "N": "minecraft:netherrack",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "NNN",
@@ -21,7 +12,6 @@
     "CRC"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_expansion:fire_starter"
   }
 }

@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:ingots/copper"
-    },
-    "G": {
-      "tag": "c:glass_panes"
-    }
+    "B": "#c:ingots/copper",
+    "G": "#c:glass_panes"
   },
   "pattern": [
     "BGB",

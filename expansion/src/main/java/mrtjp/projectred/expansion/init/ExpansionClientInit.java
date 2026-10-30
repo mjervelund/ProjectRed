@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.init;
 
+import mrtjp.projectred.expansion.client.GraphDebugRenderer;
 import mrtjp.projectred.expansion.block.BatteryBoxBlock;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
@@ -58,7 +59,7 @@ public class ExpansionClientInit {
         NeoForge.EVENT_BUS.addListener(PneumaticSmokeParticle::onSubmitCustomGeometry);
 
         // GraphDebugManager hooks
-        NeoForge.EVENT_BUS.addListener(GraphDebugManager::onSubmitCustomGeometry);
+        NeoForge.EVENT_BUS.addListener(GraphDebugRenderer::onSubmitCustomGeometry);
         NeoForge.EVENT_BUS.addListener((ItemTooltipEvent e) -> {
             if (e.getItemStack().is(BATTERY_BOX_BLOCK.get().asItem())) {
                 BatteryBoxBlock.appendStoredPower(e.getItemStack(), e.getToolTip()::add);

@@ -1,19 +1,10 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:crafting_table"
-    },
-    "C": {
-      "item": "minecraft:chest"
-    },
-    "S": {
-      "tag": "c:stones"
-    },
-    "W": {
-      "tag": "minecraft:planks"
-    }
+    "B": "minecraft:crafting_table",
+    "C": "minecraft:chest",
+    "S": "#c:stones",
+    "W": "#minecraft:planks"
   },
   "pattern": [
     "SSS",
@@ -21,7 +12,6 @@
     "WCW"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_expansion:project_bench"
   }
 }

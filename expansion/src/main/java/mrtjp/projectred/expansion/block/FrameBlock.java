@@ -102,14 +102,9 @@ public class FrameBlock extends Block implements Frame {
             faceShapes.add(VoxelShapeCache.merge(fb.build()));
         }
 
-        // Clients will use verts directly from parsed OBJ.
-        // Server will use data-pack JSON file with verts from OBJ
-        Vertex5[] verts;
-        if (FMLEnvironment.getDist().isClient()) {
-            verts = FrameModelRenderer.getQuadsForMask(mask);
-        } else {
-            verts = getQuadsForMask(mask);
-        }
+        // Verts generated from the frame OBJ (same on both sides). Parsing the OBJ needs the client's resource
+        // manager, which doesn't exist yet when shapes are first built (datagen, early registry setup).
+        Vertex5[] verts = getQuadsForMask(mask);
 
         VoxelShape parent = VoxelShapeCache.merge(ImmutableSet.copyOf(faceShapes));
         return ModelVoxelShape.fromQuads(parent, verts);

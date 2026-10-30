@@ -30,7 +30,6 @@ public class ExpansionItemModelProvider extends ProjectRedModelProvider {
     protected void registerModels() {
 
         simpleItemBlock(PROJECT_BENCH_BLOCK.get());
-        simpleItemBlock(BATTERY_BOX_BLOCK.get());
         simpleItemBlock(AUTO_CRAFTER_BLOCK.get());
         simpleItemBlock(CHARGING_BENCH_BLOCK.get());
         simpleItemBlock(FIRE_STARTER_BLOCK.get());
