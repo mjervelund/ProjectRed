@@ -144,7 +144,7 @@ public class MultipartLightPart extends BaseMultipart implements SlottedPart, No
     }
 
     private boolean checkSupport() {
-        if (level().isClientSide) return false;
+        if (level().isClientSide()) return false;
         if (properties.canFloat()) return false;
 
         BlockPos bc = pos().relative(Direction.values()[side]);
@@ -166,7 +166,7 @@ public class MultipartLightPart extends BaseMultipart implements SlottedPart, No
 
     private void updateState(boolean forceRender) {
         boolean updated = false;
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             boolean oldPower = powered;
             powered = checkPower();
             if (oldPower != powered) {
@@ -180,7 +180,7 @@ public class MultipartLightPart extends BaseMultipart implements SlottedPart, No
     }
 
     private void updateRender() {
-        if (!level().isClientSide)
+        if (!level().isClientSide())
             sendUpdate(this::writeDesc);
         tile().recalcLight(false, true);
         tile().markRender();

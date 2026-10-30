@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,7 +8,6 @@ import mrtjp.projectred.fabrication.editor.ICEditorToolType;
 import mrtjp.projectred.fabrication.editor.tools.IICEditorTool;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -59,7 +59,7 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
 
     public boolean keyPressed(int glfwKeyCode, int glfwFlags) {
         switch (glfwKeyCode) {
-            case GLFW.GLFW_KEY_ESCAPE:
+            case InputConstants.KEY_ESCAPE:
                 // Try to cancel current tool
                 if (selectedTool.toolCanceled()) break;
 
@@ -69,22 +69,22 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
                     break;
                 }
                 return false;
-            case GLFW.GLFW_KEY_W:
+            case InputConstants.KEY_W:
                 upPressed = true;
                 break;
-            case GLFW.GLFW_KEY_A:
+            case InputConstants.KEY_A:
                 leftPressed = true;
                 break;
-            case GLFW.GLFW_KEY_S:
+            case InputConstants.KEY_S:
                 downPressed = true;
                 break;
-            case GLFW.GLFW_KEY_D:
+            case InputConstants.KEY_D:
                 rightPressed = true;
                 break;
-            case GLFW.GLFW_KEY_UP:
+            case InputConstants.KEY_UP:
                 layerUpPressed = true;
                 break;
-            case GLFW.GLFW_KEY_DOWN:
+            case InputConstants.KEY_DOWN:
                 layerDownPressed = true;
                 break;
             default:
@@ -95,22 +95,22 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
 
     public boolean keyReleased(int glfwKeyCode, int glfwFlags) {
         switch (glfwKeyCode) {
-            case GLFW.GLFW_KEY_W:
+            case InputConstants.KEY_W:
                 upPressed = false;
                 break;
-            case GLFW.GLFW_KEY_A:
+            case InputConstants.KEY_A:
                 leftPressed = false;
                 break;
-            case GLFW.GLFW_KEY_S:
+            case InputConstants.KEY_S:
                 downPressed = false;
                 break;
-            case GLFW.GLFW_KEY_D:
+            case InputConstants.KEY_D:
                 rightPressed = false;
                 break;
-            case GLFW.GLFW_KEY_UP:
+            case InputConstants.KEY_UP:
                 layerUpPressed = false;
                 break;
-            case GLFW.GLFW_KEY_DOWN:
+            case InputConstants.KEY_DOWN:
                 layerDownPressed = false;
                 break;
             default:
@@ -143,11 +143,11 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
     @Override
     public void mouseButtonPressed(ICRenderNode renderNode, Vector3 mousePosition, int glfwMouseButton) {
         switch (glfwMouseButton) {
-            case GLFW.GLFW_MOUSE_BUTTON_LEFT:
+            case InputConstants.MOUSE_BUTTON_LEFT:
                 leftMouseDown = true;
                 initialLeftMousePosition.set(mousePosition);
                 break;
-            case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
+            case InputConstants.MOUSE_BUTTON_RIGHT:
                 rightMouseDown = true;
                 initialRightMousePosition.set(mousePosition);
                 break;
@@ -161,10 +161,10 @@ public class ICEditorToolManager implements ICRenderNode.IICRenderNodeEventRecei
     @Override
     public void mouseButtonReleased(ICRenderNode renderNode, Vector3 mousePosition, int glfwMouseButton) {
         switch (glfwMouseButton) {
-            case GLFW.GLFW_MOUSE_BUTTON_LEFT:
+            case InputConstants.MOUSE_BUTTON_LEFT:
                 leftMouseDown = false;
                 break;
-            case GLFW.GLFW_MOUSE_BUTTON_RIGHT:
+            case InputConstants.MOUSE_BUTTON_RIGHT:
                 rightMouseDown = false;
                 break;
             default:

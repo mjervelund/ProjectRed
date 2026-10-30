@@ -57,7 +57,7 @@ public class PlacementLib {
 
     public static void dropTowardsPlayer(Level world, BlockPos pos, ItemStack stack, Player player) {
 
-        if (world.isClientSide || !world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+        if (world.isClientSide() || !world.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
             return;
         }
 

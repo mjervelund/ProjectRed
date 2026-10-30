@@ -220,7 +220,7 @@ public class FabricatedGatePart extends BundledGatePart {
 
     @Override
     protected void gateLogicOnTick() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             long simTimeElapsed = level().getGameTime() - simulationTimeStart;
 
             // Push new simulation time register

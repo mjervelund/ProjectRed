@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -13,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 import static mrtjp.projectred.fabrication.editor.tools.IICEditorTool.toNearestPosition;
 
@@ -57,7 +57,7 @@ public class EraseTool extends BaseICEditorTool {
 
     @Override
     public boolean toolStart(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             leftMouseDown = true;
             initialMouseDown.set(mousePosition);
             return true;
@@ -67,7 +67,7 @@ public class EraseTool extends BaseICEditorTool {
 
     @Override
     public boolean toolReleased(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && leftMouseDown) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && leftMouseDown) {
             leftMouseDown = false;
             executeTool(initialMouseDown, mousePosition);
             return true;
@@ -84,7 +84,7 @@ public class EraseTool extends BaseICEditorTool {
 
     @Override
     public boolean toolDragged(Vector3 mousePosition, Vector3 delta, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             return leftMouseDown;
         }
         return false;

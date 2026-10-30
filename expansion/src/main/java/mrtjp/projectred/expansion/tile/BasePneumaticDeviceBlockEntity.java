@@ -59,7 +59,7 @@ public abstract class BasePneumaticDeviceBlockEntity extends BaseDeviceBlockEnti
     protected void onScheduledTick() {
         super.onScheduledTick();
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             exportQueue();
             scheduleTick(itemQueue.isEmpty() ? 4 : 16);
         }

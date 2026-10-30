@@ -4,6 +4,7 @@ import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.item.ItemStack;
 
 public class PneumaticTubePayload {
@@ -91,7 +92,7 @@ public class PneumaticTubePayload {
         tag.putInt("speed", speed);
         tag.putInt("input_dir", inputSide);
         tag.putInt("output_dir", outputSide);
-        tag.put("item_stack", itemStack.save(lookupProvider));
+        tag.put("item_stack", ItemStack.OPTIONAL_CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), itemStack).getOrThrow());
     }
 
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
@@ -99,7 +100,7 @@ public class PneumaticTubePayload {
         speed = tag.getInt("speed");
         inputSide = tag.getInt("input_dir");
         outputSide = tag.getInt("output_dir");
-        itemStack = ItemStack.parseOptional(lookupProvider, tag.getCompound("item_stack"));
+        itemStack = ItemStack.OPTIONAL_CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), tag.getCompoundOrEmpty("item_stack")).result().orElse(ItemStack.EMPTY);
     }
 
     public void writeDesc(MCDataOutput output) {

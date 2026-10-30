@@ -14,7 +14,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -57,8 +57,8 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
         super.loadFromNBT(tag, lookupProvider);
         conductor.load(tag);
         inventory.loadFrom(tag, "inventory", lookupProvider);
-        burnTimeRemaining = tag.getInt("burnTime");
-        powerStored = tag.getInt("stored");
+        burnTimeRemaining = tag.getIntOr("burnTime", 0);
+        powerStored = tag.getIntOr("stored", 0);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!getLevel().isClientSide) {
+    public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!getLevel().isClientSide()) {
             CCLMenuType.openMenu((ServerPlayer) player, new SimpleMenuProvider(
                             (id, inv, p) -> new ElectrotineGeneratorMenu(inv, this, id),
                             getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
 
-        return ItemInteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class ElectrotineGeneratorBlockEntity extends BasePoweredBlockEntity impl
 
     @Override
     public void tick() {
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
 
         conductor.tick();
 

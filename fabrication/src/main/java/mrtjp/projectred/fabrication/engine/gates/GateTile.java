@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.engine.gates;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.render.CCRenderState;
@@ -15,7 +16,6 @@ import mrtjp.projectred.integration.client.GateModelRenderer;
 import mrtjp.projectred.integration.part.IGateRenderData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Optional;
@@ -163,7 +163,7 @@ public abstract class GateTile extends BaseTile implements IConnectableICTile, I
         int i = 1;
         if (canRotate()) {
             zones.add(new HotKeyInteractionZone.Builder()
-                    .keyCode(GLFW.GLFW_KEY_R)
+                    .keyCode(InputConstants.KEY_R)
                     .text(Component.translatable(UL_ROTATE))
                     .bounds(box.copy().add(1 - s * i, 0, 1 - s))
                     .keyAction(this::rotateAndSend)
@@ -173,7 +173,7 @@ public abstract class GateTile extends BaseTile implements IConnectableICTile, I
         }
         if (canReflect()) {
             zones.add(new HotKeyInteractionZone.Builder()
-                    .keyCode(GLFW.GLFW_KEY_F)
+                    .keyCode(InputConstants.KEY_F)
                     .text(Component.translatable(UL_REFLECT))
                     .bounds(box.copy().add(1 - s * i, 0, 1 - s))
                     .keyAction(this::reflectAndSend)

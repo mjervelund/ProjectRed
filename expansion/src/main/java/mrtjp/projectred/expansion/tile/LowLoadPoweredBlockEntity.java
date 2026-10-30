@@ -37,7 +37,7 @@ public abstract class LowLoadPoweredBlockEntity extends BasePoweredBlockEntity i
 
     @Override
     public void tick() {
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
         conductor.tick();
 
         chargeFlow <<= 1;

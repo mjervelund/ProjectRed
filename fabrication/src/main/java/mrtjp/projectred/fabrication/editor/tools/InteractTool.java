@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
@@ -13,7 +14,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -105,12 +105,12 @@ public class InteractTool extends BaseICEditorTool {
 
     @Override
     public boolean toolStart(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             leftMouseDown = true;
             rightMouseDown = false;
             initialMouseDown.set(mousePosition);
             return true;
-        } else if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        } else if (glfwMouseButton == InputConstants.MOUSE_BUTTON_RIGHT) {
             rightMouseDown = true;
             leftMouseDown = false;
             initialMouseDown.set(mousePosition);
@@ -121,8 +121,8 @@ public class InteractTool extends BaseICEditorTool {
 
     @Override
     public boolean toolReleased(Vector3 mousePosition, int glfwMouseButton) {
-        if ((glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && leftMouseDown) ||
-                (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT && rightMouseDown)) {
+        if ((glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && leftMouseDown) ||
+                (glfwMouseButton == InputConstants.MOUSE_BUTTON_RIGHT && rightMouseDown)) {
 
             sendClick(initialMouseDown, mousePosition);
             leftMouseDown = false;
@@ -134,10 +134,10 @@ public class InteractTool extends BaseICEditorTool {
 
     @Override
     public boolean toolDragged(Vector3 mousePosition, Vector3 delta, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             return leftMouseDown;
         }
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_RIGHT) {
             return rightMouseDown;
         }
         return false;

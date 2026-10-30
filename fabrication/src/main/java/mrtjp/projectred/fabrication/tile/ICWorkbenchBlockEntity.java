@@ -18,7 +18,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -92,7 +92,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!getLevel().isClientSide()) {
 
             ItemStack stackInHand = player.getItemInHand(hand);
@@ -120,7 +120,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override
@@ -151,7 +151,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
     }
 
     private void openGuiFromServer(Player player) {
-        if (getLevel().isClientSide || !(player instanceof ServerPlayer)) { throw new RuntimeException("Server only"); }
+        if (getLevel().isClientSide() || !(player instanceof ServerPlayer)) { throw new RuntimeException("Server only"); }
         filterAndGetWatchers().add((ServerPlayer) player);
         sendUpdateToPlayer(KEY_CLIENT_OPENED_SCREEN, editor::writeDesc, (ServerPlayer) player);
     }
@@ -217,7 +217,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
     @Override
     public MCDataOutput getBufferedStream(int streamKey, int frameKey) {
         MCDataOutput out =  editorBufferedStreams.computeIfAbsent(streamKey, k -> {
-            PacketCustom packet = getLevel().isClientSide ?
+            PacketCustom packet = getLevel().isClientSide() ?
                     CoreNetwork.createTileServerPacket(this, (byte) KEY_EDITOR_PACKET, getLevel().registryAccess()) :
                     CoreNetwork.createTileClientPacket(this, (byte) KEY_EDITOR_PACKET, getLevel().registryAccess());
             packet.writeByte(k); // One-time key that identifies the entire stream
@@ -230,7 +230,7 @@ public class ICWorkbenchBlockEntity extends ProjectRedBlockEntity implements IPa
     private void flushEditorStreams() {
         for (PacketCustom packet : editorBufferedStreams.values()) {
             packet.writeByte(255); // Terminator frame byte
-            if (getLevel().isClientSide) {
+            if (getLevel().isClientSide()) {
                 packet.sendToServer();
             } else {
                 for (ServerPlayer player : filterAndGetWatchers()) { packet.sendToPlayer(player); }

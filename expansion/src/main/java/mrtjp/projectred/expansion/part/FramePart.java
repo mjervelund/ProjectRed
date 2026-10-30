@@ -103,23 +103,23 @@ public class FramePart extends BaseMultipart implements NormalOcclusionPart, Ico
     //region Events
     @Override
     public void onAdded() {
-        if (!level().isClientSide) calcAndSendOccludedSidesMask();
+        if (!level().isClientSide()) calcAndSendOccludedSidesMask();
     }
 
     @Override
     public void onNeighborBlockChanged(BlockPos neighbor) {
-        if (!level().isClientSide) calcAndSendOccludedSidesMask();
+        if (!level().isClientSide()) calcAndSendOccludedSidesMask();
     }
 
     @Override
     public void onPartChanged(@Nullable MultiPart part) {
-        if (!level().isClientSide) calcAndSendOccludedSidesMask();
+        if (!level().isClientSide()) calcAndSendOccludedSidesMask();
     }
 
     @Override
     public void onMoved() {
         super.onMoved();
-        if (!level().isClientSide) calcAndSendOccludedSidesMask();
+        if (!level().isClientSide()) calcAndSendOccludedSidesMask();
     }
     //endregion
 

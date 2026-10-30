@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.gui.screen.inventory;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.expansion.inventory.container.AutoCrafterMenu;
 import mrtjp.projectred.expansion.item.RecipePlanComponent;
@@ -14,7 +15,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 
@@ -118,7 +118,7 @@ public class AutoCrafterScreen extends RedUIContainerScreen<AutoCrafterMenu> {
 
     @Override
     public boolean onKeyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) {
-        if (!consumed && glfwKeyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+        if (!consumed && glfwKeyCode == InputConstants.KEY_LSHIFT) {
             isShiftDown = true;
             return true;
         }
@@ -127,7 +127,7 @@ public class AutoCrafterScreen extends RedUIContainerScreen<AutoCrafterMenu> {
 
     @Override
     public boolean onKeyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) {
-        if (glfwKeyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+        if (glfwKeyCode == InputConstants.KEY_LSHIFT) {
             isShiftDown = false;
             return true;
         }

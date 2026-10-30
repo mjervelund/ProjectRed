@@ -1,12 +1,12 @@
 package mrtjp.projectred.redui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import mrtjp.projectred.lib.Point;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 
-import static org.lwjgl.glfw.GLFW.*;
 
 public abstract class TextBoxNode extends AbstractGuiNode {
 
@@ -79,7 +79,7 @@ public abstract class TextBoxNode extends AbstractGuiNode {
     public boolean mouseClicked(Point p, int glfwMouseButton, boolean consumed) {
         if (enabled && !consumed && isFirstHit(p)) {
             setFocused(true);
-            if (glfwMouseButton == GLFW_MOUSE_BUTTON_RIGHT) {
+            if (glfwMouseButton == InputConstants.MOUSE_BUTTON_RIGHT) {
                 currentText = "";
             }
             return true;
@@ -101,13 +101,13 @@ public abstract class TextBoxNode extends AbstractGuiNode {
             changed = appendText(clipboard);
         } else {
             switch (glfwKeyCode) {
-                case GLFW_KEY_BACKSPACE:
+                case InputConstants.KEY_BACKSPACE:
                     changed = backspaceText();
                     break;
-                case GLFW_KEY_ESCAPE:
+                case InputConstants.KEY_ESCAPE:
                     setFocused(false);
                     break;
-                case GLFW_KEY_ENTER:
+                case InputConstants.KEY_RETURN:
                     setFocused(false);
                     onReturnPressed();
                     break;

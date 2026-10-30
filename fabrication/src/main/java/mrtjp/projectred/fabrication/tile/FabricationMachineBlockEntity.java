@@ -51,7 +51,7 @@ public abstract class FabricationMachineBlockEntity extends BasePoweredBlockEnti
 
     @Override
     public void tick() {
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
 
         boolean wasCharged = isCharged;
         boolean wasWorking = isWorking;

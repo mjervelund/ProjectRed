@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Vector3;
@@ -20,7 +21,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -150,22 +150,22 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
             return false;
 
         switch (glfwKeyCode) {
-            case GLFW.GLFW_KEY_W:
+            case InputConstants.KEY_W:
                 upPressed = true;
                 break;
-            case GLFW.GLFW_KEY_A:
+            case InputConstants.KEY_A:
                 leftPressed = true;
                 break;
-            case GLFW.GLFW_KEY_S:
+            case InputConstants.KEY_S:
                 downPressed = true;
                 break;
-            case GLFW.GLFW_KEY_D:
+            case InputConstants.KEY_D:
                 rightPressed = true;
                 break;
-            case GLFW.GLFW_KEY_UP:
+            case InputConstants.KEY_UP:
                 layerUpPressed = true;
                 break;
-            case GLFW.GLFW_KEY_DOWN:
+            case InputConstants.KEY_DOWN:
                 layerDownPressed = true;
                 break;
             default:
@@ -177,22 +177,22 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
     @Override
     public boolean onKeyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) {
         switch (glfwKeyCode) {
-            case GLFW.GLFW_KEY_W:
+            case InputConstants.KEY_W:
                 upPressed = false;
                 break;
-            case GLFW.GLFW_KEY_A:
+            case InputConstants.KEY_A:
                 leftPressed = false;
                 break;
-            case GLFW.GLFW_KEY_S:
+            case InputConstants.KEY_S:
                 downPressed = false;
                 break;
-            case GLFW.GLFW_KEY_D:
+            case InputConstants.KEY_D:
                 rightPressed = false;
                 break;
-            case GLFW.GLFW_KEY_UP:
+            case InputConstants.KEY_UP:
                 layerUpPressed = false;
                 break;
-            case GLFW.GLFW_KEY_DOWN:
+            case InputConstants.KEY_DOWN:
                 layerDownPressed = false;
                 break;
             default:

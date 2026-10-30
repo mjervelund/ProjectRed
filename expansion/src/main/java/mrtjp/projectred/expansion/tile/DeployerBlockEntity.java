@@ -72,8 +72,8 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!getLevel().isClientSide) {
+    public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!getLevel().isClientSide()) {
             CCLMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
@@ -81,7 +81,7 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
                             getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
-        return ItemInteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override
@@ -185,7 +185,7 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
         // Block gets the second use call. It can optionally consume the right-click
         if (!event.getUseBlock().isFalse()) {
             BlockState blockstate = getLevel().getBlockState(usePos);
-            ItemInteractionResult interactionResult = blockstate.useItemOn(player.getItemInHand(InteractionHand.MAIN_HAND), getLevel(), player, InteractionHand.MAIN_HAND, hit);
+            InteractionResult interactionResult = blockstate.useItemOn(player.getItemInHand(InteractionHand.MAIN_HAND), getLevel(), player, InteractionHand.MAIN_HAND, hit);
             if (interactionResult.consumesAction()) {
                 // If the block consumed the action, return the result
                 return interactionResult.result();

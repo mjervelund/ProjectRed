@@ -34,18 +34,18 @@ public class BackpackItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
 
-        if (!context.getLevel().isClientSide) {
+        if (!context.getLevel().isClientSide()) {
             ServerPlayer player = (ServerPlayer) context.getPlayer();
             if (player != null) {
                 openGui(player);
             }
         }
-        return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(context.getLevel().isClientSide());
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
             openGui(serverPlayer);
         }

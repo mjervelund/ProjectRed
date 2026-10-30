@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.math.MathHelper;
@@ -20,7 +21,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -93,7 +93,7 @@ public class GatePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolStart(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             TileCoord start = toNearestPosition(mousePosition);
             if (isValidStart(start)) {
                 leftMouseDown = true;
@@ -106,7 +106,7 @@ public class GatePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolReleased(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && leftMouseDown) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && leftMouseDown) {
             leftMouseDown = false;
             TileCoord posA = toNearestPosition(initialMouseDown);
             sendPlaceGatePacket(posA, getPlacementRotation(initialMouseDown, mousePosition));
@@ -117,7 +117,7 @@ public class GatePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolDragged(Vector3 mousePosition, Vector3 delta, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             return leftMouseDown;
         }
         return false;

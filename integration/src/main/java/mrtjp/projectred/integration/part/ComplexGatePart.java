@@ -20,7 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneWireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -240,7 +240,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (held.isEmpty() || !(held.getItem() instanceof IScrewdriver)) {
-                if (!level().isClientSide) toggle();
+                if (!level().isClientSide()) toggle();
                 return true;
             }
             return false;
@@ -396,7 +396,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
             if (pointer_start < 0) {
                 pointer_start = level().getGameTime();
                 tile().setChanged();
-                if (!level().isClientSide) sendPointerUpdate();
+                if (!level().isClientSide()) sendPointerUpdate();
             }
         }
 
@@ -404,7 +404,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
             if (pointer_start >= 0) {
                 pointer_start = -1;
                 tile().setChanged();
-                if (!level().isClientSide) sendPointerUpdate();
+                if (!level().isClientSide()) sendPointerUpdate();
             }
         }
 
@@ -431,7 +431,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (held.isEmpty() || !(held.getItem() instanceof IScrewdriver)) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     ITimerGuiLogic.openFromServer(player, this);
                 }
                 return true;
@@ -486,7 +486,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected void pointerTick() {
             resetPointer();
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 scheduleTick(2);
                 setState(0xB0 | state() & 0xF);
                 onOutputChange(0xB);
@@ -598,7 +598,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         @Override
         protected void gateLogicOnTick() {
-            if (level().isClientSide) return;
+            if (level().isClientSide()) return;
 
             int oldOut = state() >> 4;
             int out = 1 << level().getDayTime() % (pointer_max * 4L) / pointer_max;
@@ -619,7 +619,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (held.isEmpty() || !(held.getItem() instanceof IScrewdriver)) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     ITimerGuiLogic.openFromServer(player, this);
                 }
                 return true;
@@ -852,7 +852,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (held.isEmpty() || !(held.getItem() instanceof IScrewdriver)) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     ICounterGuiLogic.openFromServer(player, this);
                 }
                 return true;
@@ -915,7 +915,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         protected void pointerTick() {
             resetPointer();
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 setState2(0);
                 sendState2Update();
                 setState(0x10 | state() & 0xF);
@@ -1098,7 +1098,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
             if (i >= 15) return i;
 
             if (state.is(Blocks.REDSTONE_WIRE)) {
-                i = Math.max(i, state.getValue(RedStoneWireBlock.POWER));
+                i = Math.max(i, state.getValue(RedstoneWireBlock.POWER));
             }
 
             return i;

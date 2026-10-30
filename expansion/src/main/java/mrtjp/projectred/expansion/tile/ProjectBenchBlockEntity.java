@@ -112,7 +112,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
 
     @Override
     public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             CCLMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
@@ -121,7 +121,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ProjectBenchBlockEntity extends ProjectRedBlockEntity implements IP
     public void tick() {
         updateRecipeIfNeeded();
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             transferExcessToStorage();
         }
     }

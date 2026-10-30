@@ -55,7 +55,7 @@ public class ElectrotineOreBlock extends DropExperienceBlock {
     }
 
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTraceResult) {
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             spawnParticles(world, pos);
         } else {
             interact(state, world, pos);

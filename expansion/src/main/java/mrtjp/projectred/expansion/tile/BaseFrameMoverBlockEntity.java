@@ -77,7 +77,7 @@ public abstract class BaseFrameMoverBlockEntity extends LowLoadPoweredBlockEntit
         super.tick();
 
         assert level != null;
-        if (level.isClientSide) return;
+        if (level.isClientSide()) return;
 
         isCharged = canConductorWork();
         isWorking = isMoving();
@@ -100,7 +100,7 @@ public abstract class BaseFrameMoverBlockEntity extends LowLoadPoweredBlockEntit
         super.onNeighborBlockChanged(neighborPos);
 
         assert level != null;
-        if (level.isClientSide) return;
+        if (level.isClientSide()) return;
 
         boolean oldPowered = powered;
         for (int s = 0; s < 6; s++) {
@@ -115,7 +115,7 @@ public abstract class BaseFrameMoverBlockEntity extends LowLoadPoweredBlockEntit
 
     @Override
     public void onOrientationChange() {
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             updateExternals();
             notifyExternals(0xF);
         }

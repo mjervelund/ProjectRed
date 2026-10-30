@@ -118,7 +118,7 @@ public class AutoCrafterBlockEntity extends BaseMachineBlockEntity implements Cr
     @Override
     public void tick() {
         super.tick();
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
 
         // Cycle plans if we are waiting too long for ingredients
         if (idleTicksOnPlan > getMaxPlanIdleTicks()) {

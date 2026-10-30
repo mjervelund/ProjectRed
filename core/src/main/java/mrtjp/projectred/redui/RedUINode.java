@@ -6,7 +6,6 @@ import mrtjp.projectred.lib.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -644,7 +643,7 @@ public interface RedUINode {
      * @param glfwMouseButton The mouse button code
      * @param consumed        True if another higher-ordered node consumed this event
      * @return True if this event was consumed
-     * @see GLFW
+     * @see com.mojang.blaze3d.platform.InputConstants
      */
     default boolean mouseClicked(Point p, int glfwMouseButton, boolean consumed) { return false; }
 
@@ -658,7 +657,7 @@ public interface RedUINode {
      * @param timeHeld        Milliseconds since the last mouseClicked event
      * @param consumed        True if another higher-ordered node consumed this event
      * @return True if this event was consumed
-     * @see GLFW
+     * @see com.mojang.blaze3d.platform.InputConstants
      */
     default boolean mouseReleased(Point p, int glfwMouseButton, long timeHeld, boolean consumed) { return false; }
 
@@ -696,7 +695,7 @@ public interface RedUINode {
      * @param glfwFlags    GLFW modifier flags TODO: Change to glfwModifierMask
      * @param consumed     True if another higher-ordered node consumed this event
      * @return True if this event was consumed
-     * @see GLFW
+     * @see com.mojang.blaze3d.platform.InputConstants
      */
     default boolean onKeyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) { return false; }
 
@@ -708,7 +707,7 @@ public interface RedUINode {
      * @param glfwFlags    GLFW modifier flags
      * @param consumed     True if another higher-ordered node consumed this event
      * @return True if this event was consumed
-     * @see GLFW
+     * @see com.mojang.blaze3d.platform.InputConstants
      */
     default boolean onKeyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) { return false; }
 
@@ -720,7 +719,7 @@ public interface RedUINode {
      * @param glfwFlags GLFW modifier flags
      * @param consumed  True if another higher-ordered node consumed this event
      * @return True if this event was consumed
-     * @see GLFW
+     * @see com.mojang.blaze3d.platform.InputConstants
      */
     default boolean onCharTyped(char ch, int glfwFlags, boolean consumed) { return false; }
 

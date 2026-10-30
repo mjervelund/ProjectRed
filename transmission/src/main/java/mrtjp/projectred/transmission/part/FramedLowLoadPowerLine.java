@@ -27,7 +27,7 @@ public class FramedLowLoadPowerLine extends FramedPowerWire implements ILowLoadP
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             conductor.tick();
         }
     }

@@ -438,7 +438,7 @@ public abstract class SimpleGatePart extends RedstoneGatePart {
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             // Allow configuring without screwdriver
             if (held.isEmpty() || !(held.getItem() instanceof IScrewdriver)) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     configure();
                 }
                 return true;
@@ -562,7 +562,7 @@ public abstract class SimpleGatePart extends RedstoneGatePart {
 
         @Override
         protected void gateLogicOnTick() {
-            if (level().isClientSide) return;
+            if (level().isClientSide()) return;
 
             int newOutput = shape() == 1 ? calcSkyLight() : shape() == 2 ? calcBlockLight() : Math.max(calcSkyLight(), calcBlockLight());
 
@@ -611,7 +611,7 @@ public abstract class SimpleGatePart extends RedstoneGatePart {
 
         @Override
         protected void gateLogicOnTick() {
-            if (level().isClientSide) return;
+            if (level().isClientSide()) return;
 
             int newOutput = level().isRaining() && level().canSeeSky(pos()) ? 4 : 0;
             int oldOutput = state() >> 4;

@@ -43,12 +43,12 @@ public interface IConnectableBlockEntity extends IBlockEventBlockEntity, IConnec
 
     default void notifyStraight(int s) {
         BlockPos pos = posOfStraight(s);
-        getBlockLevel().neighborChanged(pos, getBlockLevel().getBlockState(pos).getBlock(), posOfInternal());
+        getBlockLevel().neighborChanged(pos, getBlockLevel().getBlockState(pos).getBlock(), null);
     }
 
     default void notifyCorner(int s, int edgeRot) {
         BlockPos pos = posOfCorner(s, edgeRot);
-        getBlockLevel().neighborChanged(pos, getBlockLevel().getBlockState(pos).getBlock(), posOfInternal());
+        getBlockLevel().neighborChanged(pos, getBlockLevel().getBlockState(pos).getBlock(), null);
     }
 
     default void notifyConnectedExternals() {
@@ -69,7 +69,7 @@ public interface IConnectableBlockEntity extends IBlockEventBlockEntity, IConnec
 
                 BlockPos pos = posOfStraight(s);
                 BlockState state = getBlockLevel().getBlockState(pos);
-                getBlockLevel().neighborChanged(pos, state.getBlock(), posOfInternal());
+                getBlockLevel().neighborChanged(pos, state.getBlock(), null);
 
                 for (int s2 = 0; s2 < 6; s2++) {
 
@@ -77,7 +77,7 @@ public interface IConnectableBlockEntity extends IBlockEventBlockEntity, IConnec
                     BlockState state2 = getBlockLevel().getBlockState(pos2);
 
                     if (s2 != (s ^ 1) && (smask & 1 << s2) == 0) {
-                        getBlockLevel().neighborChanged(pos2, state2.getBlock(), pos);
+                        getBlockLevel().neighborChanged(pos2, state2.getBlock(), null);
                     }
                 }
 

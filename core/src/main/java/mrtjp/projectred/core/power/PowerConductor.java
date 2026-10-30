@@ -31,8 +31,8 @@ public class PowerConductor {
     }
 
     public void load(CompoundTag tag) {
-        vCap = tag.getDouble("vCap");
-        iCap = tag.getDouble("iCap");
+        vCap = tag.getDoubleOr("vCap", 0.0);
+        iCap = tag.getDoubleOr("iCap", 0.0);
     }
     //endregion
 

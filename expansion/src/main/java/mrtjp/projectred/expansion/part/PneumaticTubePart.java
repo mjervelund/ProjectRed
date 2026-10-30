@@ -189,7 +189,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             for (var i : transport.getPayloads()) {
                 TileMultipart.dropItem(i.getItemStack(), level(), Vector3.fromTileCenter(tile()));
             }
@@ -312,7 +312,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     //region IGraphNodeContainer overrides
     @Override
     public void onNodeChanged(boolean linksChanged, boolean stateChange) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (linksChanged) {
                 linkCache.setLinks(node.getLinks());
                 linkCache.setActive(node.isActive());
@@ -360,7 +360,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
     @Override
     public void setOutputDirection(PneumaticTubePayload payload) {
 
-        if (level().isClientSide) return; // Clients will get dir from packet
+        if (level().isClientSide()) return; // Clients will get dir from packet
 
         //TODO This strategy of using the connMask breaks down when pipe is connected to redstone blocks.
         //     We should have a separate portion of the mask just for route-able connections. Otherwise,
@@ -430,14 +430,14 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
 
     @Override
     public void onPayloadChanged(int id, PneumaticTubePayload payload) {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             sendPayloadUpdate(id, payload);
         }
     }
 
     @Override
     public boolean onPayloadReachedOutput(int id, PneumaticTubePayload payload) {
-        if (level().isClientSide) return false; //Client will keep item until handoff packet
+        if (level().isClientSide()) return false; //Client will keep item until handoff packet
 
         CenterLookup lookup = CenterLookup.lookupStraightCenter(level(), pos(), payload.getOutputSide());
 

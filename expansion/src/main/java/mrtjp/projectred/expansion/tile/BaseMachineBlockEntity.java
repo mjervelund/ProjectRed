@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +58,7 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
     public void tick() {
         super.tick();
 
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
 
         isCharged = canConductorWork();
         if (!isWorking) { // Not currently working
@@ -98,23 +98,23 @@ public abstract class BaseMachineBlockEntity extends LowLoadPoweredBlockEntity {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack held, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult useItemOn(ItemStack held, Player player, InteractionHand hand, BlockHitResult hit) {
         // Try to rotate block
         if (held.getItem() instanceof IScrewdriver screwdriver) {
             if (screwdriver.canUse(player, hand)) {
-                if (!level.isClientSide) {
+                if (!level.isClientSide()) {
                     rotateBlock();
                     screwdriver.damageScrewdriver(player, hand);
                 }
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                return InteractionResult.sidedSuccess(level.isClientSide());
             }
         }
 
         // Otherwise, open GUI
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             openGui(player);
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     private void rotateBlock() {

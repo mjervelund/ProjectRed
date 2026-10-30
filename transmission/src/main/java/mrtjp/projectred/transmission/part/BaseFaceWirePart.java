@@ -136,7 +136,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     @Override
     public void onPartChanged(@Nullable MultiPart part) {
         super.onPartChanged(part);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutward();
         }
     }
@@ -144,7 +144,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     @Override
     public void onNeighborBlockChanged(BlockPos from) {
         super.onNeighborBlockChanged(from);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (dropIfCantStay()) return;
             updateOutside();
         }
@@ -153,7 +153,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     @Override
     public void onAdded() {
         super.onAdded();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateInsideAndOutside();
         }
     }
@@ -161,7 +161,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             notifyAllExternals();
         }
     }

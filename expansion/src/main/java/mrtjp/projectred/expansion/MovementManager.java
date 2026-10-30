@@ -105,12 +105,12 @@ public class MovementManager {
     }
 
     private void addChunkWatcher(ChunkPos pos, ServerPlayer player) {
-//        LOGGER.debug("Player {} started watching chunk {},{} (isClient: {})", player.getName().getString(), pos.x, pos.z, player.level.isClientSide);
+//        LOGGER.debug("Player {} started watching chunk {},{} (isClient: {})", player.getName().getString(), pos.x, pos.z, player.level.isClientSide());
         newWatchers.computeIfAbsent(player, p -> new HashSet<>()).add(pos);
     }
 
     private void removeChunkWatcher(ChunkPos pos, ServerPlayer player) {
-//        LOGGER.debug("Player {} stopped watching chunk {},{} (isClient: {})", player.getName().getString(), pos.x, pos.z, player.level.isClientSide);
+//        LOGGER.debug("Player {} stopped watching chunk {},{} (isClient: {})", player.getName().getString(), pos.x, pos.z, player.level.isClientSide());
         Set<ChunkPos> newWatchersSet = newWatchers.get(player);
         if (newWatchersSet != null) newWatchersSet.remove(pos);
 
@@ -129,7 +129,7 @@ public class MovementManager {
     }
 
     private void cancelMovementsInChunk(Level level, ChunkPos pos) {
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             return;
         }
         List<Integer> removed = new LinkedList<>();
@@ -156,7 +156,7 @@ public class MovementManager {
             e.getValue().tickProgress(level);
         }
 
-        if (level.isClientSide) return;
+        if (level.isClientSide()) return;
 
         // Send descriptions to new watchers
         for (var e : newWatchers.entrySet()) {

@@ -15,7 +15,7 @@ public class RedAlloyWirePart extends RedwirePart {
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             tile().notifyNeighborChange(getSide());
         }
     }

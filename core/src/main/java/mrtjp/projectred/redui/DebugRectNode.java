@@ -1,5 +1,6 @@
 package mrtjp.projectred.redui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.lib.GuiLib;
 import mrtjp.projectred.lib.Point;
@@ -7,7 +8,6 @@ import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Collections;
 
@@ -51,7 +51,7 @@ public class DebugRectNode extends AbstractGuiNode {
 
     @Override
     public boolean mouseClicked(Point p, int glfwMouseButton, boolean consumed) {
-        if (!consumed&& glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && isFirstHit(p) ) {
+        if (!consumed&& glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && isFirstHit(p) ) {
             clickDown = true;
             return true;
         }
@@ -60,7 +60,7 @@ public class DebugRectNode extends AbstractGuiNode {
 
     @Override
     public boolean mouseReleased(Point p, int glfwMouseButton, long timeHeld, boolean consumed) {
-        if (clickDown && glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (clickDown && glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             clickDown = false;
             return true;
         }

@@ -8,7 +8,7 @@ import mrtjp.projectred.core.part.IPropagationPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneWireBlock;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -54,7 +54,7 @@ public class RedstonePropagator {
         return canRedwiresProvidePower;
     }
     public static void setDustProvidesPower(boolean dustProvidesPower) {
-        ((RedStoneWireBlock) Blocks.REDSTONE_WIRE).shouldSignal = dustProvidesPower;
+        ((RedstoneWireBlock) Blocks.REDSTONE_WIRE).shouldSignal = dustProvidesPower;
     }
     public static void setRedwiresProvidePower(boolean canRedwiresProvidePower) {
         RedstonePropagator.canRedwiresProvidePower = canRedwiresProvidePower;

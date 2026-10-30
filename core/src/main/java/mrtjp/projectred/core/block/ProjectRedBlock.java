@@ -4,7 +4,6 @@ import mrtjp.projectred.core.tile.IBlockEventBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -64,9 +64,10 @@ public abstract class ProjectRedBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos neighbor, boolean isMoving) {
+    protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean isMoving) {
         BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof IBlockEventBlockEntity) ((IBlockEventBlockEntity) tile).onNeighborBlockChanged(neighbor);
+        // 26.x no longer passes the neighbor's position. No handler uses it (same as CB Multipart).
+        if (tile instanceof IBlockEventBlockEntity) ((IBlockEventBlockEntity) tile).onNeighborBlockChanged(BlockPos.ZERO);
     }
 
     @Override
@@ -76,10 +77,10 @@ public abstract class ProjectRedBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity tile = world.getBlockEntity(pos);
         if (tile instanceof IBlockEventBlockEntity) return ((IBlockEventBlockEntity) tile).useItemOn(stack, player, hand, hit);
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     @Override
@@ -87,19 +88,6 @@ public abstract class ProjectRedBlock extends Block implements EntityBlock {
         BlockEntity tile = level.getBlockEntity(pos);
         if (tile instanceof IBlockEventBlockEntity) return ((IBlockEventBlockEntity) tile).useWithoutItem(player, hit);
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public void onRemove(BlockState oldState, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-        BlockEntity tile = world.getBlockEntity(pos);
-        if (tile instanceof IBlockEventBlockEntity) {
-            if (oldState.is(newState.getBlock())) {
-                ((IBlockEventBlockEntity) tile).onBlockStateReplaced(newState);
-            } else {
-                ((IBlockEventBlockEntity) tile).onBlockRemoved();
-            }
-        }
-        super.onRemove(oldState, world, pos, newState, isMoving); // Removes tile if no longer valid for new state
     }
 
     @Override

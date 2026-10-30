@@ -28,7 +28,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -233,7 +233,7 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     @Override
     public void onPartChanged(@Nullable MultiPart part) {
         super.onPartChanged(part);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutward();
             onChange();
         }
@@ -242,7 +242,7 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     @Override
     public void onNeighborBlockChanged(BlockPos from) {
         super.onNeighborBlockChanged(from);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             if (dropIfCantStay()) {
                 return;
             }
@@ -254,7 +254,7 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     @Override
     public void onAdded() {
         super.onAdded();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             gateLogicSetup();
             updateInsideAndOutside();
             onChange();
@@ -264,7 +264,7 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             notifyAllExternals();
         }
     }
@@ -326,7 +326,7 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             processScheduled();
         }
         gateLogicOnTick();
@@ -422,12 +422,12 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
 
     //region Activation handling
     @Override
-    public ItemInteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
+    public InteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
         if (gateLogicActivate(player, held, hit))
-            return ItemInteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
 
         if (!held.isEmpty() && held.getItem() instanceof IScrewdriver screwdriver) {
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 if (player.isCrouching()) {
                     configure();
                 } else {
@@ -435,10 +435,10 @@ public abstract class GatePart extends BaseMultipart implements IConnectableFace
                 }
                 screwdriver.damageScrewdriver(player, hand);
             }
-            return ItemInteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     protected void configure() {

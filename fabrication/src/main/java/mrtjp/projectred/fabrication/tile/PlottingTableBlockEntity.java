@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -67,14 +67,14 @@ public class PlottingTableBlockEntity extends FabricationMachineBlockEntity {
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!getLevel().isClientSide) {
+    public InteractionResult useItemOn(ItemStack itemStack, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!getLevel().isClientSide()) {
             CCLMenuType.openMenu((ServerPlayer) player,
                     new SimpleMenuProvider((id, inv, p) -> new PlottingTableMenu(inv, this, id), getBlockState().getBlock().getName()),
                     p -> p.writePos(getBlockPos()));
         }
 
-        return ItemInteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override

@@ -870,7 +870,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (!held.isEmpty() && held.getItem() instanceof IScrewdriver) return false;
             if (hit.subHit > -1) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     pressMask ^= (1 << hit.subHit);
                     gateLogicOnChange();
                 }
@@ -985,7 +985,7 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
             if (held.isEmpty() || held.getItem() instanceof IScrewdriver) return false;
             EnumColour c = EnumColour.fromDyeStack(held);
             if (c != null && c.ordinal() != getState() && c != EnumColour.BLACK) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     setState(c.ordinal());
                     sendStateUpdate();
                 }

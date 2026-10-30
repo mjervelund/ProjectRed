@@ -27,7 +27,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -231,7 +231,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     @Override
     public void onPartChanged(@Nullable MultiPart part) {
         super.onPartChanged(part);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutward();
         }
     }
@@ -239,7 +239,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     @Override
     public void onNeighborBlockChanged(BlockPos from) {
         super.onNeighborBlockChanged(from);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutside();
         }
     }
@@ -247,7 +247,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     @Override
     public void onAdded() {
         super.onAdded();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateInsideAndOutside();
         }
     }
@@ -255,7 +255,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             notifyAllExternals();
         }
     }
@@ -314,7 +314,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
+    public InteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
         return super.useItemOn(held, player, hit, hand);
 
         //TODO Uncomment to deal with material application
@@ -325,7 +325,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
 //
 //        // Couch + right click with empty hand removes material
 //        if (held.isEmpty() && player.isCrouching() && material != null) {
-//            if (!level().isClientSide) {
+//            if (!level().isClientSide()) {
 //                if (material != null && !player.isCreative()) {
 //                    PlacementLib.dropTowardsPlayer(level(), pos(), ItemMicroBlock.create(0, 1, material), player);
 //                }
@@ -339,7 +339,7 @@ public abstract class BaseTubePart extends BaseMultipart implements IConnectable
 //        if (!held.isEmpty() && held.getItem() == CBMicroblockModContent.MICRO_BLOCK_ITEM.get() && ItemMicroBlock.getFactory(held) == CBMicroblockModContent.FACE_MICROBLOCK_PART.get() && ItemMicroBlock.getSize(held) == 1) {
 //            MicroMaterial newMat = ItemMicroBlock.getMaterialFromStack(held);
 //            if (newMat != null && (material == null || newMat != material)) {
-//                if (!level().isClientSide) {
+//                if (!level().isClientSide()) {
 //                    // Exclude incompatible materials
 //                    if (newMat.isTransparent()) {
 //                        return InteractionResult.PASS;

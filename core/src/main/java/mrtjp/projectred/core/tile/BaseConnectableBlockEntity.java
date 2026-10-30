@@ -40,7 +40,7 @@ public abstract class BaseConnectableBlockEntity extends ProjectRedBlockEntity i
 
     @Override
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        connMap = tag.getLong("connMap");
+        connMap = tag.getLongOr("connMap", 0L);
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class BaseConnectableBlockEntity extends ProjectRedBlockEntity i
     @Override
     public void onNeighborBlockChanged(BlockPos neighborPos) {
         super.onNeighborBlockChanged(neighborPos);
-        if (!getBlockLevel().isClientSide) {
+        if (!getBlockLevel().isClientSide()) {
             updateExternals();
         }
     }
@@ -91,7 +91,7 @@ public abstract class BaseConnectableBlockEntity extends ProjectRedBlockEntity i
     @Override
     public void onBlockPlaced(@Nullable LivingEntity player, ItemStack item) {
         super.onBlockPlaced(player, item);
-        if (!getBlockLevel().isClientSide) {
+        if (!getBlockLevel().isClientSide()) {
             updateExternals();
         }
     }
@@ -99,7 +99,7 @@ public abstract class BaseConnectableBlockEntity extends ProjectRedBlockEntity i
     @Override
     public void onBlockRemoved() {
         super.onBlockRemoved();
-        if (!getBlockLevel().isClientSide) {
+        if (!getBlockLevel().isClientSide()) {
             notifyConnectedExternals();
         }
     }

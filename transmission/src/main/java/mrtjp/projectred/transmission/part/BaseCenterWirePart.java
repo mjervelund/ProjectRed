@@ -27,7 +27,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -181,7 +181,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     @Override
     public void onPartChanged(@Nullable MultiPart part) {
         super.onPartChanged(part);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutward();
         }
     }
@@ -189,7 +189,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     @Override
     public void onNeighborBlockChanged(BlockPos from) {
         super.onNeighborBlockChanged(from);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateOutside();
         }
     }
@@ -197,7 +197,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     @Override
     public void onAdded() {
         super.onAdded();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             updateInsideAndOutside();
         }
     }
@@ -205,7 +205,7 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     @Override
     public void onRemoved() {
         super.onRemoved();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             notifyAllExternals();
         }
     }
@@ -265,20 +265,20 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
     }
 
     @Override
-    public ItemInteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
+    public InteractionResult useItemOn(ItemStack held, Player player, PartRayTraceResult hit, InteractionHand hand) {
         var result = super.useItemOn(held, player, hit, hand);
         if (result.consumesAction()) return result;
 
         // Couch + right click with empty hand removes material
         if (held.isEmpty() && player.isCrouching() && material != null) {
-            if (!level().isClientSide) {
+            if (!level().isClientSide()) {
                 if (!player.isCreative()) {
                     PlacementLib.dropTowardsPlayer(level(), pos(), ItemMicroBlock.create(0, 1, material), player);
                 }
                 material = null;
                 sendMaterialUpdate();
             }
-            return ItemInteractionResult.sidedSuccess(level().isClientSide);
+            return InteractionResult.sidedSuccess(level().isClientSide());
         }
 
         // Retrieve micro material from held item
@@ -288,10 +288,10 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
         if (matComp != null && matComp.factory() == CBMicroblockModContent.FACE_MICROBLOCK_PART.get() && matComp.size() == 1) {
             MicroMaterial newMat = matComp.material();
             if (material == null || newMat != material) {
-                if (!level().isClientSide) {
+                if (!level().isClientSide()) {
                     // Exclude incompatible materials
                     if (newMat.isTransparent()) {
-                        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                        return InteractionResult.TRY_WITH_EMPTY_HAND;
                     }
 
                     // Drop old material if player is not in creative
@@ -314,11 +314,11 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
                         held.shrink(1);
                     }
                 }
-                return ItemInteractionResult.sidedSuccess(level().isClientSide);
+                return InteractionResult.sidedSuccess(level().isClientSide());
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     //region IConnectableCenterPart overrides

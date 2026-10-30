@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.gui.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.fabrication.ProjectRedFabrication;
 import mrtjp.projectred.fabrication.editor.ICWorkbenchEditor;
@@ -19,7 +20,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -124,7 +124,7 @@ public class ICWorkbenchScreen extends RedUIScreen {
         if (super.keyPressed(glfwKeyCode, glfwScanCode, glfwFlags)) return true;
 
         // Since we didn't consume ESC, we'll close the screen if it was pressed
-        if (glfwKeyCode == GLFW.GLFW_KEY_ESCAPE) {
+        if (glfwKeyCode == InputConstants.KEY_ESCAPE) {
             onClose();
             return true;
         }

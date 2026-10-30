@@ -75,7 +75,7 @@ public class BatteryBoxBlockEntity extends LowLoadPoweredBlockEntity {
 
     @Override
     public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             CCLMenuType.openMenu(
                     (ServerPlayer) player,
                     new SimpleMenuProvider(
@@ -84,7 +84,7 @@ public class BatteryBoxBlockEntity extends LowLoadPoweredBlockEntity {
                     p -> p.writePos(getBlockPos()));
         }
 
-        return InteractionResult.sidedSuccess(getLevel().isClientSide);
+        return InteractionResult.sidedSuccess(getLevel().isClientSide());
     }
 
     @Override
@@ -115,7 +115,7 @@ public class BatteryBoxBlockEntity extends LowLoadPoweredBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getLevel().isClientSide) return;
+        if (getLevel().isClientSide()) return;
 
         boolean changed = false;
 

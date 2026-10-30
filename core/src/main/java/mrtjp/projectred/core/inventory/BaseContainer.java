@@ -4,6 +4,7 @@ import mrtjp.projectred.core.ProjectRedCore;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -33,7 +34,7 @@ public class BaseContainer extends SimpleContainer {
             if (!stack.isEmpty()) {
                 CompoundTag itemTag = new CompoundTag();
                 itemTag.putInt(TAG_SLOT, i);
-                list.add(stack.save(lookupProvider, itemTag));
+                list.add(ItemStack.CODEC.encode(stack, lookupProvider.createSerializationContext(NbtOps.INSTANCE), itemTag).getOrThrow());
             }
         }
         tag.put(TAG_ITEMS, list);
@@ -43,13 +44,13 @@ public class BaseContainer extends SimpleContainer {
 
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         clearContent();
-        ListTag list = tag.getList(TAG_ITEMS, 10);
+        ListTag list = tag.getListOrEmpty(TAG_ITEMS);
         for (int i = 0; i < list.size(); i++) {
-            CompoundTag itemTag = list.getCompound(i);
-            int slot = itemTag.getInt(TAG_SLOT);
+            CompoundTag itemTag = list.getCompoundOrEmpty(i);
+            int slot = itemTag.getIntOr(TAG_SLOT, 0);
             if (slot >= 0 && slot < getContainerSize()) {
-                ItemStack.parse(lookupProvider, itemTag)
-                        .ifPresent(stack -> setItem(slot, stack));
+                ItemStack.CODEC.parse(lookupProvider.createSerializationContext(NbtOps.INSTANCE), itemTag)
+                        .ifSuccess(stack -> setItem(slot, stack));
             }
         }
     }
@@ -60,31 +61,18 @@ public class BaseContainer extends SimpleContainer {
 
     public void loadFrom(CompoundTag parent, String key, HolderLookup.Provider lookupProvider) {
         // Check if list-format tags are present
-        ListTag itemList = parent.getList(key, 10);
+        ListTag itemList = parent.getListOrEmpty(key);
         if (!itemList.isEmpty()) {
             fromTag(itemList, lookupProvider);
             ProjectRedCore.LOGGER.warn("Inventory {} loaded from non-ordered data. Its contents may have shuffled", this);
         } else {
             // Otherwise, use new compound format
-            load(parent.getCompound(key), lookupProvider);
+            load(parent.getCompoundOrEmpty(key), lookupProvider);
         }
     }
 
     public static int getItemCount(CompoundTag tag) {
-        return tag.getList(TAG_ITEMS, 10).size();
+        return tag.getListOrEmpty(TAG_ITEMS).size();
     }
 
-    //region Deprecate vanilla save/load as it does not load back to correct slots
-    @Override
-    @Deprecated // Use saveTo or save
-    public ListTag createTag(HolderLookup.Provider lookupProvider) {
-        return super.createTag(lookupProvider);
-    }
-
-    @Override
-    @Deprecated // Use loadFrom or load
-    public void fromTag(ListTag pContainerNbt, HolderLookup.Provider lookupProvider) {
-        super.fromTag(pContainerNbt, lookupProvider);
-    }
-    //endregion
 }

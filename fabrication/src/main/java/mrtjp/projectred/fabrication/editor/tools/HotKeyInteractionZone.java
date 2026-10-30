@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
@@ -17,7 +18,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Objects;
@@ -108,7 +108,7 @@ public class HotKeyInteractionZone implements InteractionZone {
     public static class Builder {
 
         private Cuboid6 bounds = Cuboid6.full;
-        private int keyCode = GLFW.GLFW_KEY_UNKNOWN;
+        private int keyCode = InputConstants.UNKNOWN.getValue();
         private Runnable keyAction = () -> {};
         private int backgroundColor = EnumColour.GRAY.rgba(64);
         private Component text = Component.nullToEmpty("//TODO label");

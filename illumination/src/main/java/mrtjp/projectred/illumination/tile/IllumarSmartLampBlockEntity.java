@@ -151,7 +151,7 @@ public class IllumarSmartLampBlockEntity extends BaseConnectableBlockEntity impl
     public void onNeighborBlockChanged(BlockPos neighborPos) {
         super.onNeighborBlockChanged(neighborPos);
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             checkSignal();
         }
     }
@@ -160,14 +160,14 @@ public class IllumarSmartLampBlockEntity extends BaseConnectableBlockEntity impl
     public void onBlockPlaced(@Nullable LivingEntity player, ItemStack item) {
         super.onBlockPlaced(player, item);
 
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             checkSignal();
         }
     }
 
     @Override
     public void onOrientationChange() {
-        if (!getLevel().isClientSide) {
+        if (!getLevel().isClientSide()) {
             updateExternals();
             notifyExternals(0xF);
             checkSignal();

@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.editor.tools;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.render.CCRenderState;
@@ -18,7 +19,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -102,7 +102,7 @@ public class WirePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolStart(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT) {
             leftMouseDown = true;
             initialMouseDown.set(mousePosition);
             addToSelection(mousePosition);
@@ -113,7 +113,7 @@ public class WirePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolReleased(Vector3 mousePosition, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && leftMouseDown) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && leftMouseDown) {
             addToSelection(mousePosition);
             sendPlaceWires();
 
@@ -128,7 +128,7 @@ public class WirePlacerTool extends BaseICEditorTool {
 
     @Override
     public boolean toolDragged(Vector3 mousePosition, Vector3 delta, int glfwMouseButton) {
-        if (glfwMouseButton == GLFW.GLFW_MOUSE_BUTTON_LEFT && leftMouseDown) {
+        if (glfwMouseButton == InputConstants.MOUSE_BUTTON_LEFT && leftMouseDown) {
             addToSelection(mousePosition);
             return true;
         }

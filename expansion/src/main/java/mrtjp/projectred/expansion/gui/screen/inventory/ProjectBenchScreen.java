@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.gui.screen.inventory;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import codechicken.lib.colour.EnumColour;
 import com.mojang.blaze3d.systems.RenderSystem;
 import mrtjp.projectred.expansion.ProjectRedExpansion;
@@ -17,7 +18,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
 
@@ -128,7 +128,7 @@ public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
 
     @Override
     public boolean onKeyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) {
-        if (!consumed && glfwKeyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+        if (!consumed && glfwKeyCode == InputConstants.KEY_LSHIFT) {
             isShiftDown = true;
             return true;
         }
@@ -137,7 +137,7 @@ public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
 
     @Override
     public boolean onKeyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags, boolean consumed) {
-        if (glfwKeyCode == GLFW.GLFW_KEY_LEFT_SHIFT) {
+        if (glfwKeyCode == InputConstants.KEY_LSHIFT) {
             isShiftDown = false;
             return true;
         }

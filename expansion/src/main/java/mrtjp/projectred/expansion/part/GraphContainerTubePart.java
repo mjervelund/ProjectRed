@@ -19,14 +19,14 @@ public abstract class GraphContainerTubePart extends RedstoneTubePart implements
     @Override
     public void onAdded() {
         super.onAdded();
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             node.onAdded();
         }
     }
 
     @Override
     public void onRemoved() {
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             int sideMask = node.onRemoved();
             // If nodes notified on multiple sides, a link was severed.
             if (Integer.bitCount(sideMask) > 1) {
@@ -40,7 +40,7 @@ public abstract class GraphContainerTubePart extends RedstoneTubePart implements
     @Override
     public void onChunkLoad(LevelChunk chunk) {
         super.onChunkLoad(chunk);
-        if (!level().isClientSide) {
+        if (!level().isClientSide()) {
             // We will rebuild on next tick
             node.markLinksChanged();
         }

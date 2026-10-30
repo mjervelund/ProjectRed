@@ -6,7 +6,7 @@ import codechicken.multipart.api.part.redstone.FaceRedstonePart;
 import mrtjp.projectred.core.part.IRedwireEmitter;
 import mrtjp.projectred.core.part.IRedwirePart;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RedStoneWireBlock;
+import net.minecraft.world.level.block.RedstoneWireBlock;
 
 public class RedstoneFaceLookup {
 
@@ -37,7 +37,7 @@ public class RedstoneFaceLookup {
 
         // Dust signal
         if (lookup.block == Blocks.REDSTONE_WIRE) {
-            signal = Math.max(lookup.state.getValue(RedStoneWireBlock.POWER) - 1, 0);
+            signal = Math.max(lookup.state.getValue(RedstoneWireBlock.POWER) - 1, 0);
             if (limitDust) {
                 return signal;
             }

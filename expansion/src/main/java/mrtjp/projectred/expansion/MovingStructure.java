@@ -209,7 +209,7 @@ public class MovingStructure implements MovingStructureInfo {
 
         FastStream.of(rows).forEach(r -> r.onMovementStarted(level));
 
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             // Force chunk to re-render so rendering of moving block can be suppressed by MovingBlockSuppressorRenderer
             markChunksForRender();
         }
@@ -240,7 +240,7 @@ public class MovingStructure implements MovingStructureInfo {
         markBlocksForLightUpdate(level);
 
         // Update chunk rendering
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             markChunksForRender();
         }
 
@@ -397,7 +397,7 @@ public class MovingStructure implements MovingStructureInfo {
         public void onMovementStarted(Level level) {
             //TODO spawn movement blocks
 
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 // Notify blocks/BEs conforming to MovementController about move
                 forEachPreMove(p -> {
                     MovementController controller = MovementRegistry.getMovementController(level, p);
@@ -475,7 +475,7 @@ public class MovingStructure implements MovingStructureInfo {
          * @param level The level
          */
         public void onMovementFinished(Level level) {
-            if (!level.isClientSide) {
+            if (!level.isClientSide()) {
                 forEachPostMove(p -> {
                     MovementController controller = MovementRegistry.getMovementController(level, pos);
                     if (controller != null) controller.onMovementFinished(level, pos);
