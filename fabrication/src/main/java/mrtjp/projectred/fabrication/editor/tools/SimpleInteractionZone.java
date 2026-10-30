@@ -79,7 +79,7 @@ public class SimpleInteractionZone implements InteractionZone {
         BlockRenderer.renderCuboid(ccrs, bounds, 1);
 
         ccrs.reset();
-        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType.apply(boundingBoxLineWidth), poseStack);
+        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType, poseStack, (float) boundingBoxLineWidth);
         ccrs.baseColour = boundingBoxColor;
         RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), bounds, 1, 1, 1, 1);
 

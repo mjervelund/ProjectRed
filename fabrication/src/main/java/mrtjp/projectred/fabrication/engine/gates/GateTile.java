@@ -62,9 +62,9 @@ public abstract class GateTile extends BaseTile implements IConnectableICTile, I
 
     @Override
     public void load(CompoundTag tag) {
-        gateRotation = tag.getByte("orient");
-        gateShape = tag.getByte("shape");
-        connMask = tag.getByte("connMask");
+        gateRotation = tag.getByteOr("orient", (byte) 0);
+        gateShape = tag.getByteOr("shape", (byte) 0);
+        connMask = tag.getByteOr("connMask", (byte) 0);
     }
 
     @Override

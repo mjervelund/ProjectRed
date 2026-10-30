@@ -12,6 +12,7 @@ import mrtjp.projectred.fabrication.item.component.BlueprintDataComponent;
 import mrtjp.projectred.fabrication.item.component.ICDataComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +24,7 @@ import static mrtjp.projectred.fabrication.editor.EditorDataUtils.*;
 
 public class ICWorkbenchEditor implements ICEditorStateMachine.StateMachineCallback {
 
-    public static final Style UNIFORM = Style.EMPTY.withFont(Identifier.fromNamespaceAndPath("minecraft", "uniform"));
+    public static final Style UNIFORM = Style.EMPTY.withFont(new FontDescription.Resource(Identifier.fromNamespaceAndPath("minecraft", "uniform")));
     public static final Style UNIFORM_DARK_GRAY = UNIFORM.withColor(ChatFormatting.DARK_GRAY);
     public static final Style UNIFORM_GRAY = UNIFORM.withColor(ChatFormatting.GRAY);
     public static final Style UNIFORM_RED = UNIFORM.withColor(ChatFormatting.RED);
@@ -98,9 +99,9 @@ public class ICWorkbenchEditor implements ICEditorStateMachine.StateMachineCallb
     }
 
     public void load(CompoundTag tag) {
-        isActive = tag.getBoolean(KEY_ACTIVE);
-        icName = tag.getString(KEY_IC_NAME);
-        tileMap.load(tag.getCompound(KEY_TILE_MAP));
+        isActive = tag.getBooleanOr(KEY_ACTIVE, false);
+        icName = tag.getStringOr(KEY_IC_NAME, "");
+        tileMap.load(tag.getCompoundOrEmpty(KEY_TILE_MAP));
         stateMachine.load(tag);
     }
 

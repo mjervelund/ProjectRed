@@ -38,10 +38,10 @@ public abstract class SidedRedstoneGateTile extends RedstoneGateTile {
     public void load(CompoundTag tag) {
         super.load(tag);
         for (int i = 0; i < 4; i++) {
-            inputRegisters[i] = tag.getInt("regIn" + i);
-            outputRegisters[i] = tag.getInt("regOut" + i);
+            inputRegisters[i] = tag.getIntOr("regIn" + i, 0);
+            outputRegisters[i] = tag.getIntOr("regOut" + i, 0);
         }
-        gateId = tag.getInt("gate");
+        gateId = tag.getIntOr("gate", 0);
     }
 
     @Override

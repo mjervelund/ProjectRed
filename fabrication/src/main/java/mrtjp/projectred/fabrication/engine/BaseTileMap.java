@@ -152,14 +152,14 @@ public class BaseTileMap implements FETileMap {
 
     public void load(CompoundTag tag) {
         removeAll();
-        int format = tag.getByte("format") & 0xFF;
-        ListTag tileList = tag.getList("tiles", 10);
+        int format = tag.getByteOr("format", (byte) 0) & 0xFF;
+        ListTag tileList = tag.getListOrEmpty("tiles");
         for (int i = 0; i < tileList.size(); i++) {
-            CompoundTag tileTag = tileList.getCompound(i);
-            int id = tileTag.getByte("_id") & 0xFF;
-            int x = tileTag.getByte("_x");
-            int y = tileTag.getByte("_y");
-            int z = tileTag.getByte("_z");
+            CompoundTag tileTag = tileList.getCompoundOrEmpty(i);
+            int id = tileTag.getByteOr("_id", (byte) 0) & 0xFF;
+            int x = tileTag.getByteOr("_x", (byte) 0);
+            int y = tileTag.getByteOr("_y", (byte) 0);
+            int z = tileTag.getByteOr("_z", (byte) 0);
             BaseTile tile = Objects.requireNonNull(ICTileType.createFromIdAndFormat(id, format));
             addTile(new TileCoord(x, y, z), tile);
             tile.load(tileTag);

@@ -38,8 +38,8 @@ public abstract class FabricationMachineBlockEntity extends BasePoweredBlockEnti
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
         conductor.load(tag);
-        isWorking = tag.getBoolean("isWorking");
-        isCharged = tag.getBoolean("isCharged");
+        isWorking = tag.getBooleanOr("isWorking", false);
+        isCharged = tag.getBooleanOr("isCharged", false);
     }
 
     @Override

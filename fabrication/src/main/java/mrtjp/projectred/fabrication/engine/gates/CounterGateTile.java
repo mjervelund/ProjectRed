@@ -55,11 +55,11 @@ public class CounterGateTile extends InternalStateGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        countRegs = tag.getIntArray("reg_count");
-        value = tag.getShort("val") & 0xFFFF;
-        max = tag.getShort("max") & 0xFFFF;
-        incr = tag.getShort("inc") & 0xFFFF;
-        decr = tag.getShort("dec") & 0xFFFF;
+        countRegs = tag.getIntArray("reg_count").orElseGet(() -> new int[0]);
+        value = tag.getShortOr("val", (short) 0) & 0xFFFF;
+        max = tag.getShortOr("max", (short) 0) & 0xFFFF;
+        incr = tag.getShortOr("inc", (short) 0) & 0xFFFF;
+        decr = tag.getShortOr("dec", (short) 0) & 0xFFFF;
     }
 
     @Override

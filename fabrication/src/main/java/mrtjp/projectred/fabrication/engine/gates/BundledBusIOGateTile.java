@@ -64,12 +64,12 @@ public class BundledBusIOGateTile extends BundledGateTile implements IIOConnecti
         super.load(tag);
         for (int i = 0; i < 16; i++) {
             if (tag.contains("reg" + i)) {
-                regIds[i] = tag.getInt("reg" + i);
+                regIds[i] = tag.getIntOr("reg" + i, 0);
             } else {
                 regIds[i] = -1;
             }
         }
-        bundledSignal = tag.getShort("bundled_signal");
+        bundledSignal = tag.getShortOr("bundled_signal", (short) 0);
     }
     //endregion
 

@@ -37,7 +37,7 @@ public class ICCompilerLog implements ICStepThroughAssembler.EventReceiver {
 
     public void save(CompoundTag tag) {
         tag.putInt(KEY_COMPLETED_STEPS, completedSteps);
-        tag.putIntArray(KEY_CURRENT_PATH, currentPath);
+        tag.putIntArray(KEY_CURRENT_PATH, currentPath.stream().mapToInt(Integer::intValue).toArray());
         compileTree.save(tag);
 
         ListTag list = new ListTag();
@@ -53,15 +53,15 @@ public class ICCompilerLog implements ICStepThroughAssembler.EventReceiver {
     }
 
     public void load(CompoundTag tag) {
-        completedSteps = tag.getInt(KEY_COMPLETED_STEPS);
+        completedSteps = tag.getIntOr(KEY_COMPLETED_STEPS, 0);
         currentPath.clear();
-        currentPath.addAll(Arrays.stream(tag.getIntArray(KEY_CURRENT_PATH)).boxed().toList());
+        currentPath.addAll(Arrays.stream(tag.getIntArray(KEY_CURRENT_PATH).orElseGet(() -> new int[0])).boxed().toList());
         compileTree.load(tag);
 
-        ListTag list = tag.getList(KEY_PROBLEMS_LIST, 10);
+        ListTag list = tag.getListOrEmpty(KEY_PROBLEMS_LIST);
         for (int i = 0; i < list.size(); i++) {
-            CompoundTag problemTag = list.getCompound(i);
-            CompileProblem problem = CompileProblemType.createById(problemTag.getByte("_type") & 0xFF);
+            CompoundTag problemTag = list.getCompoundOrEmpty(i);
+            CompileProblem problem = CompileProblemType.createById(problemTag.getByteOr("_type", (byte) 0) & 0xFF);
             problem.load(problemTag);
             addProblemInternal(problem);
         }
@@ -295,8 +295,8 @@ public class ICCompilerLog implements ICStepThroughAssembler.EventReceiver {
             }
             tag.put("tileCoords", tileCoordsTag);
 
-            tag.putIntArray("registerIds", registerIds);
-            tag.putIntArray("gateIds", gateIds);
+            tag.putIntArray("registerIds", registerIds.stream().mapToInt(Integer::intValue).toArray());
+            tag.putIntArray("gateIds", gateIds.stream().mapToInt(Integer::intValue).toArray());
 
             ListTag remapsTag = new ListTag();
             for (Map.Entry<Integer, Integer> entry : registerRemaps.entrySet()) {
@@ -317,31 +317,31 @@ public class ICCompilerLog implements ICStepThroughAssembler.EventReceiver {
         }
 
         public void load(CompoundTag tag) {
-            step = ICStepThroughAssembler.AssemblerStepType.values()[tag.getByte("step")];
+            step = ICStepThroughAssembler.AssemblerStepType.values()[tag.getByteOr("step", (byte) 0)];
 
             // Note: this is only called on fresh instance. No need to clear lists
 
-            ListTag tileCoordsTag = tag.getList("tileCoords", Tag.TAG_COMPOUND);
+            ListTag tileCoordsTag = tag.getListOrEmpty("tileCoords");
             for (Tag coordTag : tileCoordsTag) {
                 CompoundTag coordTagCompound = (CompoundTag) coordTag;
                 tileCoords.add(new TileCoord(
-                        coordTagCompound.getByte("x"),
-                        coordTagCompound.getByte("y"),
-                        coordTagCompound.getByte("z")
+                        coordTagCompound.getByteOr("x", (byte) 0),
+                        coordTagCompound.getByteOr("y", (byte) 0),
+                        coordTagCompound.getByteOr("z", (byte) 0)
                 ));
             }
 
-            registerIds.addAll(Arrays.stream(tag.getIntArray("registerIds")).boxed().toList());
-            gateIds.addAll(Arrays.stream(tag.getIntArray("gateIds")).boxed().toList());
+            registerIds.addAll(Arrays.stream(tag.getIntArray("registerIds").orElseGet(() -> new int[0])).boxed().toList());
+            gateIds.addAll(Arrays.stream(tag.getIntArray("gateIds").orElseGet(() -> new int[0])).boxed().toList());
 
-            ListTag remapsTag = tag.getList("registerRemaps", Tag.TAG_COMPOUND);
+            ListTag remapsTag = tag.getListOrEmpty("registerRemaps");
             for (Tag remapTag : remapsTag) {
                 CompoundTag remapTagCompound = (CompoundTag) remapTag;
-                registerRemaps.put(remapTagCompound.getInt("k"), remapTagCompound.getInt("v"));
+                registerRemaps.put(remapTagCompound.getIntOr("k", 0), remapTagCompound.getIntOr("v", 0));
             }
 
             children.clear();
-            ListTag childrenTag = tag.getList("children", Tag.TAG_COMPOUND);
+            ListTag childrenTag = tag.getListOrEmpty("children");
             for (Tag childTag : childrenTag) {
                 CompileTreeNode child = new CompileTreeNode();
                 child.load((CompoundTag) childTag);
@@ -533,9 +533,9 @@ public class ICCompilerLog implements ICStepThroughAssembler.EventReceiver {
         }
 
         public void load(CompoundTag tag) {
-            size = tag.getInt("size");
+            size = tag.getIntOr("size", 0);
             rootNodes.clear();
-            ListTag rootNodesTag = tag.getList("rootNodes", Tag.TAG_COMPOUND);
+            ListTag rootNodesTag = tag.getListOrEmpty("rootNodes");
             for (Tag rootNodeTag : rootNodesTag) {
                 CompileTreeNode rootNode = new CompileTreeNode();
                 rootNode.load((CompoundTag) rootNodeTag);

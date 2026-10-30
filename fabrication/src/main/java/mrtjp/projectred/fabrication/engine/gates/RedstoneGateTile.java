@@ -39,7 +39,7 @@ public abstract class RedstoneGateTile extends GateTile implements IRedstoneConn
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        gateState = tag.getByte("state");
+        gateState = tag.getByteOr("state", (byte) 0);
     }
 
     @Override

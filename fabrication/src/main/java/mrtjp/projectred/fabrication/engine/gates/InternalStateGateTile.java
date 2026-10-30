@@ -31,8 +31,8 @@ public abstract class InternalStateGateTile extends SidedRedstoneGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        state2 = tag.getByte("state2");
-        stateReg = tag.getInt("regS");
+        state2 = tag.getByteOr("state2", (byte) 0);
+        stateReg = tag.getIntOr("regS", 0);
     }
 
     @Override

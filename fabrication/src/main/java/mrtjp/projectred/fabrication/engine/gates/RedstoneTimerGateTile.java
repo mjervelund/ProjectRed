@@ -36,8 +36,8 @@ public abstract class RedstoneTimerGateTile extends TimedStateGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        pointerStartTime = tag.getLong("tstart");
-        pointerMax = tag.getInt("tmax");
+        pointerStartTime = tag.getLongOr("tstart", 0L);
+        pointerMax = tag.getIntOr("tmax", 0);
     }
 
     @Override

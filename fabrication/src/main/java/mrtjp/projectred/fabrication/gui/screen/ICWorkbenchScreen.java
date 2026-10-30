@@ -14,6 +14,7 @@ import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ItemStackNode;
 import mrtjp.projectred.redui.RedUIScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -51,7 +52,7 @@ public class ICWorkbenchScreen extends RedUIScreen {
     }
 
     public static void openGuiOnClient(ICWorkbenchBlockEntity tile) {
-        Minecraft.getInstance().setScreen(new ICWorkbenchScreen(tile));
+        Minecraft.getInstance().gui.setScreen(new ICWorkbenchScreen(tile));
     }
 
     private void initSubNodes() {
@@ -119,9 +120,10 @@ public class ICWorkbenchScreen extends RedUIScreen {
     }
 
     @Override
-    public boolean keyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags) {
+    public boolean keyPressed(KeyEvent event) {
+        int glfwKeyCode = event.key();
         // This gives our UI elements a chance to consume ESC before we close the screen
-        if (super.keyPressed(glfwKeyCode, glfwScanCode, glfwFlags)) return true;
+        if (super.keyPressed(event)) return true;
 
         // Since we didn't consume ESC, we'll close the screen if it was pressed
         if (glfwKeyCode == InputConstants.KEY_ESCAPE) {

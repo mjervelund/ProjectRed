@@ -39,7 +39,7 @@ public class EditorDataUtils {
     public static final String KEY_WARNING_COUNT = "warning_count"; // int
 
     public static int getFormat(CompoundTag tag) {
-        return tag.getInt(KEY_FORMAT);
+        return tag.getIntOr(KEY_FORMAT, 0);
     }
 
     public static boolean hasEditorData(@Nullable CompoundTag tag) {
@@ -61,30 +61,30 @@ public class EditorDataUtils {
     }
 
     public static boolean isBuilt(CompoundTag tag) {
-        return tag.getBoolean(KEY_IS_BUILT);
+        return tag.getBooleanOr(KEY_IS_BUILT, false);
     }
 
     public static boolean isCompileFormatValid(CompoundTag tag) {
-        return tag.getInt(KEY_COMPILE_FORMAT) == PRFabricationEngine.COMPILE_FORMAT;
+        return tag.getIntOr(KEY_COMPILE_FORMAT, 0) == PRFabricationEngine.COMPILE_FORMAT;
     }
 
     public static int getErrorCount(CompoundTag tag) {
-        return tag.getCompound(KEY_COMPILER_LOG).getInt(KEY_ERROR_COUNT);
+        return tag.getCompoundOrEmpty(KEY_COMPILER_LOG).getIntOr(KEY_ERROR_COUNT, 0);
     }
 
     public static int getWarningCount(CompoundTag tag) {
-        return tag.getCompound(KEY_COMPILER_LOG).getInt(KEY_WARNING_COUNT);
+        return tag.getCompoundOrEmpty(KEY_COMPILER_LOG).getIntOr(KEY_WARNING_COUNT, 0);
     }
 
     // Creates copy of editor tag with only the data required to fabricate a gate
     public static CompoundTag createFabricationCopy(CompoundTag editorTag) {
         CompoundTag copy = new CompoundTag();
-        copy.putInt(KEY_COMPILE_FORMAT, editorTag.getInt(KEY_COMPILE_FORMAT));
-        copy.putBoolean(KEY_IS_BUILT, editorTag.getBoolean(KEY_IS_BUILT));
-        copy.putString(KEY_IC_NAME, editorTag.getString(KEY_IC_NAME));
-        copy.putInt(KEY_TILE_COUNT, editorTag.getInt(KEY_TILE_COUNT));
-        copy.put(KEY_IO_SPEC, editorTag.getCompound(KEY_IO_SPEC));
-        copy.putString(KEY_FLAT_MAP, editorTag.getString(KEY_FLAT_MAP));
+        copy.putInt(KEY_COMPILE_FORMAT, editorTag.getIntOr(KEY_COMPILE_FORMAT, 0));
+        copy.putBoolean(KEY_IS_BUILT, editorTag.getBooleanOr(KEY_IS_BUILT, false));
+        copy.putString(KEY_IC_NAME, editorTag.getStringOr(KEY_IC_NAME, ""));
+        copy.putInt(KEY_TILE_COUNT, editorTag.getIntOr(KEY_TILE_COUNT, 0));
+        copy.put(KEY_IO_SPEC, editorTag.getCompoundOrEmpty(KEY_IO_SPEC));
+        copy.putString(KEY_FLAT_MAP, editorTag.getStringOr(KEY_FLAT_MAP, ""));
         return copy;
     }
 
@@ -100,9 +100,9 @@ public class EditorDataUtils {
 
     public static TileCoord loadTileCoord(CompoundTag tag, String key) {
         return new TileCoord(
-                tag.getByte(key + "_x"),
-                tag.getByte(key + "_y"),
-                tag.getByte(key + "_z")
+                tag.getByteOr(key + "_x", (byte) 0),
+                tag.getByteOr(key + "_y", (byte) 0),
+                tag.getByteOr(key + "_z", (byte) 0)
         );
     }
 
@@ -115,9 +115,9 @@ public class EditorDataUtils {
     }
 
     public static void loadTileCoordList(CompoundTag tag, String key, List<TileCoord> coordList) {
-        ListTag list = tag.getList(key, Tag.TAG_COMPOUND);
+        ListTag list = tag.getListOrEmpty(key);
         for (int i = 0; i < list.size(); i++) {
-            coordList.add(tileCoordFromNBT(list.getCompound(i)));
+            coordList.add(tileCoordFromNBT(list.getCompoundOrEmpty(i)));
         }
     }
 

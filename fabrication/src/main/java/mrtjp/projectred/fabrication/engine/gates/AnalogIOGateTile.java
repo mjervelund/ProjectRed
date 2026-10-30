@@ -49,7 +49,7 @@ public class AnalogIOGateTile extends SingleBitIOGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        analogSignal = tag.getByte("analog_signal");
+        analogSignal = tag.getByteOr("analog_signal", (byte) 0);
     }
     //endregion
 

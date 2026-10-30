@@ -12,6 +12,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -150,7 +151,7 @@ public class ICDataComponent implements TooltipProvider {
 
     //region Tooltip Provider
     @Override
-    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltipList, TooltipFlag flag) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltipList, TooltipFlag flag, DataComponentGetter components) {
 
         // Name and tile count
         tooltipList.accept(Component.translatable(UL_NAME).append(": " + name).withStyle(ChatFormatting.GRAY));

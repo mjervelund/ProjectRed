@@ -81,15 +81,15 @@ public class ICSimulationContainer {
     }
 
     public void load(CompoundTag tag) {
-        ICSimulation simulation = PRFabricationEngine.instance.deserializeSimulation(tag.getString("simulation"));
+        ICSimulation simulation = PRFabricationEngine.instance.deserializeSimulation(tag.getStringOr("simulation", ""));
         if (simulation != null) {
             this.simulation = simulation;
         }
         for (int i = 0; i < 4; i++) {
-            inputs[i] = tag.getShort("in" + i);
-            outputs[i] = tag.getShort("out" + i);
+            inputs[i] = tag.getShortOr("in" + i, (short) 0);
+            outputs[i] = tag.getShortOr("out" + i, (short) 0);
         }
-        systemTime = tag.getLong("systemTime");
+        systemTime = tag.getLongOr("systemTime", 0L);
     }
 
     public void writeDesc(MCDataOutput out) {

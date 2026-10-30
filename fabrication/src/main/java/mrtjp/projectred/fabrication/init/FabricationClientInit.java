@@ -1,6 +1,7 @@
 package mrtjp.projectred.fabrication.init;
 
-import codechicken.multipart.api.MultipartClientRegistry;
+import codechicken.multipart.api.RegisterMultipartRenderersEvent;
+import mrtjp.projectred.core.client.IconPartParticleHandler;
 import mrtjp.projectred.fabrication.client.RenderFabricatedGate;
 import mrtjp.projectred.fabrication.gui.ICRenderTypes;
 import mrtjp.projectred.fabrication.gui.screen.inventory.LithographyTableScreen;
@@ -21,6 +22,7 @@ public class FabricationClientInit {
 
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(FabricationClientInit::clientSetup);
+        modEventBus.addListener(FabricationClientInit::onRegisterMultipartRenderers);
 
         // Register sprites
         modEventBus.addListener(ICRenderTypes::onTextureStitchEvent);
@@ -31,11 +33,13 @@ public class FabricationClientInit {
 
     private static void clientSetup(final FMLClientSetupEvent event) {
 
-        // Register part renderers
-        MultipartClientRegistry.register(FabricationParts.FABRICATED_GATE_PART.get(), GatePartRenderer.INSTANCE);
-
         // Register gate renderer
         GateModelRenderer.registerRenderer(GateType.FABRICATED_GATE, RenderFabricatedGate::new);
+    }
+
+    private static void onRegisterMultipartRenderers(RegisterMultipartRenderersEvent event) {
+        event.registerDynamicPartRenderer(FabricationParts.FABRICATED_GATE_PART.get(), () -> GatePartRenderer.INSTANCE);
+        event.registerParticleHandler(FabricationParts.FABRICATED_GATE_PART.get(), IconPartParticleHandler.INSTANCE);
     }
 
     private static void onRegisterMenuScreensEvent(RegisterMenuScreensEvent event) {

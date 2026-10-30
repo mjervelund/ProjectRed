@@ -72,7 +72,7 @@ public class HotKeyInteractionZone implements InteractionZone {
 
         // Bounds outline
         ccrs.reset();
-        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType.apply(2.0), poseStack);
+        getter.bind(ccrs, ICRenderTypes.interactionZoneLinesRenderType, poseStack, 2.0F);
         ccrs.baseColour = EnumColour.WHITE.rgba();
         RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), getBounds(), 1, 1, 1, 1);
 
@@ -85,7 +85,7 @@ public class HotKeyInteractionZone implements InteractionZone {
 
     @Override
     public void buildToolTip(List<Component> tooltip) {
-        String keyName = Objects.requireNonNullElse(GLFW.glfwGetKeyName(keyCode, 0), "???");
+        String keyName = InputConstants.Type.KEYBOARD.getOrCreate(keyCode).getDisplayName().getString();
         tooltip.add(Component.literal("[" + keyName + "] ").append(text).withStyle(ICWorkbenchEditor.UNIFORM_GRAY));
     }
 

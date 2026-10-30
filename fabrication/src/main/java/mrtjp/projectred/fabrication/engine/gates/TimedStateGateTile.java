@@ -28,8 +28,8 @@ public abstract class TimedStateGateTile extends InternalStateGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        stateReg = tag.getInt("regS");
-        timeRegs = tag.getIntArray("reg_time");
+        stateReg = tag.getIntOr("regS", 0);
+        timeRegs = tag.getIntArray("reg_time").orElseGet(() -> new int[0]);
     }
     //endregion
 

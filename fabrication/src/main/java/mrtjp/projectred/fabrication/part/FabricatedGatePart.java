@@ -70,8 +70,8 @@ public class FabricatedGatePart extends BundledGatePart {
     @Override
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.load(tag, lookupProvider);
-        icDataComponent = ICDataComponent.parse(tag.getCompound("ic_data")).orElse(ICDataComponent.EMPTY);
-        simulationTimeStart = tag.getLong("sim_time");
+        icDataComponent = ICDataComponent.parse(tag.getCompoundOrEmpty("ic_data")).orElse(ICDataComponent.EMPTY);
+        simulationTimeStart = tag.getLongOr("sim_time", 0L);
 
         var compileFormat = icDataComponent.getCompileFormat();
         if (compileFormat == PRFabricationEngine.COMPILE_FORMAT) {

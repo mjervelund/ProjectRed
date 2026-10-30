@@ -45,9 +45,9 @@ public class MultipleDriversError extends CompileProblem {
 
     @Override
     public void load(CompoundTag tag) {
-        coord = EditorDataUtils.tileCoordFromNBT(tag.getCompound("coord"));
+        coord = EditorDataUtils.tileCoordFromNBT(tag.getCompoundOrEmpty("coord"));
         registerList.clear();
-        for (int i : tag.getIntArray("registers")) {
+        for (int i : tag.getIntArray("registers").orElse(new int[0])) {
             registerList.add(i);
         }
     }

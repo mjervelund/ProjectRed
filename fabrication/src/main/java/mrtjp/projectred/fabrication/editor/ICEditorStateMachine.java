@@ -99,13 +99,13 @@ public class ICEditorStateMachine {
     }
 
     public void load(CompoundTag tag) {
-        currentState = tag.getByte(KEY_COMP_STATE) & 0xFF;
-        lastCompiledFormat = tag.getInt(KEY_COMPILE_FORMAT);
-        lastCompiledFlatMap = tag.getString(KEY_FLAT_MAP);
-        simulationContainer.load(tag.getCompound(KEY_SIMULATION));
-        compilerLog.load(tag.getCompound(KEY_COMPILER_LOG));
-        enableAutoCompile = tag.getBoolean(KEY_AUTO_COMPILE_ENABLE);
-        autoCompileAvailable = tag.getBoolean(KEY_AUTO_COMPILE_ALLOWED);
+        currentState = tag.getByteOr(KEY_COMP_STATE, (byte) 0) & 0xFF;
+        lastCompiledFormat = tag.getIntOr(KEY_COMPILE_FORMAT, 0);
+        lastCompiledFlatMap = tag.getStringOr(KEY_FLAT_MAP, "");
+        simulationContainer.load(tag.getCompoundOrEmpty(KEY_SIMULATION));
+        compilerLog.load(tag.getCompoundOrEmpty(KEY_COMPILER_LOG));
+        enableAutoCompile = tag.getBooleanOr(KEY_AUTO_COMPILE_ENABLE, false);
+        autoCompileAvailable = tag.getBooleanOr(KEY_AUTO_COMPILE_ALLOWED, false);
     }
 
     public void writeDesc(MCDataOutput out) {

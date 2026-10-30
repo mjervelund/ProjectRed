@@ -48,7 +48,7 @@ public abstract class WireTile extends BaseTile implements IConnectableICTile {
 
     @Override
     public void load(CompoundTag tag) {
-        connMask = tag.getByte("connMask");
+        connMask = tag.getByteOr("connMask", (byte) 0);
     }
 
     @Override

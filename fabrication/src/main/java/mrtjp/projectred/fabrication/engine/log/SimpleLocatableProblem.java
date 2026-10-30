@@ -38,7 +38,7 @@ public abstract class SimpleLocatableProblem extends CompileProblem {
 
     @Override
     public void load(CompoundTag tag) {
-        coord = EditorDataUtils.tileCoordFromNBT(tag.getCompound("coord"));
+        coord = EditorDataUtils.tileCoordFromNBT(tag.getCompoundOrEmpty("coord"));
     }
 
     @Override

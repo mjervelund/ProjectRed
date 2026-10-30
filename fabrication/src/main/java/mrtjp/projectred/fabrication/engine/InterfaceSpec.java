@@ -71,11 +71,11 @@ public class InterfaceSpec {
     public static InterfaceSpec load(CompoundTag tag) {
         ICInterfaceType[] sideInterfaces = new ICInterfaceType[4];
         for (int r = 0; r < 4; r++) {
-            sideInterfaces[r] = ICInterfaceType.fromId(tag.getByte("if" + r) & 0xFF);
+            sideInterfaces[r] = ICInterfaceType.fromId(tag.getByteOr("if" + r, (byte) 0) & 0xFF);
         }
-        int redstoneMask = tag.getByte("rmask") & 0xFF;
-        int bundledMask = tag.getByte("bmask") & 0xFF;
-        int analogMask = tag.getByte("amask") & 0xFF;
+        int redstoneMask = tag.getByteOr("rmask", (byte) 0) & 0xFF;
+        int bundledMask = tag.getByteOr("bmask", (byte) 0) & 0xFF;
+        int analogMask = tag.getByteOr("amask", (byte) 0) & 0xFF;
 
         return new InterfaceSpec(sideInterfaces, redstoneMask, bundledMask, analogMask);
     }
@@ -178,7 +178,7 @@ public class InterfaceSpec {
     }
 
     public static InterfaceSpec loadFrom(CompoundTag tag, String key) {
-        CompoundTag tag1 = tag.getCompound(key);
+        CompoundTag tag1 = tag.getCompoundOrEmpty(key);
         return load(tag1);
     }
 

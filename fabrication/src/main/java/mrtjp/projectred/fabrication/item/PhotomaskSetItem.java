@@ -10,6 +10,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 
@@ -22,8 +24,8 @@ public class PhotomaskSetItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipList, TooltipFlag tooltipFlag) {
-        stack.addToTooltip(FabricationDataComponents.IC_DATA_COMPONENT_TYPE, context, tooltipList::add, tooltipFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipList, TooltipFlag tooltipFlag) {
+        stack.addToTooltip(FabricationDataComponents.IC_DATA_COMPONENT_TYPE, context, display, tooltipList, tooltipFlag);
     }
 
     @Override

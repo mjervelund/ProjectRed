@@ -36,8 +36,8 @@ public abstract class SingleBitIOGateTile extends RedstoneGateTile implements II
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        regId = tag.getInt("reg");
-        ioBit = tag.getByte("io_bit");
+        regId = tag.getIntOr("reg", 0);
+        ioBit = tag.getByteOr("io_bit", (byte) 0);
     }
     //endregion
 

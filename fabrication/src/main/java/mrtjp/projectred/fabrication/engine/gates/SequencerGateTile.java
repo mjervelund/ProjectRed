@@ -36,7 +36,7 @@ public class SequencerGateTile extends SidedRedstoneGateTile {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        pointerMax = tag.getInt("tmax");
+        pointerMax = tag.getIntOr("tmax", 0);
     }
 
     @Override

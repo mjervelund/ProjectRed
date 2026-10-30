@@ -6,6 +6,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
@@ -23,11 +25,11 @@ public class BaseSiliconWaferItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipList, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipList, tooltipFlag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltipList, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, display, tooltipList, tooltipFlag);
 
-        tooltipList.add(Component.translatable(UL_SIZE).append(": " + waferType.getWaferWidth() + "nm x " + waferType.getWaferHeight() + "nm").withStyle(ChatFormatting.GRAY));
-        tooltipList.add(Component.translatable(UL_DEFECT_CHANCE).append(": %.2e%% / nm^2".formatted(waferType.getDefectRatePerUnitArea()*100)).withStyle(ChatFormatting.GRAY));
+        tooltipList.accept(Component.translatable(UL_SIZE).append(": " + waferType.getWaferWidth() + "nm x " + waferType.getWaferHeight() + "nm").withStyle(ChatFormatting.GRAY));
+        tooltipList.accept(Component.translatable(UL_DEFECT_CHANCE).append(": %.2e%% / nm^2".formatted(waferType.getDefectRatePerUnitArea()*100)).withStyle(ChatFormatting.GRAY));
     }
 
     public WaferType getWaferType() {

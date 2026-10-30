@@ -24,10 +24,17 @@ import java.util.Map;
  */
 public final class RecordingBufferSource {
 
-    private final Map<RenderType, Recorder> batches = new LinkedHashMap<>();
+    private final Map<Batch, Recorder> batches = new LinkedHashMap<>();
 
     public VertexConsumer getBuffer(RenderType type) {
-        return batches.computeIfAbsent(type, t -> new Recorder());
+        return getBuffer(type, 1);
+    }
+
+    /**
+     * Buffer whose vertices default to {@code lineWidth} (line widths used to be part of the render type).
+     */
+    public VertexConsumer getBuffer(RenderType type, float lineWidth) {
+        return batches.computeIfAbsent(new Batch(type, lineWidth), b -> new Recorder(b.lineWidth()));
     }
 
     /**
@@ -35,6 +42,10 @@ public final class RecordingBufferSource {
      */
     public void bind(CCRenderState ccrs, RenderType type, PoseStack stack) {
         ccrs.bind(new TransformingVertexConsumer(getBuffer(type), stack), type);
+    }
+
+    public void bind(CCRenderState ccrs, RenderType type, PoseStack stack, float lineWidth) {
+        ccrs.bind(new TransformingVertexConsumer(getBuffer(type, lineWidth), stack), type);
     }
 
     public void bind(CCRenderState ccrs, RenderType type, Transformation transform) {
@@ -54,13 +65,17 @@ public final class RecordingBufferSource {
         for (var entry : batches.entrySet()) {
             Recorder recorder = entry.getValue();
             if (recorder.vertexCount() == 0) continue;
-            collector.submitCustomGeometry(identity, entry.getKey(), (pose, consumer) -> recorder.replay(consumer));
+            collector.submitCustomGeometry(identity, entry.getKey().type(), (pose, consumer) -> recorder.replay(consumer));
         }
         batches.clear();
     }
 
+    private record Batch(RenderType type, float lineWidth) {
+    }
+
     /**
-     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, no overlay, full light, up normal, 1px lines).
+     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, no overlay, full light, up normal,
+     * the batch's line width).
      */
     private static final class Recorder implements VertexConsumer {
 
@@ -68,7 +83,12 @@ public final class RecordingBufferSource {
         private final IntArrayList ints = new IntArrayList();       // color uv1 uv2
         private static final int F = 11;
         private static final int I = 3;
+        private final float lineWidth;
         private int count;
+
+        Recorder(float lineWidth) {
+            this.lineWidth = lineWidth;
+        }
 
         int vertexCount() {
             return count;
@@ -79,7 +99,7 @@ public final class RecordingBufferSource {
             floats.add(x);
             floats.add(y);
             floats.add(z);
-            for (int i = 3; i < F; i++) floats.add(i == 8 || i == 10 ? 1 : 0); // up normal, 1px line width
+            for (int i = 3; i < F; i++) floats.add(i == 8 ? 1 : i == 10 ? lineWidth : 0); // up normal, default line width
             ints.add(-1);
             ints.add(OverlayTexture.NO_OVERLAY);
             ints.add(0xF000F0);

@@ -1,7 +1,7 @@
 package mrtjp.projectred.fabrication.data;
 
 import mrtjp.projectred.core.data.ProjectRedModelProvider;
-import mrtjp.projectred.integration.client.GatePartItemRenderer;
+import mrtjp.projectred.integration.init.IntegrationClientInit;
 import net.minecraft.data.PackOutput;
 
 import static mrtjp.projectred.fabrication.ProjectRedFabrication.MOD_ID;
@@ -32,6 +32,6 @@ public class FabricationItemModelProvider extends ProjectRedModelProvider {
         generated(VALID_DIE_ITEM);
         generated(INVALID_DIE_ITEM);
 
-        clazz(FABRICATED_GATE_ITEM, GatePartItemRenderer.class);
+        specialItem(FABRICATED_GATE_ITEM.get(), IntegrationClientInit.GATE_ITEM_RENDERER);
    }
 }

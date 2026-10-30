@@ -9,13 +9,10 @@ import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.renderpearl.api.vertex.VertexFormat;
 import com.mojang.math.Axis;
-import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import mrtjp.projectred.core.client.RecordingBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,8 +21,6 @@ import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 import org.joml.Matrix4f;
 
-import java.util.OptionalDouble;
-import java.util.function.Function;
 
 import static mrtjp.projectred.fabrication.ProjectRedFabrication.MOD_ID;
 
@@ -36,118 +31,22 @@ public class ICRenderTypes {
     public static Identifier PERFBOARD_EDGE_TEXTURE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_edge.png");
     public static Identifier PERFBOARD_CORNER_TEXTURE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_corner.png");
 
-    public static RenderType layersRenderType = RenderType.create(MOD_ID + ":ic_block", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 10000, false, true,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_CUTOUT_SHADER) //TODO only default one that discards alpha frags
-                    .setTextureState(RenderStateShard.BLOCK_SHEET)
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.CULL)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.NO_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(RenderStateShard.DEFAULT_LINE)
-                    .createCompositeState(true));
+    // 26.x builds render types from pipelines; these are the closest vanilla ones to the old composite states
+    // (cutout + translucent blend + lightmap; lightning blend for the selection; translucent lines).
+    public static RenderType layersRenderType = RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS);
 
-    public static RenderType selectionRenderType = RenderType.create(MOD_ID + ":ic_selection", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
-                    .setTextureState(RenderStateShard.NO_TEXTURE)
-                    .setTransparencyState(RenderStateShard.LIGHTNING_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.CULL)
-                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.NO_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(RenderStateShard.DEFAULT_LINE)
-                    .createCompositeState(true));
+    public static RenderType selectionRenderType = RenderTypes.lightning();
 
-    public static RenderType gridRenderType = RenderType.create(MOD_ID + ":ic_grid", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_CUTOUT_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(PERFBOARD_TEXTURE, false, false)) // Mipped: Strange artifacts on render. Our normal world rendering is not mipped
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.CULL)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.NO_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(RenderStateShard.DEFAULT_LINE)
-                    .createCompositeState(true));
+    public static RenderType gridRenderType = RenderTypes.entityTranslucent(PERFBOARD_TEXTURE);
 
-    public static RenderType gridEdgeRenderType = RenderType.create(MOD_ID + ":ic_grid_edge", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_CUTOUT_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(PERFBOARD_EDGE_TEXTURE, false, false))
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.CULL)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.NO_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(RenderStateShard.DEFAULT_LINE)
-                    .createCompositeState(true));
+    public static RenderType gridEdgeRenderType = RenderTypes.entityTranslucent(PERFBOARD_EDGE_TEXTURE);
 
-    public static RenderType gridCornerRenderType = RenderType.create(MOD_ID + ":ic_grid_corner", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_CUTOUT_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(PERFBOARD_CORNER_TEXTURE, false, false))
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.CULL)
-                    .setLightmapState(RenderStateShard.LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.NO_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(RenderStateShard.DEFAULT_LINE)
-                    .createCompositeState(true));
+    public static RenderType gridCornerRenderType = RenderTypes.entityTranslucent(PERFBOARD_CORNER_TEXTURE);
 
-    public static RenderType holoGridRenderType = RenderType.create(MOD_ID + ":holo_grid_lines", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
-                    .setTextureState(RenderStateShard.NO_TEXTURE)
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.NO_CULL)
-                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
-                    .createCompositeState(false));
+    public static RenderType holoGridRenderType = RenderTypes.linesTranslucent();
 
-    public static Function<Double, RenderType> interactionZoneLinesRenderType = Util.memoize(a -> RenderType.create(MOD_ID + ":interact_zone_lines", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
-                    .setTextureState(RenderStateShard.NO_TEXTURE)
-                    .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                    .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                    .setCullState(RenderStateShard.NO_CULL)
-                    .setLightmapState(RenderStateShard.NO_LIGHTMAP)
-                    .setOverlayState(RenderStateShard.NO_OVERLAY)
-                    .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-                    .setOutputState(RenderStateShard.MAIN_TARGET)
-                    .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                    .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                    .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(a)))
-                    .createCompositeState(false)));
-
+    /** Line width is a vertex attribute now: bind with {@code RecordingBufferSource#bind(ccrs, type, stack, lineWidth)}. */
+    public static RenderType interactionZoneLinesRenderType = RenderTypes.linesTranslucent();
 
     public static TextureAtlasSprite icSurfaceIcon;
     public static TextureAtlasSprite icSurfaceBorderIcon;

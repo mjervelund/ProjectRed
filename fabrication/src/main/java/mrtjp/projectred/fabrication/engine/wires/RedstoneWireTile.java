@@ -38,10 +38,10 @@ public abstract class RedstoneWireTile extends WireTile implements IRedstoneConn
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        signal = tag.getByte("signal");
+        signal = tag.getByteOr("signal", (byte) 0);
 
-        int numInputReg = tag.getByte("numInputReg") & 0xFF;
-        for (int i = 0; i < numInputReg; i++) inputRegisters.add(tag.getInt("inR" + i));
+        int numInputReg = tag.getByteOr("numInputReg", (byte) 0) & 0xFF;
+        for (int i = 0; i < numInputReg; i++) inputRegisters.add(tag.getIntOr("inR" + i, 0));
     }
 
     @Override
