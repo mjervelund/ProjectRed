@@ -45,6 +45,8 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
 
     protected final String modId;
     protected BlockModelGenerators blockModels;
+    // Model ids already written: block state lambdas may ask for the same model once per state.
+    private final java.util.Set<Identifier> createdModels = new java.util.HashSet<>();
     protected ItemModelGenerators itemModels;
 
     protected ProjectRedModelProvider(PackOutput output, String modId) {
@@ -162,10 +164,12 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
     }
 
     protected Identifier cubeAll(String name, Identifier texture) {
+        if (!createdModels.add(modLoc("block/" + name))) return modLoc("block/" + name);
         return ModelTemplates.CUBE_ALL.create(modLoc("block/" + name), TextureMapping.cube(new Material(texture)), blockModels.modelOutput);
     }
 
     protected Identifier cubeBottomTop(String name, Identifier side, Identifier bottom, Identifier top) {
+        if (!createdModels.add(modLoc("block/" + name))) return modLoc("block/" + name);
         return ModelTemplates.CUBE_BOTTOM_TOP.create(modLoc("block/" + name), new TextureMapping()
                 .put(TextureSlot.SIDE, new Material(side))
                 .put(TextureSlot.BOTTOM, new Material(bottom))
@@ -173,6 +177,7 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
     }
 
     protected Identifier orientableWithBottom(String name, Identifier side, Identifier front, Identifier bottom, Identifier top) {
+        if (!createdModels.add(modLoc("block/" + name))) return modLoc("block/" + name);
         return ModelTemplates.CUBE_ORIENTABLE_TOP_BOTTOM.create(modLoc("block/" + name), new TextureMapping()
                 .put(TextureSlot.SIDE, new Material(side))
                 .put(TextureSlot.FRONT, new Material(front))
@@ -181,6 +186,7 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
     }
 
     protected Identifier cube(String name, Identifier down, Identifier up, Identifier north, Identifier south, Identifier east, Identifier west) {
+        if (!createdModels.add(modLoc("block/" + name))) return modLoc("block/" + name);
         return ModelTemplates.CUBE.create(modLoc("block/" + name), new TextureMapping()
                 .put(TextureSlot.DOWN, new Material(down))
                 .put(TextureSlot.UP, new Material(up))

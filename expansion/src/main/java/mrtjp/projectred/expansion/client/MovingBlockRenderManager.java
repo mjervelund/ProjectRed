@@ -1,37 +1,40 @@
 package mrtjp.projectred.expansion.client;
 
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.render.RenderUtils;
-import codechicken.lib.render.buffer.TransformingVertexConsumer;
-import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.QuadInstance;
+import mrtjp.projectred.core.client.RecordingBufferSource;
 import mrtjp.projectred.expansion.MovementManager;
 import mrtjp.projectred.expansion.MovingStructure;
 import mrtjp.projectred.expansion.MovingStructureInfo;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import mrtjp.projectred.core.client.RecordingBufferSource;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RenderHighlightEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.client.event.ExtractBlockOutlineRenderStateEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
+/**
+ * Draws blocks of moving structures at their animated offset (the chunk mesh skips them, see SectionCompilerMixin).
+ */
 public class MovingBlockRenderManager {
+
+    private static final Direction[] SIDES_AND_NULL = { Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, null };
 
     public static boolean isMoving(MovementManager manager, BlockPos pos) {
         return manager.getMovementInfo(pos).isMoving();
@@ -45,94 +48,98 @@ public class MovingBlockRenderManager {
         return false;
     }
 
-    public static void onRenderLevelStage(RenderLevelStageEvent event) {
+    private static float partialTick() {
+        return Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+    }
+
+    private static RenderType renderType(ChunkSectionLayer layer) {
+        return switch (layer) {
+            case SOLID -> RenderTypes.solidMovingBlock();
+            case TRANSLUCENT -> RenderTypes.translucentMovingBlock();
+            default -> RenderTypes.cutoutMovingBlock();
+        };
+    }
+
+    public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
         Level level = Minecraft.getInstance().level;
         if (level == null) return;
 
         MovementManager manager = MovementManager.getInstance(level);
         if (manager.hasNoMovingStructures()) return;
 
-        // Get the renderType for this stage, and skip if we dont care about it
-        List<RenderType> renderTypes = List.of(RenderTypes.solidMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.cutoutMovingBlock(), RenderTypes.translucentMovingBlock());
-        RenderType renderType = null;
-        for (RenderType type : renderTypes) {
-            if (RenderLevelStageEvent.Stage.fromRenderType(type) == event.getStage()) {
-                renderType = type;
-                break;
-            }
-        }
-        if (renderType == null) return;
-
         RandomSource random = RandomSource.create();
+        var modelSet = Minecraft.getInstance().getModelManager().getBlockStateModelSet();
+        RecordingBufferSource buffers = new RecordingBufferSource();
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        QuadInstance instance = new QuadInstance();
 
-        // Set up camera pose
-        Vec3 cam = event.getCamera().getPosition();
+        Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
         PoseStack stack = event.getPoseStack();
         stack.pushPose();
-        stack.mulPose(event.getModelViewMatrix());
         stack.translate(-cam.x, -cam.y, -cam.z);
 
         for (MovingStructure structure : manager.getMovingStructures()) {
-
             // Set up render offset based on progress of movement
-            Vector3 offset = structure.getRenderOffset(event.getPartialTick().getGameTimeDeltaPartialTick(false));
+            var offset = structure.getRenderOffset(partialTick());
             stack.pushPose();
             stack.translate(offset.x, offset.y, offset.z);
-
-            RecordingBufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-            BlockRenderDispatcher blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
             Iterator<BlockPos> it = structure.iteratePreMove();
             while (it.hasNext()) {
                 BlockPos p = it.next();
                 BlockState state = level.getBlockState(p);
-                BakedModel model = blockRenderer.getBlockModel(state);
-                ModelData data = level.getModelData(p);
+                if (state.isAir()) continue;
 
-                if (!model.getRenderTypes(state, random, data).contains(renderType)) {
-                    continue;
-                }
+                parts.clear();
+                random.setSeed(state.getSeed(p));
+                modelSet.get(state).collectParts(level, p, state, random, parts);
+                instance.setLightCoords(LightCoordsUtil.getLightCoords(level, p));
 
-                // Render the moving block
                 stack.pushPose();
                 stack.translate(p.getX(), p.getY(), p.getZ());
-                blockRenderer.renderBatched(state, p, level, stack, buffers.getBuffer(renderType), false, random, data, renderType);
+                PoseStack.Pose pose = stack.last();
+                for (BlockStateModelPart part : parts) {
+                    for (Direction side : SIDES_AND_NULL) {
+                        for (BakedQuad quad : part.getQuads(side)) {
+                            buffers.getBuffer(renderType(quad.materialInfo().layer())).putBakedQuad(pose, quad, instance);
+                        }
+                    }
+                }
                 stack.popPose(); //p
             }
-
-            buffers.endBatch();
             stack.popPose(); //offset
         }
-
         stack.popPose(); //cam
+
+        buffers.submit(event.getSubmitNodeCollector());
     }
 
-    public static void onDrawHighlight(RenderHighlightEvent.Block event) {
+    public static void onExtractBlockOutline(ExtractBlockOutlineRenderStateEvent event) {
         // Check for movement. Return if not moving
         MovementManager manager = MovementManager.getClientInstanceNullable();
         if (manager == null || manager.hasNoMovingStructures()) return;
-        MovingStructureInfo info = manager.getMovementInfo(event.getTarget().getBlockPos());
+        BlockPos pos = event.getBlockPos();
+        MovingStructureInfo info = manager.getMovementInfo(pos);
         if (!info.isMoving()) return;
 
-        Level level = Objects.requireNonNull(Minecraft.getInstance().level);
-        BlockPos pos = event.getTarget().getBlockPos();
-        BlockState state = level.getBlockState(pos);
+        Level level = event.getLevel();
+        BlockState state = event.getBlockState();
         if (state.isAir() || !level.getWorldBorder().isWithinBounds(pos)) return;
 
-        Camera camera = event.getCamera();
-        PoseStack pStack = event.getPoseStack();
-        pStack.pushPose();
-        pStack.translate(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z);
-
         VoxelShape shape = state.getShape(level, pos);
-        var offset = info.getRenderOffset(event.getDeltaTracker().getGameTimeDeltaPartialTick(false));
-        pStack.translate(pos.getX(), pos.getY(), pos.getZ());
-        pStack.translate(offset.x, offset.y, offset.z);
-        VertexConsumer consumer = new TransformingVertexConsumer(event.getMultiBufferSource().getBuffer(RenderType.lines()), pStack);
-        RenderUtils.bufferShapeOutline(consumer, shape, 0, 0, 0, 0.4F); // RGBA from LevelRenderer#renderHitOutline
+        var offset = info.getRenderOffset(partialTick());
+        float lineWidth = Minecraft.getInstance().getWindow().getAppropriateLineWidth();
 
-        pStack.popPose();
-
+        // Replace the outline: same shape, drawn at the animated position
+        event.getLevelRenderState().blockOutlineRenderState = new BlockOutlineRenderState(pos, event.isInTranslucentPass(), event.isHighContrast(), Shapes.empty(),
+                List.of((renderState, collector, poseStack, levelRenderState) -> {
+                    Vec3 cam = levelRenderState.cameraRenderState.pos;
+                    poseStack.pushPose();
+                    poseStack.translate(pos.getX() - cam.x + offset.x, pos.getY() - cam.y + offset.y, pos.getZ() - cam.z + offset.z);
+                    collector.submitShapeOutline(poseStack, shape, RenderTypes.lines(), 0x66000000, lineWidth, false); // colour from vanilla's outline
+                    poseStack.popPose();
+                    return true;
+                }));
         event.setCanceled(true);
     }
 }

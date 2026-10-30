@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.part;
 
+import codechicken.multipart.api.part.BlockStateModelPart;
 import net.minecraft.world.level.storage.loot.LootParams;
 import mrtjp.projectred.core.part.IconHitEffectsPart;
 import mrtjp.projectred.core.part.ProjectRedPart;
@@ -41,7 +42,7 @@ import java.util.Collections;
 
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.FRAME_BLOCK;
 
-public class FramePart extends ProjectRedPart implements NormalOcclusionPart, IconHitEffectsPart, Frame, ModelRenderPart {
+public class FramePart extends ProjectRedPart implements NormalOcclusionPart, IconHitEffectsPart, Frame, BlockStateModelPart {
 
     public static final Cuboid6[] oBounds = new Cuboid6[6];
     public static final VoxelShape[] oShapes = new VoxelShape[6];
@@ -244,10 +245,11 @@ public class FramePart extends ProjectRedPart implements NormalOcclusionPart, Ic
 
     @Override
     public ModelData getModelData() {
-        return ModelData.of(
-                FrameModelData.DATA,
-                new FrameModelData(getOccludedSideMask())
-        );
+        // Rendered by CB Multipart's BlockStatePartBakedModelRenderer through the frame block's model
+        return ModelData.builder()
+                .with(BlockStateModelPartData.TYPE, new BlockStateModelPartData(getCurrentState()))
+                .with(FrameModelData.DATA, new FrameModelData(getOccludedSideMask()))
+                .build();
     }
     //endregion
 }

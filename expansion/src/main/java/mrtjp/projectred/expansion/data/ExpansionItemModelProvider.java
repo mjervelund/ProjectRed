@@ -1,18 +1,23 @@
 package mrtjp.projectred.expansion.data;
 
+import java.util.List;
+import java.util.ArrayList;
+import net.minecraft.resources.Identifier;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.renderer.item.RangeSelectItemModel;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import mrtjp.projectred.expansion.init.ExpansionClientInit;
+import mrtjp.projectred.expansion.client.ExpansionItemProperties;
 import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.expansion.TubeType;
-import mrtjp.projectred.expansion.client.TubePartItemRenderer;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.*;
-import static mrtjp.projectred.expansion.init.ExpansionClientInit.ITEM_MODEL_PROPERTY_CHARGE_LEVEL;
-import static mrtjp.projectred.expansion.init.ExpansionClientInit.ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN;
 import static mrtjp.projectred.expansion.init.ExpansionItems.*;
 
 public class ExpansionItemModelProvider extends ProjectRedModelProvider {
@@ -38,7 +43,7 @@ public class ExpansionItemModelProvider extends ProjectRedModelProvider {
         simpleItemBlock(FRAME_MOTOR_BLOCK.get());
 
         for (TubeType type : TubeType.values()) {
-            clazz(type.getItem(), TubePartItemRenderer.class);
+            specialItem(type.getItem(), ExpansionClientInit.TUBE_ITEM_RENDERER);
         }
 
         generated(EMPTY_BATTERY_ITEM);
@@ -51,31 +56,21 @@ public class ExpansionItemModelProvider extends ProjectRedModelProvider {
         chargeableItemBlock(BATTERY_BOX_BLOCK.get(), 8);
     }
 
+    // Block model per charge level, selected by the charge level property
     private void chargeableItemBlock(Block block, int chargeLevels) {
-
-        ItemModelBuilder builder = getBuilder(block)
-                .parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name(block))));
-
-        // Add overrides for each non-zero state
+        List<RangeSelectItemModel.Entry> entries = new ArrayList<>();
         for (int i = 1; i <= chargeLevels; i++) {
-            builder.override()
-                    .predicate(ITEM_MODEL_PROPERTY_CHARGE_LEVEL, i)
-                    .model(getBuilder(name(block) + "_charge" + i)
-                            .parent(new ModelFile.UncheckedModelFile(modLoc("block/" + name(block) + "_charge" + i))))
-                    .end();
+            entries.add(ItemModelUtils.override(ItemModelUtils.plainModel(modLoc("block/" + name(block) + "_charge" + i)), i));
         }
+        itemModels.itemModelOutput.accept(block.asItem(), ItemModelUtils.rangeSelect(new ExpansionItemProperties.ChargeLevel(),
+                ItemModelUtils.plainModel(modLoc("block/" + name(block))), entries));
     }
 
+    // Blank and written textures, selected by the written property
     private void writablePlanItem(Item item) {
-
-        getBuilder(item)
-                .parent(GENERATED)
-                .texture("layer0", modLoc("item/" + name(item)))
-                .override()
-                    .predicate(ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN, 1)
-                    .model(getBuilder(name(item) + "_written")
-                            .texture("layer0", modLoc("item/" + name(item) + "_written"))
-                            .parent(GENERATED))
-                    .end();
+        Identifier blank = ModelTemplates.FLAT_ITEM.create(modLoc("item/" + name(item)), TextureMapping.layer0(new Material(modLoc("item/" + name(item)))), itemModels.modelOutput);
+        Identifier written = ModelTemplates.FLAT_ITEM.create(modLoc("item/" + name(item) + "_written"), TextureMapping.layer0(new Material(modLoc("item/" + name(item) + "_written"))), itemModels.modelOutput);
+        itemModels.itemModelOutput.accept(item, ItemModelUtils.conditional(new ExpansionItemProperties.WrittenRecipePlan(),
+                ItemModelUtils.plainModel(written), ItemModelUtils.plainModel(blank)));
     }
 }

@@ -1,73 +1,55 @@
 package mrtjp.projectred.expansion.client;
 
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.model.PerspectiveModel;
-import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakedQuadVertexBuilder;
-import codechicken.lib.util.TransformUtils;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
+import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class FrameBlockModel implements IDynamicBakedModel, PerspectiveModel {
+import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 
-    // Mask -> List<BakedQuads>
-    private static final HashMap<Integer, List<BakedQuad>> bakedQuads = new HashMap<>();
+public class FrameBlockModel implements DynamicBlockStateModel {
 
-    public FrameBlockModel() {
-    }
+    // Mask -> part
+    private static final HashMap<Integer, BlockStateModelPart> bakedParts = new HashMap<>();
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
-        // Cutout only
-        if (renderType != null && renderType != RenderTypes.cutoutMovingBlock()) return List.of();
-
-        // No cull yet
-        if (side != null) return List.of();
-
-        var frameData = extraData.get(FrameModelData.DATA);
+    public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+        var frameData = level.getModelData(pos).get(FrameModelData.DATA);
         int mask = frameData != null ? frameData.mask() : 0;
-
-        return getOrGenerateQuads(mask);
+        parts.add(getOrGeneratePart(mask));
     }
 
     @Override
-    public @Nullable PerspectiveModelState getModelState() {
-        return TransformUtils.DEFAULT_BLOCK;
+    public Material.Baked particleMaterial() {
+        return new Material.Baked(FrameModelRenderer.getFrameIcon(), false);
     }
 
     @Override
-    public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-        return ChunkRenderTypeSet.of(RenderTypes.cutoutMovingBlock());
+    public @BakedQuad.MaterialFlags int materialFlags() {
+        return 0;
     }
 
-    private static List<BakedQuad> getOrGenerateQuads(int mask) {
-        var quads = bakedQuads.get(mask);
-        if (quads != null) return quads;
-
-        synchronized (bakedQuads) {
-            // Re-check after waiting for sync
-            quads = bakedQuads.get(mask);
-            if (quads != null) return quads;
-
-            quads = generateQuads(mask);
-            bakedQuads.put(mask, quads);
+    private BlockStateModelPart getOrGeneratePart(int mask) {
+        synchronized (bakedParts) {
+            return bakedParts.computeIfAbsent(mask, m -> new Part(generateQuads(m), particleMaterial()));
         }
-
-        return quads;
     }
 
     private static List<BakedQuad> generateQuads(int mask) {
@@ -79,17 +61,45 @@ public class FrameBlockModel implements IDynamicBakedModel, PerspectiveModel {
         ccrs.bind(builder, DefaultVertexFormat.BLOCK);
         FrameModelRenderer.renderStatic(ccrs, mask);
 
-        return builder.bake();
+        return builder.getQuads();
     }
 
-    //region BakedModel
-    //@formatter:off
-    @Override public boolean useAmbientOcclusion() { return true; }
-    @Override public boolean isGui3d() { return true; }
-    @Override public boolean usesBlockLight() { return true; }
-    @Override public boolean isCustomRenderer() { return false; }
-    @Override public TextureAtlasSprite getParticleIcon() { return FrameModelRenderer.getFrameIcon(); }
-    @Override public ItemOverrides getOverrides() { return ItemOverrides.EMPTY; }
-    //@formatter:on
-    //endregion
+    // No cull yet: all quads are unculled
+    private record Part(List<BakedQuad> quads, Material.Baked particleMaterial) implements BlockStateModelPart {
+
+        @Override
+        public List<BakedQuad> getQuads(@Nullable Direction direction) {
+            return direction == null ? quads : List.of();
+        }
+
+        @Override
+        public boolean useAmbientOcclusion() {
+            return true;
+        }
+
+        @Override
+        public @BakedQuad.MaterialFlags int materialFlags() {
+            return 0;
+        }
+    }
+
+    public static final class Unbaked implements CustomUnbakedBlockStateModel {
+
+        public static final Identifier TYPE = Identifier.fromNamespaceAndPath(MOD_ID, "frame");
+        public static final MapCodec<Unbaked> CODEC = MapCodec.unit(Unbaked::new);
+
+        @Override
+        public BlockStateModel bake(ModelBaker baker) {
+            return new FrameBlockModel();
+        }
+
+        @Override
+        public void resolveDependencies(Resolver resolver) {
+        }
+
+        @Override
+        public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
+            return CODEC;
+        }
+    }
 }

@@ -1,62 +1,37 @@
 package mrtjp.projectred.expansion.mixin;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mrtjp.projectred.expansion.MovementManager;
 import mrtjp.projectred.expansion.client.MovingBlockRenderManager;
-import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.BlockQuadOutput;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
-import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.model.data.ModelData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * Render hook for moving blocks for Minecraft's default render pipeline
+ * Leaves moving blocks out of the chunk mesh; {@link MovingBlockRenderManager} draws them at their animated offset.
  */
 @Mixin(SectionCompiler.class)
 public class SectionCompilerMixin {
 
     @Redirect(
-            method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderChunkRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
+            method = "compile(Lnet/minecraft/core/SectionPos;Lnet/minecraft/client/renderer/chunk/RenderSectionRegion;Lcom/mojang/blaze3d/vertex/VertexSorting;Lnet/minecraft/client/renderer/SectionBufferBuilderPack;Ljava/util/List;)Lnet/minecraft/client/renderer/chunk/SectionCompiler$Results;",
             at = @At(
                     value = "INVOKE",
-                    target = "net/minecraft/client/renderer/block/BlockRenderDispatcher.renderBatched (Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/BlockAndTintGetter;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;ZLnet/minecraft/util/RandomSource;Lnet/neoforged/neoforge/client/model/data/ModelData;Lnet/minecraft/client/renderer/RenderType;)V"
+                    target = "Lnet/minecraft/client/renderer/block/ModelBlockRenderer;tesselateBlock(Lnet/minecraft/client/renderer/block/BlockQuadOutput;FFFLnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/block/dispatch/BlockStateModel;J)V"
             )
     )
-    private static void compile_WrapRenderBatched(
-            BlockRenderDispatcher blockRenderer,
-            BlockState state,
-            BlockPos pos,
-            BlockAndTintGetter blockAndTintGetter,
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            boolean enableCulling,
-            RandomSource random,
-            ModelData modelData,
-            RenderType renderType) {
-
+    private void compile_WrapTesselateBlock(ModelBlockRenderer renderer, BlockQuadOutput output, float x, float y, float z,
+                                            BlockAndTintGetter level, BlockPos pos, BlockState state, BlockStateModel model, long seed) {
         MovementManager manager = MovementManager.getClientInstanceNullable();
-
-        if (manager != null && !manager.hasNoMovingStructures()) {
-            // If block is moving, don't render it
-            if (MovingBlockRenderManager.isMoving(manager, pos)) {
-                return;
-            }
-
-            // If block is adjacent to moving block, render without culling
-            if (MovingBlockRenderManager.isAdjacentToMoving(manager, pos)) {
-                blockRenderer.renderBatched(state, pos, blockAndTintGetter, poseStack, buffer, false, random, modelData, renderType);
-                return;
-            }
+        if (manager != null && !manager.hasNoMovingStructures() && MovingBlockRenderManager.isMoving(manager, pos)) {
+            return;
         }
-
-        // Render normally
-        blockRenderer.renderBatched(state, pos, blockAndTintGetter, poseStack, buffer, enableCulling, random, modelData, renderType);
+        renderer.tesselateBlock(output, x, y, z, level, pos, state, model, seed);
     }
 }

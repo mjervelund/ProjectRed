@@ -7,6 +7,7 @@ import mrtjp.projectred.expansion.ProjectRedExpansion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockCollisions;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.CollisionGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -23,16 +24,16 @@ public abstract class BlockCollisionsMixin<T> {
             method = "computeNext",
             at = @At(
                     value = "INVOKE",
-                    target = "net/minecraft/world/level/block/state/BlockState.getCollisionShape (Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
+                    target = "Lnet/minecraft/world/phys/shapes/CollisionContext;getCollisionShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/CollisionGetter;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/phys/shapes/VoxelShape;"
             )
     )
     private VoxelShape modifyCollisionShapeForMovingBlocks(
+            CollisionContext context,
             BlockState state,
-            BlockGetter getter,
-            BlockPos pos,
-            CollisionContext context) {
+            CollisionGetter getter,
+            BlockPos pos) {
 
-        VoxelShape shape = state.getCollisionShape(getter, pos, context);
+        VoxelShape shape = context.getCollisionShape(state, getter, pos);
 
         if (!(getter instanceof Level level)) return shape;
 
@@ -47,7 +48,7 @@ public abstract class BlockCollisionsMixin<T> {
         BlockPos pos2 = pos.relative(info.getDirection().getOpposite());
         MovingStructureInfo info2 = manager.getMovementInfo(pos2);
         if (info2.isMoving() && info2.getDirection() == info.getDirection()) {
-            var shape2 = level.getBlockState(pos2).getCollisionShape(level, pos2, context);
+            var shape2 = context.getCollisionShape(level.getBlockState(pos2), level, pos2);
             shape2 = shape2.move(adjacentOffset.getStepX(), adjacentOffset.getStepY(), adjacentOffset.getStepZ());
             var shape3 = Shapes.or(shape, shape2);
             ProjectRedExpansion.LOGGER.info("{}@{} adjacent block merged: {} + {} = {}", state, pos, shape, shape2, shape3);

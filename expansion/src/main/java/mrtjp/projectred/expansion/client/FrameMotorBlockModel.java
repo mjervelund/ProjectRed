@@ -1,5 +1,9 @@
 package mrtjp.projectred.expansion.client;
 
+import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.vec.uv.MultiIconTransformation;
 import mrtjp.projectred.core.block.ProjectRedBlock;
@@ -32,10 +36,6 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
     private static @Nullable MultiIconTransformation iconT2;
     private static @Nullable MultiIconTransformation iconT3;
 
-    @Override
-    protected RenderType getBlockRenderLayer(@Nullable BlockState state) {
-        return RenderTypes.solidMovingBlock();
-    }
 
     @Override
     protected RenderData getBlockRenderData(@Nullable BlockState state) {
@@ -59,7 +59,7 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
     }
 
     @Override
-    public TextureAtlasSprite getParticleIcon() {
+    protected TextureAtlasSprite getParticleIcon() {
         return topIcon;
     }
 
@@ -76,5 +76,25 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
         iconT1 = new MultiIconTransformation(bottomIcon, topIcon, frontBack0Icon, frontBack0Icon, leftIcon, rightIcon);
         iconT2 = new MultiIconTransformation(bottomIcon, topIcon, frontBack1Icon, frontBack1Icon, leftIcon, rightIcon);
         iconT3 = new MultiIconTransformation(bottomIcon, topIcon, frontBack2Icon, frontBack2Icon, leftIcon, rightIcon);
+    }
+
+    public static final class Unbaked implements CustomUnbakedBlockStateModel {
+
+        public static final Identifier TYPE = Identifier.fromNamespaceAndPath(MOD_ID, "frame_motor");
+        public static final MapCodec<Unbaked> CODEC = MapCodec.unit(Unbaked::new);
+
+        @Override
+        public BlockStateModel bake(ModelBaker baker) {
+            return new FrameMotorBlockModel();
+        }
+
+        @Override
+        public void resolveDependencies(Resolver resolver) {
+        }
+
+        @Override
+        public MapCodec<? extends CustomUnbakedBlockStateModel> codec() {
+            return CODEC;
+        }
     }
 }

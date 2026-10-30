@@ -40,7 +40,10 @@ public interface BlockGetterMixin {
 
             var movementInfo = manager.getMovementInfo(pos);
             if (!movementInfo.isMoving()) {
-                return lambda$clip$2(ctx, pos); // Super's impl of this lambda
+                // Vanilla behaviour: block and fluid hits at this position, closest wins
+                List<BlockHitResult> hits = new LinkedList<>();
+                gatherHits(level, ctx, ctx.getFrom(), ctx.getTo(), pos, pos, Vector3.ZERO, hits);
+                return selectClosest(hits, ctx.getFrom());
             }
 
             Vec3 fromVec = ctx.getFrom();
@@ -62,7 +65,7 @@ public interface BlockGetterMixin {
 
         }, ctx -> {
             Vec3 vec3 = ctx.getFrom().subtract(ctx.getTo());
-            return BlockHitResult.miss(ctx.getTo(), Direction.getNearest(vec3.x, vec3.y, vec3.z), BlockPos.containing(ctx.getTo()));
+            return BlockHitResult.miss(ctx.getTo(), Direction.getApproximateNearest(vec3.x, vec3.y, vec3.z), BlockPos.containing(ctx.getTo()));
         });
 
         cir.setReturnValue(hit);
@@ -131,9 +134,4 @@ public interface BlockGetterMixin {
         return closestHit;
     }
 
-    @Shadow
-    private BlockHitResult lambda$clip$2(ClipContext clipContext, BlockPos pos) {
-        //noinspection DataFlowIssue
-        return null;
-    }
 }

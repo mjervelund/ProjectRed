@@ -1,19 +1,29 @@
 package mrtjp.projectred.expansion.init;
 
-import codechicken.multipart.api.MultipartClientRegistry;
-import codechicken.multipart.api.part.render.PartBakedModelRenderer;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
+import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterBlockStateModels;
+import mrtjp.projectred.expansion.part.BaseTubePart;
+import mrtjp.projectred.expansion.client.TubePartRenderer;
+import mrtjp.projectred.expansion.client.TubePartItemRenderer;
+import mrtjp.projectred.expansion.client.FrameMotorBlockModel;
+import mrtjp.projectred.expansion.client.FrameBlockModel;
+import mrtjp.projectred.expansion.client.ExpansionItemProperties;
+import mrtjp.projectred.core.client.ProjectRedItemRenderer;
+import mrtjp.projectred.core.client.IconPartParticleHandler;
+import codechicken.multipart.api.part.render.BlockStatePartBakedModelRenderer;
+import codechicken.multipart.api.RegisterMultipartRenderersEvent;
+import codechicken.multipart.api.MultipartType;
 import mrtjp.projectred.expansion.GraphDebugManager;
 import mrtjp.projectred.expansion.TubeType;
 import mrtjp.projectred.expansion.client.*;
-import mrtjp.projectred.expansion.compatibility.EmbeddiumCompatibility;
 import mrtjp.projectred.expansion.gui.screen.inventory.*;
 import mrtjp.projectred.expansion.item.BatteryBoxStorageComponent;
 import mrtjp.projectred.expansion.item.RecipePlanComponent;
 import net.covers1624.quack.util.SneakyUtils;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -31,13 +41,19 @@ public class ExpansionClientInit {
 
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(ExpansionClientInit::clientSetup);
+        modEventBus.addListener(ExpansionClientInit::onRegisterRangeSelectProperties);
+        modEventBus.addListener(ExpansionClientInit::onRegisterConditionalProperties);
+        modEventBus.addListener(ExpansionClientInit::onRegisterBlockStateModels);
+        modEventBus.addListener(ExpansionClientInit::onRegisterMultipartRenderers);
+        modEventBus.addListener(ExpansionClientInit::onRegisterSpecialModelRenderers);
 
         // Register menu screens
         modEventBus.addListener(ExpansionClientInit::onRegisterMenuScreensEvent);
 
         // MovementManager hooks
-        NeoForge.EVENT_BUS.addListener(MovingBlockRenderManager::onRenderLevelStage);
-        NeoForge.EVENT_BUS.addListener(MovingBlockRenderManager::onDrawHighlight);
+        NeoForge.EVENT_BUS.addListener(MovingBlockRenderManager::onSubmitCustomGeometry);
+        NeoForge.EVENT_BUS.addListener(MovingBlockRenderManager::onExtractBlockOutline);
+        NeoForge.EVENT_BUS.addListener(PneumaticSmokeParticle::onSubmitCustomGeometry);
 
         // GraphDebugManager hooks
         NeoForge.EVENT_BUS.addListener(GraphDebugManager::onRenderLevelStage);
@@ -53,22 +69,6 @@ public class ExpansionClientInit {
 
     private static void clientSetup(final FMLClientSetupEvent event) {
 
-        // Register item model properties
-        addItemModelProperties();
-
-        // Register part renderers
-        MultipartClientRegistry.register(FRAME_PART.get(), PartBakedModelRenderer.simple());
-
-        // Register pipe renderers
-        for (TubeType type : TubeType.values()) {
-            // Block renderer
-            MultipartClientRegistry.register(type.getPartType(), SneakyUtils.unsafeCast(TubePartRenderer.INSTANCE));
-        }
-
-        // Load compatibility modules
-        //noinspection Convert2MethodRef
-        ModList.get().getModContainerById("embeddium")
-                .ifPresent(mod -> EmbeddiumCompatibility.initClient(mod));
     }
 
     private static void onRegisterMenuScreensEvent(RegisterMenuScreensEvent event) {
@@ -79,15 +79,31 @@ public class ExpansionClientInit {
         event.register(DEPLOYER_MENU.get(), DeployerScreen::new);
     }
 
-    private static void addItemModelProperties() {
-        ItemProperties.register(BATTERY_BOX_BLOCK.get().asItem(), ITEM_MODEL_PROPERTY_CHARGE_LEVEL, (stack, world, entity, seed) -> {
-            var component = BatteryBoxStorageComponent.getComponent(stack);
-            return component != null ? component.storedPowerRenderLevel() : 0.0F;
-        });
+    private static void onRegisterRangeSelectProperties(RegisterRangeSelectItemModelPropertyEvent event) {
+        event.register(ITEM_MODEL_PROPERTY_CHARGE_LEVEL, ExpansionItemProperties.ChargeLevel.CODEC);
+    }
 
-        ItemProperties.register(RECIPE_PLAN_ITEM.get(), ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN, (stack, world, entity, seed) -> {
-            var recipeData = RecipePlanComponent.getComponent(stack);
-            return recipeData != null && recipeData.isRecipeValid() ? 1.0F : 0.0F;
-        });
+    private static void onRegisterConditionalProperties(RegisterConditionalItemModelPropertyEvent event) {
+        event.register(ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN, ExpansionItemProperties.WrittenRecipePlan.CODEC);
+    }
+
+    private static void onRegisterBlockStateModels(RegisterBlockStateModels event) {
+        event.registerModel(FrameBlockModel.Unbaked.TYPE, FrameBlockModel.Unbaked.CODEC);
+        event.registerModel(FrameMotorBlockModel.Unbaked.TYPE, FrameMotorBlockModel.Unbaked.CODEC);
+    }
+
+    private static void onRegisterMultipartRenderers(RegisterMultipartRenderersEvent event) {
+        event.registerStaticPartRenderer(FRAME_PART.get(), BlockStatePartBakedModelRenderer::new);
+        event.registerParticleHandler(FRAME_PART.get(), IconPartParticleHandler.INSTANCE);
+        for (TubeType type : TubeType.values()) {
+            event.registerDynamicPartRenderer(SneakyUtils.<MultipartType<BaseTubePart>>unsafeCast(type.getPartType()), () -> TubePartRenderer.INSTANCE);
+            event.registerParticleHandler(type.getPartType(), IconPartParticleHandler.INSTANCE);
+        }
+    }
+
+    public static final ProjectRedItemRenderer.Unbaked TUBE_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(TubePartItemRenderer::new);
+
+    private static void onRegisterSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "tube"), TUBE_ITEM_RENDERER.type());
     }
 }

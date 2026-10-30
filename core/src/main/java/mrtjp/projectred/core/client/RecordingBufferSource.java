@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -59,7 +60,7 @@ public final class RecordingBufferSource {
     }
 
     /**
-     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, full light, up normal).
+     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, no overlay, full light, up normal).
      */
     private static final class Recorder implements VertexConsumer {
 
@@ -80,7 +81,7 @@ public final class RecordingBufferSource {
             floats.add(z);
             for (int i = 3; i < F; i++) floats.add(i == 8 ? 1 : 0);
             ints.add(-1);
-            ints.add(0);
+            ints.add(OverlayTexture.NO_OVERLAY);
             ints.add(0xF000F0);
             count++;
             return this;

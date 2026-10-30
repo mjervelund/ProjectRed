@@ -1,18 +1,23 @@
 package mrtjp.projectred.expansion.client;
 
+import java.util.WeakHashMap;
+import java.util.Set;
+import java.util.Collections;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.Minecraft;
+import mrtjp.projectred.core.client.RecordingBufferSource;
+import com.mojang.blaze3d.vertex.PoseStack;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.*;
-import com.mojang.renderpearl.backend.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import mrtjp.projectred.core.client.particle.BaseActionParticle;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
@@ -28,21 +33,8 @@ public class PneumaticSmokeParticle extends BaseActionParticle {
 
     public static TextureAtlasSprite SMOKE_PARTICLE_SPRITE;
 
-    private static ParticleRenderType PARTICLE_TYPE_SMOKE = new ParticleRenderType() {
-        @Override
-        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
-            RenderSystem.depthMask(true);
-            RenderSystem.setShaderTexture(0, SMOKE_PARTICLE_LOCATION);
-            RenderSystem.enableBlend();
-            RenderSystem.disableCull();
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
-        }
-
-        public String toString() {
-            return "PARTICLE_TYPE_SMOKE";
-        }
-    };
+    // 26.x particles only render through vanilla's particle groups: smoke trails are drawn by onSubmitCustomGeometry.
+    private static final Set<PneumaticSmokeParticle> ACTIVE = Collections.newSetFromMap(new WeakHashMap<>());
 
     private final List<Vector3> points = new LinkedList<>();
 
@@ -65,15 +57,34 @@ public class PneumaticSmokeParticle extends BaseActionParticle {
             bounds.enclose(point);
         }
         setBoundingBox(bounds.aabb());
+
+        ACTIVE.add(this);
     }
 
 
-    @Override
-    public void render(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
+    public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
+        ACTIVE.removeIf(p -> !p.isAlive());
+        if (ACTIVE.isEmpty()) return;
+
+        float partialTicks = Minecraft.getInstance().getDeltaTracker().getGameTimeDeltaPartialTick(false);
+        Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
+        RecordingBufferSource buffers = new RecordingBufferSource();
+        VertexConsumer buffer = buffers.getBuffer(RenderTypes.entityTranslucent(SMOKE_PARTICLE_LOCATION));
+        PoseStack stack = event.getPoseStack();
+        stack.pushPose();
+        VertexConsumer posed = new TransformingVertexConsumer(buffer, stack);
+        for (PneumaticSmokeParticle particle : ACTIVE) {
+            particle.render(posed, cam, partialTicks);
+        }
+        stack.popPose();
+        buffers.submit(event.getSubmitNodeCollector());
+    }
+
+    private void render(VertexConsumer pBuffer, Vec3 cam, float pPartialTicks) {
 
         runActions(pPartialTicks);
 
-        var t = new Translation(-pRenderInfo.getPosition().x, -pRenderInfo.getPosition().y, -pRenderInfo.getPosition().z);
+        var t = new Translation(-cam.x, -cam.y, -cam.z);
         VertexConsumer vc = new TransformingVertexConsumer(pBuffer, t);
 
         // Draw lines from point to point
@@ -110,7 +121,7 @@ public class PneumaticSmokeParticle extends BaseActionParticle {
         float u2 = 1.0f;
         float v2 = v1 + (float) length;
 
-        int j = getLightColor(f);
+        int j = getLightCoords(f);
 
         // 90-degree rotated on Y axis for crossed quad render
         Transformation[] transforms = {
@@ -128,8 +139,8 @@ public class PneumaticSmokeParticle extends BaseActionParticle {
     }
 
     @Override
-    public ParticleRenderType getRenderType() {
-        return PARTICLE_TYPE_SMOKE;
+    public ParticleRenderType getGroup() {
+        return ParticleRenderType.NO_RENDER;
     }
 
     public static void onTextureStitchEvent(TextureAtlasStitchedEvent event) {

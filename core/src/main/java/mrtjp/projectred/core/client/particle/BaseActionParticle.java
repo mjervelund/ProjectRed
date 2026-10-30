@@ -10,6 +10,15 @@ public abstract class BaseActionParticle extends Particle {
 
     // 26.x Particle has no alpha (only SingleQuadParticle); action particles keep their own.
     protected float alpha = 1.0F;
+    protected float rCol = 1.0F;
+    protected float gCol = 1.0F;
+    protected float bCol = 1.0F;
+
+    public void setColor(float r, float g, float b) {
+        this.rCol = r;
+        this.gCol = g;
+        this.bCol = b;
+    }
 
     private final LinkedList<ParticleAction> actionQueue = new LinkedList<>();
     private @Nullable ParticleAction currentAction = null;

@@ -1,18 +1,19 @@
 package mrtjp.projectred.expansion.data;
 
+import net.neoforged.neoforge.client.model.generators.blockstate.CustomBlockStateModelBuilder;
+import net.neoforged.neoforge.client.model.block.CustomUnbakedBlockStateModel;
+import net.minecraft.resources.Identifier;
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.BlockModelGenerators;
 import mrtjp.projectred.core.data.ProjectRedModelProvider;
-import codechicken.lib.datagen.ClassModelLoaderBuilder;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.expansion.block.BatteryBoxBlock;
 import mrtjp.projectred.expansion.client.FrameBlockModel;
 import mrtjp.projectred.expansion.client.FrameMotorBlockModel;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 import static mrtjp.projectred.expansion.init.ExpansionBlocks.*;
@@ -40,27 +41,13 @@ public class ExpansionBlockStateModelProvider extends ProjectRedModelProvider {
         addSidedOppositeMatchingFacesDeviceBlock(DEPLOYER_BLOCK.get());
 
         // Advanced models rendered programmatically. Only Particle info provided by model file
-        addDynamicModel(FRAME_BLOCK.get(), FrameBlockModel.class);
-        addDynamicModel(FRAME_MOTOR_BLOCK.get(), FrameMotorBlockModel.class);
+        addDynamicModel(FRAME_BLOCK.get(), new FrameBlockModel.Unbaked());
+        addDynamicModel(FRAME_MOTOR_BLOCK.get(), new FrameMotorBlockModel.Unbaked());
     }
 
-    private void addProgrammaticWithParticleTexture(Block block, String texSuffix) {
-        String blockName = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        String texName = blockName + texSuffix;
-        ModelFile dummy = models()
-                .withExistingParent(blockName + "_programmatically_rendered", "block")
-                .texture("particle", "block/" + texName);
-        simpleBlock(block, dummy);
-    }
-
-    private void addDynamicModel(Block block, Class<? extends BakedModel> clazz) {
-        String blockName = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        ModelFile model = models()
-                .withExistingParent(blockName, "block")
-                .customLoader(ClassModelLoaderBuilder::new)
-                .clazz(clazz)
-                .end();
-        simpleBlock(block, model);
+    private void addDynamicModel(Block block, CustomUnbakedBlockStateModel model) {
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block,
+                MultiVariant.of(new CustomBlockStateModelBuilder.Simple(model))));
     }
 
     private void addRotatableOppositeMatchingFacesBlock(Block block) {
@@ -68,19 +55,17 @@ public class ExpansionBlockStateModelProvider extends ProjectRedModelProvider {
     }
 
     private void addBatteryBoxBlock(Block block) {
-        getVariantBuilder(block).forAllStates(state -> {
+        forAllStates(block, state -> {
             int charge = state.getValue(BatteryBoxBlock.CHARGE_LEVEL);
-            return ConfiguredModel.builder()
-                    .modelFile(createBatteryModel(block, charge))
-                    .build();
+            return new Variant(createBatteryModel(block, charge));
         });
     }
 
     private void addTriStateFrontFacedPoweredMachineBlock(Block block) {
 
-        ModelFile m0 = createFrontFacedMachineModel(block, 0);
-        ModelFile m1 = createFrontFacedMachineModel(block, 1);
-        ModelFile m3 = createFrontFacedMachineModel(block, 2);
+        Identifier m0 = createFrontFacedMachineModel(block, 0);
+        Identifier m1 = createFrontFacedMachineModel(block, 1);
+        Identifier m3 = createFrontFacedMachineModel(block, 2);
 
         // m2 not possible here (cannot be working and not charged)
         addRotatablePoweredMachineVariants(block, m0, m1, m1, m3);
@@ -88,172 +73,153 @@ public class ExpansionBlockStateModelProvider extends ProjectRedModelProvider {
 
     private void addBiStateSideAndTopMachineBlock(Block block) {
 
-        ModelFile m0 = createSideAndTopStateModel(block, 0);
-        ModelFile m1 = createSideAndTopStateModel(block, 1);
+        Identifier m0 = createSideAndTopStateModel(block, 0);
+        Identifier m1 = createSideAndTopStateModel(block, 1);
 
         addChargedMachineVariants(block, m0, m1);
     }
 
     private void addSidedOppositeMatchingFacesDeviceBlock(Block block) {
-        ModelFile inactive = createOppositeMatchingFaceDeviceModel(block, false);
-        ModelFile active = createOppositeMatchingFaceDeviceModel(block, true);
+        Identifier inactive = createOppositeMatchingFaceDeviceModel(block, false);
+        Identifier active = createOppositeMatchingFaceDeviceModel(block, true);
 
         addSidedDeviceVariants(block, inactive, active);
     }
 
     private void addTriStateSidedPoweredDeviceBlock(Block block) {
-        ModelFile m0 = createSideStateModel(block, 0);
-        ModelFile m1 = createSideStateModel(block, 1);
-        ModelFile m2 = createSideStateModel(block, 2);
+        Identifier m0 = createSideStateModel(block, 0);
+        Identifier m1 = createSideStateModel(block, 1);
+        Identifier m2 = createSideStateModel(block, 2);
 
         addSidedPoweredDeviceVariants(block, m0, m1, m1, m2);
     }
 
     private void addSideAndTopActiveModel(Block block) {
-        ModelFile inactive = createSideAndTopActiveModel(block, false);
-        ModelFile active = createSideAndTopActiveModel(block, true);
+        Identifier inactive = createSideAndTopActiveModel(block, false);
+        Identifier active = createSideAndTopActiveModel(block, true);
 
         addSidedDeviceVariants(block, inactive, active);
     }
 
-    private void addRotatableVariants(Block block, ModelFile model) {
-        for (int r = 0; r < 4; r++) {
-            getVariantBuilder(block)
-                    .partialState().with(ProjectRedBlock.ROTATION, r)
-                    .addModels(ConfiguredModel.builder().modelFile(model).rotationY(r * 90).build());
-        }
+    private void addRotatableVariants(Block block, Identifier model) {
+        forAllStates(block, state -> rotateY(new Variant(model), state.getValue(ProjectRedBlock.ROTATION) * 90));
     }
 
-    private void addRotatablePoweredMachineVariants(Block block, ModelFile idle, ModelFile charged, ModelFile working, ModelFile chargedAndWorking) {
-        getVariantBuilder(block).forAllStates(state -> {
+    private void addRotatablePoweredMachineVariants(Block block, Identifier idle, Identifier charged, Identifier working, Identifier chargedAndWorking) {
+        forAllStates(block, state -> {
             int r = state.getValue(ProjectRedBlock.ROTATION);
             boolean isWorking = state.getValue(ProjectRedBlock.WORKING);
             boolean isCharged = state.getValue(ProjectRedBlock.CHARGED);
 
-            ModelFile model = isWorking && isCharged ? chargedAndWorking
+            Identifier model = isWorking && isCharged ? chargedAndWorking
                     : isWorking ? working
                     : isCharged ? charged
                     : idle;
 
-            return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .rotationY(r * 90)
-                    .build();
+            return rotateY(new Variant(model), r * 90);
         });
     }
 
-    private void addChargedMachineVariants(Block block, ModelFile idle, ModelFile charged) {
-        getVariantBuilder(block).forAllStates(state -> {
+    private void addChargedMachineVariants(Block block, Identifier idle, Identifier charged) {
+        forAllStates(block, state -> {
             boolean isCharged = state.getValue(ProjectRedBlock.CHARGED);
 
-            ModelFile model = isCharged ? charged : idle;
-            return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .build();
+            Identifier model = isCharged ? charged : idle;
+            return new Variant(model);
         });
     }
 
-    private void addSidedDeviceVariants(Block block, ModelFile inactive, ModelFile active) {
-        getVariantBuilder(block).forAllStates(state -> {
+    private void addSidedDeviceVariants(Block block, Identifier inactive, Identifier active) {
+        forAllStates(block, state -> {
             int s = state.getValue(ProjectRedBlock.SIDE);
             boolean isActive = state.getValue(ProjectRedBlock.ACTIVE);
 
-            return ConfiguredModel.builder()
-                    .modelFile(isActive ? active : inactive)
-                    .rotationX(DEVICE_SIDED_ROTATIONS[s][0] * 90)
-                    .rotationY(DEVICE_SIDED_ROTATIONS[s][1] * 90)
-                    .build();
+            return rotateY(rotateX(new Variant(isActive ? active : inactive), DEVICE_SIDED_ROTATIONS[s][0] * 90), DEVICE_SIDED_ROTATIONS[s][1] * 90);
         });
     }
 
-    private void addSidedPoweredDeviceVariants(Block block, ModelFile idle, ModelFile charged, ModelFile working, ModelFile chargedAndWorking) {
-        getVariantBuilder(block).forAllStates(state -> {
+    private void addSidedPoweredDeviceVariants(Block block, Identifier idle, Identifier charged, Identifier working, Identifier chargedAndWorking) {
+        forAllStates(block, state -> {
             int s = state.getValue(ProjectRedBlock.SIDE);
             boolean isWorking = state.getValue(ProjectRedBlock.WORKING);
             boolean isCharged = state.getValue(ProjectRedBlock.CHARGED);
-            ModelFile model = isWorking && isCharged ? chargedAndWorking
+            Identifier model = isWorking && isCharged ? chargedAndWorking
                     : isWorking ? working
                     : isCharged ? charged
                     : idle;
 
-            return ConfiguredModel.builder()
-                    .modelFile(model)
-                    .rotationX(DEVICE_SIDED_ROTATIONS[s][0] * 90)
-                    .rotationY(DEVICE_SIDED_ROTATIONS[s][1] * 90)
-                    .build();
+            return rotateY(rotateX(new Variant(model), DEVICE_SIDED_ROTATIONS[s][0] * 90), DEVICE_SIDED_ROTATIONS[s][1] * 90);
         });
     }
 
-    private BlockModelBuilder createOppositeMatchingFaceModel(Block block) {
+    private Identifier createOppositeMatchingFaceModel(Block block) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        return models().cube(texture,
+        return cube(texture,
                         modLoc("block/" + texture + "_bottom"),
                         modLoc("block/" + texture + "_top"),
                         modLoc("block/" + texture + "_front_back"),
                         modLoc("block/" + texture + "_front_back"),
                         modLoc("block/" + texture + "_left_right"),
-                        modLoc("block/" + texture + "_left_right"))
-                .texture("particle", modLoc("block/" + texture + "_front_back"));
+                        modLoc("block/" + texture + "_left_right"));
     }
 
-    private BlockModelBuilder createBatteryModel(Block block, int charge) {
+    private Identifier createBatteryModel(Block block, int charge) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String modelName = texture + (charge > 0 ? "_charge" + charge : "");
-        return models().cubeBottomTop(modelName,
+        return cubeBottomTop(modelName,
                 modLoc("block/" + texture + "_side_" + charge),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top"));
     }
 
-    private BlockModelBuilder createFrontFacedMachineModel(Block block, int state) {
+    private Identifier createFrontFacedMachineModel(Block block, int state) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String modelName = texture + (state > 0 ? "_state" + state : "");
-        return models().orientableWithBottom(modelName,
+        return orientableWithBottom(modelName,
                 modLoc("block/" + texture + "_side"),
                 modLoc("block/" + texture + "_front_" + state),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top"));
     }
 
-    private BlockModelBuilder createSideAndTopStateModel(Block block, int state) {
+    private Identifier createSideAndTopStateModel(Block block, int state) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String modelName = texture + (state > 0 ? "_state" + state : "");
-        return models().cubeBottomTop(modelName,
+        return cubeBottomTop(modelName,
                 modLoc("block/" + texture + "_side_" + state),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top_" + state));
     }
 
-    private BlockModelBuilder createSideStateModel(Block block, int state) {
+    private Identifier createSideStateModel(Block block, int state) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String modelName = texture + (state > 0 ? "_state" + state : "");
-        return models().cubeBottomTop(modelName,
+        return cubeBottomTop(modelName,
                 modLoc("block/" + texture + "_side_" + state),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top"));
     }
 
-    private BlockModelBuilder createSideAndTopActiveModel(Block block, boolean active) {
+    private Identifier createSideAndTopActiveModel(Block block, boolean active) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String activeKey = active ? "_active" : "";
         String modelName = texture + activeKey;
-        return models().cubeBottomTop(modelName,
+        return cubeBottomTop(modelName,
                 modLoc("block/" + texture + "_side" + activeKey),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top" + activeKey));
     }
 
-    private BlockModelBuilder createOppositeMatchingFaceDeviceModel(Block block, boolean active) {
+    private Identifier createOppositeMatchingFaceDeviceModel(Block block, boolean active) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String activeKey = active ? "_active" : "";
         String modelName = texture + activeKey;
-        return models().cube(modelName,
+        return cube(modelName,
                         modLoc("block/" + texture + "_bottom" + activeKey),
                         modLoc("block/" + texture + "_top" + activeKey),
                         modLoc("block/" + texture + "_front_back" + activeKey),
                         modLoc("block/" + texture + "_front_back" + activeKey),
                         modLoc("block/" + texture + "_left_right" + activeKey),
-                        modLoc("block/" + texture + "_left_right" + activeKey))
-                .texture("particle", modLoc("block/" + texture + "_front_back" + activeKey));
+                        modLoc("block/" + texture + "_left_right" + activeKey));
     }
 }
