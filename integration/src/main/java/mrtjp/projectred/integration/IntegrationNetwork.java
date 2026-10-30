@@ -7,6 +7,7 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustomChannel;
 import codechicken.multipart.api.part.MultiPart;
 import codechicken.multipart.block.BlockMultipart;
+import codechicken.multipart.block.TileMultipart;
 import mrtjp.projectred.integration.gui.screen.CounterScreen;
 import mrtjp.projectred.integration.gui.screen.TimerScreen;
 import mrtjp.projectred.integration.part.ComplexGatePart;
@@ -17,6 +18,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -54,6 +56,21 @@ public class IntegrationNetwork {
         BlockPos pos = in.readPos();
         int index = in.readUByte();
         return Objects.requireNonNull(BlockMultipart.getTile(world, pos)).getPartList().get(index);
+    }
+
+    /**
+     * Server side {@link #readPartIndex}: the part a client names, or null unless it is in a loaded chunk, within the
+     * sender's reach, and the index is valid.
+     */
+    @Nullable
+    private static MultiPart readPartIndexFromClient(ServerPlayer sender, MCDataInput in) {
+        BlockPos pos = in.readPos();
+        int index = in.readUByte();
+        Level world = sender.level();
+        if (!world.isLoaded(pos) || !sender.isWithinBlockInteractionRange(pos, 4.0)) return null;
+        TileMultipart tile = BlockMultipart.getTile(world, pos);
+        if (tile == null || index >= tile.getPartList().size()) return null;
+        return tile.getPartList().get(index);
     }
 
     private static class ClientHandler implements ICustomPacketHandler.IClientPacketHandler {
@@ -95,10 +112,10 @@ public class IntegrationNetwork {
             switch (packet.getType()) {
 
                 case INCR_TIMER_FROM_CLIENT:
-                    handleIncrTimerMessage(sender.level(), packet);
+                    handleIncrTimerMessage(sender, packet);
                     break;
                 case INCR_COUNTER_FROM_CLIENT:
-                    handleIncrCounterMessage(sender.level(), packet);
+                    handleIncrCounterMessage(sender, packet);
                     break;
                 default:
                     // unknown key
@@ -106,15 +123,15 @@ public class IntegrationNetwork {
             }
         }
 
-        private void handleIncrTimerMessage(Level world, PacketCustom packet) {
-            MultiPart part = readPartIndex(world, packet);
+        private void handleIncrTimerMessage(ServerPlayer sender, PacketCustom packet) {
+            MultiPart part = readPartIndexFromClient(sender, packet);
             if (part instanceof ComplexGatePart.ITimerGuiLogic gate) {
                 gate.setTimerMax(gate.getTimerMax() + packet.readShort());
             }
         }
 
-        private void handleIncrCounterMessage(Level world, PacketCustom packet) {
-            MultiPart part = readPartIndex(world, packet);
+        private void handleIncrCounterMessage(ServerPlayer sender, PacketCustom packet) {
+            MultiPart part = readPartIndexFromClient(sender, packet);
             if (part instanceof ComplexGatePart.ICounterGuiLogic gate) {
                 int actionId = packet.readByte();
                 switch (actionId) {

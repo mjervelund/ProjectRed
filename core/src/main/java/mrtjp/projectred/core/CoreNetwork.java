@@ -6,6 +6,7 @@ import codechicken.lib.packet.PacketCustom;
 import codechicken.lib.packet.PacketCustomChannel;
 import mrtjp.projectred.core.tile.IPacketReceiverBlockEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
@@ -90,7 +91,11 @@ public class CoreNetwork {
         }
 
         private void handleTilePacket(Level world, MCDataInput data, ServerPlayer sender) {
-            BlockEntity tile = world.getBlockEntity(data.readPos());
+            BlockPos pos = data.readPos();
+            // Only blocks the sender could interact with: loaded (looking one up must not load or generate
+            // chunks) and within reach, with the same allowance vanilla gives open containers.
+            if (!world.isLoaded(pos) || !sender.isWithinBlockInteractionRange(pos, 4.0)) return;
+            BlockEntity tile = world.getBlockEntity(pos);
             int key = data.readUByte();
             if (tile instanceof IPacketReceiverBlockEntity)
                 ((IPacketReceiverBlockEntity) tile).receiveUpdateFromClient(key, data, sender);
