@@ -4,7 +4,7 @@ import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public abstract class ScrollBarNode extends AbstractGuiNode {
 
@@ -27,7 +27,7 @@ public abstract class ScrollBarNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         // Draw semi-transparent grey background
         int x = getFrame().x();
@@ -130,7 +130,7 @@ public abstract class ScrollBarNode extends AbstractGuiNode {
         }
     }
 
-    protected abstract void drawSlider(GuiGraphics graphics, Rect sliderFrame);
+    protected abstract void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame);
 
     protected abstract void adjustContent(double scrollPercentage); //move content based on scroll position
 }

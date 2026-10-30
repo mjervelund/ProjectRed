@@ -1,6 +1,6 @@
 package mrtjp.projectred.redui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class ButtonNode extends AbstractButtonNode {
     }
 
     @Override
-    protected void drawButtonBody(GuiGraphics graphics, boolean mouseover) {
+    protected void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover) {
 
         graphics.drawCenteredString(getRoot().getFontRenderer(), buttonText,
                 getPosition().x + getFrame().width()/2,

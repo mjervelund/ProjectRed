@@ -2,89 +2,41 @@ package mrtjp.projectred.core.client;
 
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.*;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.renderpearl.api.vertex.VertexFormat;
 import mrtjp.projectred.api.MovingBlockEntityRenderCallback;
 import mrtjp.projectred.api.ProjectRedAPI;
 import mrtjp.projectred.core.Configurator;
-import mrtjp.projectred.core.init.CoreClientInit;
-import net.minecraft.client.GraphicsStatus;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import static mrtjp.projectred.core.ProjectRedCore.MOD_ID;
-import static net.minecraft.client.renderer.RenderStateShard.*;
-import static net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage.AFTER_LEVEL;
-import static net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage.AFTER_PARTICLES;
-
+/**
+ * Light halos for illumar lamps and lights.
+ * <p>
+ * 26.3 port: halos are additive glow geometry submitted through {@link SubmitCustomGeometryEvent}. The Fabulous-only
+ * bloom post chain ({@code fabulousLights}) is not ported yet: its render types and post chain were built on the
+ * removed {@code RenderStateShard}/{@code PostChain} APIs. Entity/item bloom requests are accepted and dropped.
+ */
 public class HaloRenderer {
 
-    private static @Nullable HaloBloomPostChain HALO_POST_CHAIN;
+    // Position + colour, additive blending, no depth write: the same look as the old unfabulous halo type.
+    private static final RenderType HALO_GLOW_RENDER_TYPE = RenderTypes.lightning();
 
-    private static final RenderType HALO_GLOW_RENDER_TYPE = RenderType.create(MOD_ID + ":halo",
-            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 2048, false, true,
-            RenderType.CompositeState.builder()
-                    .setTransparencyState(LIGHTNING_TRANSPARENCY)
-                    .setShaderState(new RenderStateShard.ShaderStateShard(() -> CoreClientInit.HALO_SHADER))
-                    .setCullState(CULL)
-                    .setOutputState(PARTICLES_TARGET)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .createCompositeState(false));
-
-    private static final RenderType HALO_FABULOUS_DEPTH_RENDER_TYPE = RenderType.create(MOD_ID + ":halo_depth",
-            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 2048, false, false,
-            RenderType.CompositeState.builder()
-                    .setTransparencyState(NO_TRANSPARENCY) // Depth only, doesn't matter
-                    .setShaderState(new RenderStateShard.ShaderStateShard(() -> CoreClientInit.HALO_SHADER))
-                    .setCullState(CULL)
-                    .setOutputState(PARTICLES_TARGET)
-                    .setWriteMaskState(DEPTH_WRITE)
-                    .createCompositeState(false));
-
-    private static final RenderType HALO_FABULOUS_BLOOM_RENDER_TYPE = RenderType.create(MOD_ID + ":halo_bloom",
-            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 2048, false, true,
-            RenderType.CompositeState.builder()
-                    .setTransparencyState(NO_TRANSPARENCY)
-                    .setShaderState(new RenderStateShard.ShaderStateShard(() -> CoreClientInit.HALO_SHADER))
-                    .setCullState(CULL)
-                    .setOutputState(new OutputStateShard("halo_post",
-                            () -> HALO_POST_CHAIN.getInputTarget().bindWrite(false),
-                            () -> Minecraft.getInstance().getMainRenderTarget().bindWrite(false)))
-                    .setWriteMaskState(COLOR_WRITE) // No need for depth here. Plus this avoids z-fighting
-                    .createCompositeState(false));
-
-    private static final RenderType HALO_FABULOUS_ITEM_ENTITY_RENDER_TYPE = RenderType.create(MOD_ID + ":halo_item_entity",
-            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
-            RenderType.CompositeState.builder()
-                    .setTransparencyState(LIGHTNING_TRANSPARENCY)
-                    .setShaderState(new RenderStateShard.ShaderStateShard(() -> CoreClientInit.HALO_SHADER))
-                    .setCullState(CULL)
-                    .setOutputState(MAIN_TARGET)
-                    .setWriteMaskState(COLOR_DEPTH_WRITE)
-                    .createCompositeState(false));
-
-    private static boolean postChainFlushPending = false;
-
-    // In-level halos in block-space. These will render both glow and bloom
+    // Ring buffer of all pending halos to render. Capped by config
     private static final LinkedList<HaloRenderData> levelHalos = new LinkedList<>();
-    // Entity halos for held and item entity rendering. Bloom only, as the glow is rendered immediately
+    // Bloom requests from item/entity renderers; only consumed by the (unported) Fabulous bloom pass.
     private static final LinkedList<HaloRenderData> entityHalos = new LinkedList<>();
-    // Global offset for moving block entities
+
     private static final Vector3 offset = Vector3.ZERO.copy();
 
     //region Init and event handlers
@@ -105,16 +57,24 @@ public class HaloRenderer {
         }
     }
 
-    public static void onRenderLevelStageEvent(final RenderLevelStageEvent event) {
-        if (event.getStage().equals(AFTER_PARTICLES)) {
-            onRenderStageAfterParticles(event);
-        } else if (event.getStage().equals(AFTER_LEVEL)) {
-            onRenderStageAfterLevel(event);
-        }
-    }
+    public static void onSubmitCustomGeometry(final SubmitCustomGeometryEvent event) {
+        entityHalos.clear();
+        if (levelHalos.isEmpty()) return;
 
-    public static void onResourceManagerReload(ResourceManager manager) {
-        loadPostChain();
+        List<HaloRenderData> lightList = pollHalos(levelHalos);
+        Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
+        PoseStack stack = event.getPoseStack();
+        stack.pushPose();
+        stack.translate(-cam.x, -cam.y, -cam.z);
+        event.getSubmitNodeCollector().submitCustomGeometry(stack, HALO_GLOW_RENDER_TYPE, (pose, consumer) -> {
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(new TransformingVertexConsumer(consumer, new Matrix4(pose.pose())), HALO_GLOW_RENDER_TYPE);
+            for (var light : lightList) {
+                renderToCCRS(ccrs, light.box, light.t, light.levelGlowRgba);
+            }
+        });
+        stack.popPose();
     }
     //endregion
 
@@ -144,109 +104,6 @@ public class HaloRenderer {
         }
     }
 
-    private static void onRenderStageAfterParticles(final RenderLevelStageEvent event) {
-        if (levelHalos.isEmpty() && entityHalos.isEmpty()) {
-            return;
-        }
-
-        if (!isFabulous()) {
-            return;
-        }
-
-        // Setup post-chain
-        preparePostChain();
-        assert HALO_POST_CHAIN != null;
-        HALO_POST_CHAIN.getInputTarget().clear(Minecraft.ON_OSX);
-        HALO_POST_CHAIN.getInputTarget().copyDepthFrom(Minecraft.getInstance().getMainRenderTarget());
-
-        // Prepare render state
-        CCRenderState ccrs = CCRenderState.instance();
-        ccrs.reset();
-        MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-
-        // Translate pose to camera position
-        Vec3 cam = event.getCamera().getPosition();
-        PoseStack stack = event.getPoseStack();
-        stack.pushPose();
-        stack.translate(-cam.x, -cam.y, -cam.z);
-
-        // Poll all pending level halos
-        List<HaloRenderData> lightList = pollHalos(levelHalos);
-
-        // Render to normal render target for primary visuals
-        ccrs.bind(HALO_GLOW_RENDER_TYPE, buffers, stack);
-        for (var light : lightList) {
-            renderToCCRS(ccrs, light.box, light.t, light.levelGlowRgba);
-        }
-
-        // Update depth buffer
-        ccrs.bind(HALO_FABULOUS_DEPTH_RENDER_TYPE, buffers, stack);
-        for (var light : lightList) {
-            renderToCCRS(ccrs, light.box, light.t, 0xFFFFFFFF);
-        }
-
-        // Render to post chain for post-processing effects
-        ccrs.bind(HALO_FABULOUS_BLOOM_RENDER_TYPE, buffers, stack);
-        for (var light : lightList) {
-            renderToCCRS(ccrs, light.box, light.t, light.bloomRgba);
-        }
-
-        stack.popPose();
-
-        // Render entity halos for held blocks and item entities
-        List<HaloRenderData> entityLightList = pollHalos(entityHalos);
-        ccrs.bind(HALO_FABULOUS_BLOOM_RENDER_TYPE, buffers); // No pose, should have their own complete transforms
-        for (var light : entityLightList) {
-            renderToCCRS(ccrs, light.box, light.t, light.bloomRgba);
-        }
-
-        // Force-end batch
-        buffers.endBatch();
-
-        // Flag to flush post-chain at end of level render
-        postChainFlushPending = true;
-    }
-
-    private static void onRenderStageAfterLevel(final RenderLevelStageEvent event) {
-        // Unfabulous rendering. Batched rendering doesn't seem to work from stage events when not
-        // on fabulous for some reason, so we have to do it here instead.
-        if (!isFabulous()) {
-            if (levelHalos.isEmpty()) return;
-
-            // Poll all pending lights from queue
-            List<HaloRenderData> lightList = pollHalos(levelHalos);
-
-            // Prepare render
-            Vec3 cam = event.getCamera().getPosition();
-            PoseStack stack = event.getPoseStack();
-            stack.pushPose();
-            stack.mulPose(event.getModelViewMatrix()); // AFTER_LEVEL no longer has MV matrix pre-applied in RenderSystem
-            stack.translate(-cam.x, -cam.y, -cam.z);
-
-            CCRenderState ccrs = CCRenderState.instance();
-            ccrs.reset();
-            MultiBufferSource.BufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-
-            // Render to normal render target for primary visuals
-            ccrs.bind(HALO_GLOW_RENDER_TYPE, buffers, stack);
-            for (var light : lightList) {
-                renderToCCRS(ccrs, light.box, light.t, light.levelGlowRgba);
-            }
-
-            // Finish render
-            buffers.endBatch();
-            stack.popPose();
-        }
-
-        // Fabulous bloom post-processing effects rendered here instead of during stage
-        if (isFabulous() && postChainFlushPending) {
-            postChainFlushPending = false;
-            assert HALO_POST_CHAIN != null;
-            HALO_POST_CHAIN.process(event.getPartialTick().getGameTimeDeltaTicks());
-            Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
-        }
-    }
-
     private static List<HaloRenderData> pollHalos(LinkedList<HaloRenderData> src) {
         List<HaloRenderData> dest = new LinkedList<>();
         HaloRenderData l;
@@ -257,38 +114,6 @@ public class HaloRenderer {
     }
     //endregion
 
-    //region PostChain management
-    private static void preparePostChain() {
-        if (HALO_POST_CHAIN == null) {
-            loadPostChain();
-        }
-        HALO_POST_CHAIN.resizeIfNeeded();
-    }
-
-    private static void loadPostChain() {
-        unloadPostChain();
-
-        try {
-            HALO_POST_CHAIN = new HaloBloomPostChain();
-            // Because for some reason this isnt done during construction
-            HALO_POST_CHAIN.resize(Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load halo post chain", e);
-        }
-    }
-
-    private static void unloadPostChain() {
-        if (HALO_POST_CHAIN != null) {
-            HALO_POST_CHAIN.close();
-            HALO_POST_CHAIN = null;
-        }
-    }
-
-    private static boolean isFabulous() {
-        return Configurator.CLIENT.fabulousLights.get() && Minecraft.getInstance().options.graphicsMode().get().getId() >= GraphicsStatus.FABULOUS.getId();
-    }
-    //endregion
-
     //region Render functions
     private static void renderToCCRS(CCRenderState ccrs, Cuboid6 cuboid, Transformation t, int rgba) {
         ccrs.setPipeline(t);
@@ -296,21 +121,23 @@ public class HaloRenderer {
         BlockRenderer.renderCuboid(ccrs, cuboid, 0);
     }
 
-    public static void renderInventoryHalo(CCRenderState ccrs, PoseStack mStack, MultiBufferSource buffers, Cuboid6 cuboid, Vector3 pos, int colourIndex) {
+    public static void renderInventoryHalo(PoseStack mStack, SubmitNodeCollector collector, Cuboid6 cuboid, Vector3 pos, int colourIndex) {
         int rgba = getBaseColour(colourIndex, HaloContext.ITEM_GLOW);
-        renderInventoryHaloRgba(ccrs, mStack, buffers, cuboid, pos, rgba);
+        renderInventoryHaloRgba(mStack, collector, cuboid, pos, rgba);
     }
 
-    public static void renderInventoryMultiHalo(CCRenderState ccrs, PoseStack mStack, MultiBufferSource buffers, Cuboid6 cuboid, Vector3 pos, byte[] alphas) {
+    public static void renderInventoryMultiHalo(PoseStack mStack, SubmitNodeCollector collector, Cuboid6 cuboid, Vector3 pos, byte[] alphas) {
         int rgba = getBlendedColour(alphas, HaloContext.ITEM_GLOW);
-        renderInventoryHaloRgba(ccrs, mStack, buffers, cuboid, pos, rgba);
+        renderInventoryHaloRgba(mStack, collector, cuboid, pos, rgba);
     }
 
-    private static void renderInventoryHaloRgba(CCRenderState ccrs, PoseStack mStack, MultiBufferSource buffers, Cuboid6 cuboid, Vector3 pos, int rgba) {
-        RenderType type = isFabulous() ? HALO_FABULOUS_ITEM_ENTITY_RENDER_TYPE : HALO_GLOW_RENDER_TYPE;
-        ccrs.reset();
-        ccrs.bind(type, buffers, mStack);
-        renderToCCRS(ccrs, cuboid, pos.translation(), rgba);
+    private static void renderInventoryHaloRgba(PoseStack mStack, SubmitNodeCollector collector, Cuboid6 cuboid, Vector3 pos, int rgba) {
+        collector.submitCustomGeometry(mStack, HALO_GLOW_RENDER_TYPE, (pose, consumer) -> {
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(new TransformingVertexConsumer(consumer, new Matrix4(pose.pose())), HALO_GLOW_RENDER_TYPE);
+            renderToCCRS(ccrs, cuboid, pos.translation(), rgba);
+        });
     }
 
     public static void addItemRendererBloom(ItemDisplayContext transformType, PoseStack stack, Vector3 pos, Cuboid6 box, int colourIndex) {

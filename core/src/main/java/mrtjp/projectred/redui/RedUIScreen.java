@@ -5,8 +5,11 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 import java.util.LinkedList;
@@ -49,10 +52,8 @@ public class RedUIScreen extends Screen implements RedUIRootNode {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialFrame) {
-        super.render(graphics, mouseX, mouseY, partialFrame);
-
-        RenderSystem.enableDepthTest(); // Nodes render out of order, so depth test is needed
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialFrame) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialFrame);
 
         // Render semi-transparent grey background
         int x = getScreenFrame().x();
@@ -84,22 +85,28 @@ public class RedUIScreen extends Screen implements RedUIRootNode {
 
     //region INestedGuiEventHandler overrides
     @Override
-    public boolean mouseClicked(double x, double y, int glfwMouseButton) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double x = event.x(), y = event.y();
+        int glfwMouseButton = event.button();
         lastClickTime = System.currentTimeMillis();
-        boolean consumed = super.mouseClicked(x, y, glfwMouseButton);
+        boolean consumed = super.mouseClicked(event, doubleClick);
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseClicked(p, glfwMouseButton, c), consumed);
     }
 
     @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        boolean consumed = super.mouseReleased(x, y, button);
+    public boolean mouseReleased(MouseButtonEvent event) {
+        double x = event.x(), y = event.y();
+        int button = event.button();
+        boolean consumed = super.mouseReleased(event);
         long timeSinceLastClick = System.currentTimeMillis() - lastClickTime;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseReleased(p, button, timeSinceLastClick, c), consumed);
     }
 
     @Override
-    public boolean mouseDragged(double x, double y, int button, double dragX, double dragY) {
-        boolean consumed = super.mouseDragged(x, y, button, dragX, dragY);
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        double x = event.x(), y = event.y();
+        int button = event.button();
+        boolean consumed = super.mouseDragged(event, dragX, dragY);
         long timeSinceLastClick = System.currentTimeMillis() - lastClickTime;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseDragged(p, button, timeSinceLastClick, c), consumed);
     }
@@ -111,20 +118,24 @@ public class RedUIScreen extends Screen implements RedUIRootNode {
     }
 
     @Override
-    public boolean charTyped(char keyPressed, int glfwFlags) {
-        boolean consumed = super.charTyped(keyPressed, glfwFlags);
+    public boolean charTyped(CharacterEvent event) {
+        char keyPressed = (char) event.codepoint();
+        int glfwFlags = 0;
+        boolean consumed = super.charTyped(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onCharTyped(keyPressed, glfwFlags, c), consumed);
     }
 
     @Override
-    public boolean keyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags) {
-        boolean consumed = super.keyPressed(glfwKeyCode, glfwScanCode, glfwFlags);
+    public boolean keyPressed(KeyEvent event) {
+        int glfwKeyCode = event.key(), glfwScanCode = event.keycode(), glfwFlags = event.modifiers();
+        boolean consumed = super.keyPressed(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onKeyPressed(glfwKeyCode, glfwScanCode, glfwFlags, c), consumed);
     }
 
     @Override
-    public boolean keyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags) {
-        boolean consumed = super.keyReleased(glfwKeyCode, glfwScanCode, glfwFlags);
+    public boolean keyReleased(KeyEvent event) {
+        int glfwKeyCode = event.key(), glfwScanCode = event.keycode(), glfwFlags = event.modifiers();
+        boolean consumed = super.keyReleased(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onKeyReleased(glfwKeyCode, glfwScanCode, glfwFlags, c), consumed);
     }
     //endregion

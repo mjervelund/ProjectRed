@@ -4,7 +4,7 @@ import mrtjp.projectred.core.inventory.container.ElectrotineGeneratorMenu;
 import mrtjp.projectred.lib.GuiLib;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.RedUIContainerScreen;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +23,7 @@ public class ElectrotineGeneratorScreen extends RedUIContainerScreen<Electrotine
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         super.drawBack(graphics, mouse, partialFrame);
 
         int x = getFrame().x();

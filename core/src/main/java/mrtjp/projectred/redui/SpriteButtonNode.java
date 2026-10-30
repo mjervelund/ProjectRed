@@ -1,6 +1,6 @@
 package mrtjp.projectred.redui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import java.util.function.Supplier;
 
@@ -33,7 +33,7 @@ public class SpriteButtonNode extends AbstractButtonNode {
     }
 
     @Override
-    protected void drawButtonBody(GuiGraphics graphics, boolean mouseover) {
+    protected void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover) {
         blitSpriteCentered(graphics, sprite);
     }
 }

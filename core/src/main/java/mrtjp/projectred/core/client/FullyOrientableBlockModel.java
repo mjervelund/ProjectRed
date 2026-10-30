@@ -1,84 +1,71 @@
 package mrtjp.projectred.core.client;
 
-import codechicken.lib.model.PerspectiveModel;
-import codechicken.lib.model.PerspectiveModelState;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakedQuadVertexBuilder;
-import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.MultiIconTransformation;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
-import net.neoforged.neoforge.model.data.ModelData;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.DynamicBlockStateModel;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Needs to exist because Vanilla's default {@link ConfiguredModel} only supports a single x rotation and y rotation,
- * making it very difficult to render blocks that can not only be oriented to all 6 sides, but also rotated about those
- * sides. With only x/y rotations, we would have to use UV-mapping to rotate the textures themselves rather than the model.
+ * A full block whose texture set is oriented by its state's side and rotation. Parts are baked once per state.
  */
-public abstract class FullyOrientableBlockModel implements IDynamicBakedModel, PerspectiveModel {
-    // State -> Side -> Quads list
-    private final HashMap<BlockState, HashMap<Integer, List<BakedQuad>>> modelMap = new HashMap<>();
+public abstract class FullyOrientableBlockModel implements DynamicBlockStateModel {
+
+    private final Map<BlockState, BlockStateModelPart> partMap = new HashMap<>();
 
     //region Implementation abstracts
-    protected abstract RenderType getBlockRenderLayer(@Nullable BlockState state);
-
     protected abstract RenderData getBlockRenderData(@Nullable BlockState state);
 
     protected abstract BlockState getItemRenderState();
+
+    protected abstract TextureAtlasSprite getParticleIcon();
     //endregion
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData date, @Nullable RenderType renderType) {
-        // Render type must match
-        if (renderType != null && renderType != getBlockRenderLayer(state)) {
-            return List.of();
-        }
-        // Full block, so no uncullable sides
-        if (side == null) {
-            return List.of();
-        }
-
-        if (state == null) {
+    public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+        // DynamicBlockStateModel's state-less overload passes air
+        if (state.isAir()) {
             state = getItemRenderState();
         }
-
-        return getOrGenerateQuads(state, side);
+        parts.add(getOrGeneratePart(state));
     }
 
-    private List<BakedQuad> getOrGenerateQuads(BlockState state, Direction side) {
-        HashMap<Integer, List<BakedQuad>> sideMap = modelMap.get(state);
-        if (sideMap != null) return sideMap.get(side.ordinal());
+    @Override
+    public Material.Baked particleMaterial() {
+        return new Material.Baked(getParticleIcon(), false);
+    }
 
-        synchronized (modelMap) {
-            // Re-check after waiting for sync
-            sideMap = modelMap.get(state);
-            if (sideMap == null) {
-                sideMap = generateSideMap(state);
-                modelMap.put(state, sideMap);
-            }
+    @Override
+    public @BakedQuad.MaterialFlags int materialFlags() {
+        return 0;
+    }
+
+    private BlockStateModelPart getOrGeneratePart(BlockState state) {
+        synchronized (partMap) {
+            return partMap.computeIfAbsent(state, this::generatePart);
         }
-
-        return sideMap.get(side.ordinal());
     }
 
-    private HashMap<Integer, List<BakedQuad>> generateSideMap(BlockState state) {
+    private BlockStateModelPart generatePart(BlockState state) {
         // Prep render
         CCRenderState ccrs = CCRenderState.instance();
         ccrs.reset();
@@ -97,38 +84,33 @@ public abstract class FullyOrientableBlockModel implements IDynamicBakedModel, P
 
         m.render(ccrs, data.iconT);
 
-        // Bake and separate sides
-        HashMap<Integer, List<BakedQuad>> sideMap = new HashMap<>();
-        List<BakedQuad> blockQuads = builder.bake();
-        for (int s = 0; s < 6; s++) {
-            LinkedList<BakedQuad> sideQuads = new LinkedList<>();
-            for (BakedQuad quad : blockQuads) {
-                if (quad.getDirection().ordinal() == s) {
-                    sideQuads.add(quad);
-                }
-            }
-            sideMap.put(s, sideQuads);
+        // Bake and separate sides. Full block, so no uncullable quads.
+        List<List<BakedQuad>> sides = new ArrayList<>(6);
+        for (int s = 0; s < 6; s++) sides.add(new ArrayList<>());
+        for (BakedQuad quad : builder.bake()) {
+            sides.get(quad.direction().ordinal()).add(quad);
         }
-
-        return sideMap;
-    }
-
-    @Override
-    public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData data) {
-        return ChunkRenderTypeSet.of(RenderType.solid());
+        return new Part(sides, particleMaterial());
     }
 
     public record RenderData(int side, int rotation, MultiIconTransformation iconT) {
     }
 
-    //region BakedModel
-    //@formatter:off
-    @Override public boolean useAmbientOcclusion() { return true; }
-    @Override public boolean isGui3d() { return true; }
-    @Override public boolean usesBlockLight() { return true; }
-    @Override public boolean isCustomRenderer() { return false; }
-    @Override public ItemOverrides getOverrides() { return ItemOverrides.EMPTY; }
-    @Override public @Nullable PerspectiveModelState getModelState() { return TransformUtils.DEFAULT_BLOCK; }
-    //@formatter:on
-    //endregion
+    private record Part(List<List<BakedQuad>> sides, Material.Baked particleMaterial) implements BlockStateModelPart {
+
+        @Override
+        public List<BakedQuad> getQuads(@Nullable Direction direction) {
+            return direction == null ? List.of() : sides.get(direction.ordinal());
+        }
+
+        @Override
+        public boolean useAmbientOcclusion() {
+            return true;
+        }
+
+        @Override
+        public @BakedQuad.MaterialFlags int materialFlags() {
+            return 0;
+        }
+    }
 }

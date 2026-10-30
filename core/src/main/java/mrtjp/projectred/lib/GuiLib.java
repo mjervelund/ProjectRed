@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
@@ -14,11 +14,11 @@ import static com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS;
 
 public class GuiLib {
 
-    public static void drawVerticalTank(GuiGraphics graphics, Identifier loc, int x, int y, int u, int v, int w, int h, int prog) {
+    public static void drawVerticalTank(GuiGraphicsExtractor graphics, Identifier loc, int x, int y, int u, int v, int w, int h, int prog) {
         graphics.blit(loc, x, y + h - prog, u, v + h - prog, w, prog);
     }
 
-    public static void drawLine(GuiGraphics graphics, int x1, int y1, int x2, int y2, int th, int argb) {
+    public static void drawLine(GuiGraphicsExtractor graphics, int x1, int y1, int x2, int y2, int th, int argb) {
 
         // Two points to rect
         Vec2 p1 = new Vec2(x1, y1);

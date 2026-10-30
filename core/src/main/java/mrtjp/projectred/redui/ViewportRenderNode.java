@@ -10,7 +10,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
 import mrtjp.projectred.lib.Vec2;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import org.joml.Matrix4fStack;
 import org.lwjgl.opengl.GL11;
@@ -72,7 +72,7 @@ public abstract class ViewportRenderNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         // Set up projection and view matrices
         Rect glFrame = getGlFrame();
@@ -119,7 +119,7 @@ public abstract class ViewportRenderNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         List<Component> tooltip = getToolTip(mouse, isFirstHit(mouse));
 

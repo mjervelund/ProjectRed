@@ -2,7 +2,7 @@ package mrtjp.projectred.redui;
 
 import mrtjp.projectred.lib.Point;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -29,10 +29,10 @@ public class ItemStackNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         // Render item
-        graphics.renderItem(itemStack, getPosition().x, getPosition().y);
+        graphics.item(itemStack, getPosition().x, getPosition().y);
 
         // Draw tooltip
         if (isFirstHit(mouse)) {
@@ -41,7 +41,7 @@ public class ItemStackNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         if (isFirstHit(mouse)) {
             Minecraft minecraft = getRoot().getMinecraft();
             List<Component> tooltip = itemStack.getTooltipLines(

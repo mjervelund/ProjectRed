@@ -1,7 +1,7 @@
 package mrtjp.projectred.redui;
 
 import mrtjp.projectred.lib.Point;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -36,7 +36,7 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         boolean mouseover = getFrame().contains(mouse) && isFirstHit(mouse);
         int state = getButtonState(mouseover);
@@ -46,7 +46,7 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         if (!isFirstHit(mouse))
             return;
@@ -68,7 +68,7 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
         return false;
     }
 
-    protected void drawMCButton(GuiGraphics graphics, int state) {
+    protected void drawMCButton(GuiGraphicsExtractor graphics, int state) {
 
         int x = getPosition().x;
         int y = getPosition().y;
@@ -78,5 +78,5 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
         graphics.blitSprite(buttonSprites[state], x, y, width, height);
     }
 
-    protected abstract void drawButtonBody(GuiGraphics graphics, boolean mouseover);
+    protected abstract void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover);
 }

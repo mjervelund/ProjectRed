@@ -6,7 +6,7 @@ import mrtjp.projectred.lib.GuiLib;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.Collections;
@@ -26,7 +26,7 @@ public class DebugRectNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         GuiLib.drawLine(graphics, getFrame().x(),      getFrame().y(),     getFrame().maxX(),  getFrame().y(),     3, EnumColour.RED.argb());
         GuiLib.drawLine(graphics, getFrame().maxX(),   getFrame().y(),     getFrame().maxX(),  getFrame().maxY(),  3, EnumColour.RED.argb());
         GuiLib.drawLine(graphics, getFrame().maxX(),   getFrame().maxY(),  getFrame().x(),     getFrame().maxY(),  3, EnumColour.RED.argb());
@@ -36,7 +36,7 @@ public class DebugRectNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         if (!isFirstHit(mouse))
             return;

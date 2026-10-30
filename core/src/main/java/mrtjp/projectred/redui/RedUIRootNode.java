@@ -4,7 +4,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import javax.annotation.Nullable;
 
@@ -41,11 +41,11 @@ public interface RedUIRootNode extends RedUINode {
         return getZPosition(); // Assume screen's base z position is zero
     }
 
-    default void drawBackForSubtree(GuiGraphics graphics, Point mouse, float partialFrame) {
+    default void drawBackForSubtree(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         renderBackForSubtree(graphics, mouse, partialFrame);
     }
 
-    default void drawFrontForSubtree(GuiGraphics graphics, Point mouse, float partialFrame) {
+    default void drawFrontForSubtree(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         renderFrontForSubtree(graphics, mouse, partialFrame);
     }
 }

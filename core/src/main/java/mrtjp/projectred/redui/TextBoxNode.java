@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import mrtjp.projectred.lib.Point;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 
 
@@ -43,7 +43,7 @@ public abstract class TextBoxNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         // Border
         int x = getPosition().x;
         int y = getPosition().y;
@@ -62,7 +62,7 @@ public abstract class TextBoxNode extends AbstractGuiNode {
         int textY = y + height/2 - lineHeight/2;
 
         if (currentText.isEmpty() && !suggestion.isEmpty()) {
-            graphics.drawString(fontRenderer, suggestion, textX, textY, SUGGESTION_COLOR, false);
+            graphics.text(fontRenderer, suggestion, textX, textY, SUGGESTION_COLOR, false);
         }
 
         if (!currentText.isEmpty()) {
@@ -71,7 +71,7 @@ public abstract class TextBoxNode extends AbstractGuiNode {
                 s += "_";
             }
 
-            graphics.drawString(fontRenderer, s, textX, textY, enabled ? ENABLED_COLOR : DISABLED_COLOR, true);
+            graphics.text(fontRenderer, s, textX, textY, enabled ? ENABLED_COLOR : DISABLED_COLOR, true);
         }
     }
 

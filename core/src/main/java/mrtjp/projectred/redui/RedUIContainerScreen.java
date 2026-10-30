@@ -5,8 +5,11 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -48,7 +51,7 @@ public class RedUIContainerScreen<T extends AbstractContainerMenu> extends Abstr
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialFrame) {
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialFrame) {
         // Call frame update function on all nodes
         Point mousePoint = new Point(mouseX, mouseY);
         operateOnSubtree(mousePoint, (n, p, c) -> {
@@ -56,31 +59,18 @@ public class RedUIContainerScreen<T extends AbstractContainerMenu> extends Abstr
             return false;
         }, false);
 
-        // Super render call, which does the following:
-        //  - Call renderBackground() which draws semi-transparent gray background and then
-        //    calls renderBg(), which is typically overridden to draw main background
-        //  - Fire ContainerScreenEvent.Render.Background client event
-        //  - Render each widget in renderables list (for each call Renderable#render())
-        //  - Disable depth test
-        //  - Render each slot and its highlight (via renderSlot() and renderSlotHighlight())
-        //  - Render labels (renderLabels())
-        //  - Fire ContainerScreenEvent.Render.Foreground client event
-        //  - Render picked up item on cursor (via renderFloatingItem())
-        //  - Render snapback items (via renderFloatingItem())
-        //  - Enable depth test
-        super.render(graphics, mouseX, mouseY, partialFrame);
-
-        // Render tooltips
-        renderTooltip(graphics, mouseX, mouseY);
+        // Super draws the dimmed background and calls extractBackground() (RedUI back layer), then slots, labels,
+        // the carried item and tooltips (tooltips are deferred to the end of the frame).
+        super.extractRenderState(graphics, mouseX, mouseY, partialFrame);
 
         // Render foreground
-        drawFrontForSubtree(graphics, new Point(mouseX, mouseY), partialFrame);
+        drawFrontForSubtree(graphics, mousePoint, partialFrame);
     }
 
     @Override
-    protected void renderBg(GuiGraphics graphics, float partialFrame, int mouseX, int mouseY) {
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialFrame) {
+        super.extractBackground(graphics, mouseX, mouseY, partialFrame);
         // Draw back of all nodes in RedUI tree (this class is expected to provide the main background via RedUI's render call)
-        RenderSystem.enableDepthTest(); // Nodes render out of order, so depth test is needed
         drawBackForSubtree(graphics, new Point(mouseX, mouseY), partialFrame);
     }
 
@@ -96,24 +86,30 @@ public class RedUIContainerScreen<T extends AbstractContainerMenu> extends Abstr
     }
 
     @Override
-    public boolean mouseClicked(double x, double y, int glfwMouseButton) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double x = event.x(), y = event.y();
+        int glfwMouseButton = event.button();
         lastClickTime = System.currentTimeMillis();
-//        boolean consumed = super.mouseClicked(x, y, glfwMouseButton); //TODO Check consumption somehow. This always returns true
+//        boolean consumed = super.mouseClicked(event, doubleClick); //TODO Check consumption somehow. This always returns true
         super.mouseClicked(x, y, glfwMouseButton);
         boolean consumed = false;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseClicked(p, glfwMouseButton, c), consumed);
     }
 
     @Override
-    public boolean mouseReleased(double x, double y, int button) {
-        boolean consumed = super.mouseReleased(x, y, button);
+    public boolean mouseReleased(MouseButtonEvent event) {
+        double x = event.x(), y = event.y();
+        int button = event.button();
+        boolean consumed = super.mouseReleased(event);
         long timeSinceLastClick = System.currentTimeMillis() - lastClickTime;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseReleased(p, button, timeSinceLastClick, c), consumed);
     }
 
     @Override
-    public boolean mouseDragged(double x, double y, int button, double dragX, double dragY) {
-        boolean consumed = super.mouseDragged(x, y, button, dragX, dragY);
+    public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+        double x = event.x(), y = event.y();
+        int button = event.button();
+        boolean consumed = super.mouseDragged(event, dragX, dragY);
         long timeSinceLastClick = System.currentTimeMillis() - lastClickTime;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseDragged(p, button, timeSinceLastClick, c), consumed);
     }
@@ -125,20 +121,24 @@ public class RedUIContainerScreen<T extends AbstractContainerMenu> extends Abstr
     }
 
     @Override
-    public boolean charTyped(char keyPressed, int glfwFlags) {
-        boolean consumed = super.charTyped(keyPressed, glfwFlags);
+    public boolean charTyped(CharacterEvent event) {
+        char keyPressed = (char) event.codepoint();
+        int glfwFlags = 0;
+        boolean consumed = super.charTyped(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onCharTyped(keyPressed, glfwFlags, c), consumed);
     }
 
     @Override
-    public boolean keyPressed(int glfwKeyCode, int glfwScanCode, int glfwFlags) {
-        boolean consumed = super.keyPressed(glfwKeyCode, glfwScanCode, glfwFlags);
+    public boolean keyPressed(KeyEvent event) {
+        int glfwKeyCode = event.key(), glfwScanCode = event.keycode(), glfwFlags = event.modifiers();
+        boolean consumed = super.keyPressed(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onKeyPressed(glfwKeyCode, glfwScanCode, glfwFlags, c), consumed);
     }
 
     @Override
-    public boolean keyReleased(int glfwKeyCode, int glfwScanCode, int glfwFlags) {
-        boolean consumed = super.keyReleased(glfwKeyCode, glfwScanCode, glfwFlags);
+    public boolean keyReleased(KeyEvent event) {
+        int glfwKeyCode = event.key(), glfwScanCode = event.keycode(), glfwFlags = event.modifiers();
+        boolean consumed = super.keyReleased(event);
         return operateOnZOrderedSubtree(Point.ZERO, (n, p, c) -> n.onKeyReleased(glfwKeyCode, glfwScanCode, glfwFlags, c), consumed);
     }
 
