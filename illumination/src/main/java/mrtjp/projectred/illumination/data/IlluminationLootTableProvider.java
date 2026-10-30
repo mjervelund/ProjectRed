@@ -23,15 +23,14 @@ public class IlluminationLootTableProvider extends LootTableProvider {
     /** Registered through {@code GatherDataRegistryEntriesEvent} (loot tables are a registry bootstrap in 26.x). */
     public IlluminationLootTableProvider() {
         super(Set.of(), List.of(
-                new LootTableProvider.SubProviderEntry(BlockLootTable::new, LootContextParamSets.BLOCK)),
-                registries
-        );
+                new LootTableProvider.SubProviderEntry(BlockLootTable::new, LootContextParamSets.BLOCK)
+        ));
     }
 
     private static final class BlockLootTable extends BlockLootSubProvider {
 
-        public BlockLootTable(HolderLookup.Provider provider) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
+        public BlockLootTable(LootTableSubProvider.Context context) {
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
         }
 
         @Override

@@ -35,13 +35,13 @@ public class ExplorationLootTableProvider extends LootTableProvider {
     public ExplorationLootTableProvider() {
         super(Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(BlockLootTable::new, LootContextParamSets.BLOCK)
-        );
+        ));
     }
 
     private static final class BlockLootTable extends BlockLootSubProvider {
 
-        BlockLootTable(HolderLookup.Provider provider) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
+        BlockLootTable(LootTableSubProvider.Context context) {
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
         }
 
         @Override

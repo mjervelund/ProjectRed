@@ -161,6 +161,10 @@ public abstract class ProjectRedModelProvider extends ModelProvider {
         return ModelTemplates.CUBE_ALL.create(block, TextureMapping.cube(new Material(blockTexture(block))), blockModels.modelOutput);
     }
 
+    protected Identifier cubeAll(String name, Identifier texture) {
+        return ModelTemplates.CUBE_ALL.create(modLoc("block/" + name), TextureMapping.cube(new Material(texture)), blockModels.modelOutput);
+    }
+
     protected Identifier cubeBottomTop(String name, Identifier side, Identifier bottom, Identifier top) {
         return ModelTemplates.CUBE_BOTTOM_TOP.create(modLoc("block/" + name), new TextureMapping()
                 .put(TextureSlot.SIDE, new Material(side))

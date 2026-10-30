@@ -1,5 +1,9 @@
 package mrtjp.projectred.illumination.part;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
@@ -43,29 +47,11 @@ public class IllumarLampMicroMaterial extends BlockMicroMaterial {
     public void initializeClient(Consumer<MicroMaterialClient> cons) {
         super.initializeClient(superMicroMaterial -> cons.accept(new MicroMaterialClient() {
 
-            // Provide RenderDynamic implementation
-            @Override
-            public void renderDynamic(MicroblockPart part, @Nullable ItemDisplayContext transform, PoseStack pStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
-                CCRenderState ccrs = CCRenderState.instance();
-                Cuboid6 cuboid = part.getBounds().copy().expand(0.025D);
-
-                if (transform != null) { // Inventory rendering
-                    HaloRenderer.renderInventoryHalo(ccrs, pStack, buffers, cuboid, Vector3.ZERO, getLightColor());
-                    HaloRenderer.addItemRendererBloom(transform, pStack, Vector3.ZERO, cuboid, getLightColor());
-                } else {
-                    HaloRenderer.addLight(part.pos(), cuboid, getLightColor());
-                }
-            }
-
-            @Override
-            public RenderType getItemRenderLayer() {
-                return RenderTypes.cutoutMovingBlock();
-            }
+            // TODO 26.3: lamp microblock halos. CB Multipart 3.6 has no dynamic microblock rendering yet.
 
             // Delegate the rest to super material
             //@formatter:off
-            @Override public List<BakedQuad> getQuads(MicroblockPart part, @Nullable Direction side, @Nullable RenderType layer, Iterable<MaskedCuboid> cuboids) { return superMicroMaterial.getQuads(part, side, layer, cuboids); }
-            @Override public void renderCuboids(CCRenderState ccrs, @Nullable RenderType layer, Iterable<MaskedCuboid> cuboids) { superMicroMaterial.renderCuboids(ccrs, layer, cuboids); }
+            @Override public void collectParts(@Nullable BlockAndTintGetter level, @Nullable BlockPos pos, ImmutableSet<MaskedCuboid> renderCuboids, List<BlockStateModelPart> parts) { superMicroMaterial.collectParts(level, pos, renderCuboids, parts); }
             @Override public void addHitEffects(MicroblockPart part, PartRayTraceResult hit, ParticleEngine engine) { superMicroMaterial.addHitEffects(part, hit, engine); }
             @Override public void addDestroyEffects(MicroblockPart part, PartRayTraceResult hit, ParticleEngine engine) { superMicroMaterial.addDestroyEffects(part, hit, engine); }
             @Override public void addLandingEffects(MicroblockPart part, PartRayTraceResult hit, Vector3 entity, int numberOfParticles) { superMicroMaterial.addLandingEffects(part, hit, entity, numberOfParticles); }

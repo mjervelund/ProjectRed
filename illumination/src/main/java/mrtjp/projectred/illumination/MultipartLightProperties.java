@@ -101,9 +101,12 @@ public abstract class MultipartLightProperties {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public Class<? extends IItemRenderer> getItemRendererClass() {
-        return DefaultMultipartLightItemRenderer.class;
+    public ProjectRedItemRenderer.Unbaked getItemRenderer() {
+        return DEFAULT_ITEM_RENDERER;
     }
+
+    @OnlyIn(Dist.CLIENT)
+    public static final ProjectRedItemRenderer.Unbaked DEFAULT_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(DefaultMultipartLightItemRenderer::new);
     //endregion
 
     //region Utils
@@ -175,11 +178,5 @@ public abstract class MultipartLightProperties {
             }
         }
 
-        //@formatter:off
-        @Override public PerspectiveModelState getModelState() { return TransformUtils.DEFAULT_BLOCK; }
-        @Override public boolean useAmbientOcclusion() { return false; }
-        @Override public boolean isGui3d() { return true; }
-        @Override public boolean usesBlockLight() { return true; }
-        //@formatter:on
     }
 }

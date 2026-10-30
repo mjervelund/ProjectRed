@@ -69,7 +69,15 @@ public class ProjectRedFabrication {
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENU_TYPES.register(modEventBus);
         PARTS.register(modEventBus);
-        CREATIVE_TABS.register(modE    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        CREATIVE_TABS.register(modEventBus);
+        DATA_COMPONENT_TYPES.register(modEventBus);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+
+    }
+
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
         event.createProvider(FabricationBlockStateModelProvider::new);
         event.createProvider(FabricationItemModelProvider::new);
         event.createProvider(FabricationLanguageProvider::new);
@@ -79,8 +87,5 @@ public class ProjectRedFabrication {
 
     private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
         event.add(Registries.LOOT_TABLE, new FabricationLootTableProvider());
-    }
-pProvider()));
-        generator.addProvider(event.includeServer(), new FabricationRecipeProvider(event.getLookupProvider(), output));
     }
 }

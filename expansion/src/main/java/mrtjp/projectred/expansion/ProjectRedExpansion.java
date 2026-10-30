@@ -112,7 +112,13 @@ public class ProjectRedExpansion {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Register frame as Multipart tile passthrough interface
-        Multi    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        MultipartGenerator.INSTANCE.registerPassThroughInterface(Frame.class);
+
+        // Init Movement registry
+        MovementRegistry.init();
+    }
+
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
         event.createProvider(ExpansionBlockStateModelProvider::new);
         event.createProvider(ExpansionItemModelProvider::new);
         event.createProvider(ExpansionLanguageProvider::new);
@@ -123,9 +129,6 @@ public class ProjectRedExpansion {
 
     private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
         event.add(Registries.LOOT_TABLE, new ExpansionLootTableProvider());
-    }
-(), output));
-        generator.addProvider(event.includeServer(), new ExpansionLootTableProvider(event.getLookupProvider(), output));
     }
 
     public void onRegisterCaps(RegisterCapabilitiesEvent event) {

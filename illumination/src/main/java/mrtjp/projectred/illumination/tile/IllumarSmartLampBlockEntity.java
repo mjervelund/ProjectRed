@@ -49,7 +49,7 @@ public class IllumarSmartLampBlockEntity extends BaseConnectableBlockEntity impl
     public void loadFromNBT(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         super.loadFromNBT(tag, lookupProvider);
 
-        var s = tag.getByteArray("signal");
+        var s = tag.getByteArray("signal").orElse(new byte[0]);
         if (s.length == 16)
             System.arraycopy(s, 0, signal, 0, 16);
     }

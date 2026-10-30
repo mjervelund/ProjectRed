@@ -23,13 +23,13 @@ public class FabricationLootTableProvider extends LootTableProvider {
     public FabricationLootTableProvider() {
         super(Set.of(), List.of(
                 new LootTableProvider.SubProviderEntry(BlockLootTables::new, LootContextParamSets.BLOCK)
-        );
+        ));
     }
 
     private static final class BlockLootTables extends BlockLootSubProvider {
 
-        BlockLootTables(HolderLookup.Provider registries) {
-            super(Set.of(), FeatureFlags.REGISTRY.allFlags();
+        BlockLootTables(LootTableSubProvider.Context context) {
+            super(Set.of(), FeatureFlags.REGISTRY.allFlags(), context);
         }
 
         @Override

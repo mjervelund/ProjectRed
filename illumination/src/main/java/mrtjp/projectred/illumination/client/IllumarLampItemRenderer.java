@@ -1,8 +1,12 @@
 package mrtjp.projectred.illumination.client;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.world.level.block.state.BlockState;
+import java.util.ArrayList;
+import java.util.List;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.model.bakedmodels.WrappedItemModel;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
@@ -14,7 +18,6 @@ import mrtjp.projectred.illumination.block.IllumarLampBlock;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
@@ -23,14 +26,13 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class IllumarLampItemRenderer extends WrappedItemModel extends ProjectRedItemRenderer {
+public class IllumarLampItemRenderer extends ProjectRedItemRenderer {
 
     private static final Cuboid6 BLOCK_BOUNDS = Cuboid6.full.copy().expand(-0.02D);
     private static final Cuboid6 GLOW_BOUNDS = Cuboid6.full.copy().expand(0.02D);
     private static final RandomSource random = RandomSource.create();
 
-    public IllumarLampItemRenderer(BakedModel wrapped) {
-        super(wrapped);
+    public IllumarLampItemRenderer() {
     }
 
     @Override
@@ -40,18 +42,11 @@ public class IllumarLampItemRenderer extends WrappedItemModel extends ProjectRed
 
         if (!(blockItem.getBlock() instanceof IllumarLampBlock block)) return;
 
-        if (!block.isInverted()) {
-            // Non-inverted blocks can use default Minecraft BlockItem model. Shouldn't happen
-            // because this renderer should only be registered to inverted variants.
-            renderWrapped(stack, mStack, getter, packedLight, packedOverlay, false);
-            return;
-        }
-
         // Render actual block. Required because renderWrapped does not play nice with
         // halo rendering. Halo completely obscures wrapped render.
 
         // Obtain texture from original block model
-        TextureAtlasSprite icon = wrapped.getQuads(null, Direction.UP, random).get(0).getSprite();
+        TextureAtlasSprite icon = sideSprite(block.defaultBlockState(), Direction.UP);
 
         // Render block
         CCRenderState ccrs = CCRenderState.instance();
@@ -68,4 +63,15 @@ public class IllumarLampItemRenderer extends WrappedItemModel extends ProjectRed
         HaloRenderer.addItemRendererBloom(transformType, mStack, Vector3.ZERO, GLOW_BOUNDS, block.getColor());
     }
 
+
+    // The sprite on the given face of the block's model (the item used to wrap the lit block model).
+    private static TextureAtlasSprite sideSprite(BlockState state, Direction side) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state).collectParts(random, parts);
+        for (BlockStateModelPart part : parts) {
+            var quads = part.getQuads(side);
+            if (!quads.isEmpty()) return quads.get(0).materialInfo().sprite();
+        }
+        return Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(state).sprite();
+    }
 }

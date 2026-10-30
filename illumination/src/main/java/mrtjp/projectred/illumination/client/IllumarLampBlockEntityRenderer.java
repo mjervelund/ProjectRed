@@ -1,16 +1,21 @@
 package mrtjp.projectred.illumination.client;
 
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import codechicken.lib.vec.Cuboid6;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.block.IllumarLampBlock;
 import mrtjp.projectred.illumination.tile.IllumarLampBlockEntity;
-import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class IllumarLampBlockEntityRenderer implements BlockEntityRenderer<IllumarLampBlockEntity> {
+public class IllumarLampBlockEntityRenderer implements BlockEntityRenderer<IllumarLampBlockEntity, BlockEntityRenderState> {
 
     public static final IllumarLampBlockEntityRenderer INSTANCE = new IllumarLampBlockEntityRenderer();
 
@@ -20,14 +25,24 @@ public class IllumarLampBlockEntityRenderer implements BlockEntityRenderer<Illum
     }
 
     @Override
-    public void render(IllumarLampBlockEntity tile, float partialTicks, PoseStack matrixStack, RecordingBufferSource buffers, int combinedLight, int combinedOverlay) {
+    public BlockEntityRenderState createRenderState() {
+        return new BlockEntityRenderState();
+    }
 
+    // Halos are queued for HaloRenderer while extracting; nothing else to submit.
+    @Override
+    public void extractRenderState(IllumarLampBlockEntity tile, BlockEntityRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+        BlockEntityRenderState.extractBase(tile, state, breakProgress);
         if (tile.getLevel() != null) {
-            BlockState state = tile.getLevel().getBlockState(tile.getBlockPos());
-            if (state.getBlock() instanceof IllumarLampBlock && tile.isLit()) {
+            BlockState blockState = tile.getLevel().getBlockState(tile.getBlockPos());
+            if (blockState.getBlock() instanceof IllumarLampBlock && tile.isLit()) {
                 HaloRenderer.addLight(tile.getBlockPos(), GLOW_BOUNDS, tile.color);
             }
         }
+    }
+
+    @Override
+    public void submit(BlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
     }
 
     @Override

@@ -1,8 +1,12 @@
 package mrtjp.projectred.illumination.client;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.world.level.block.state.BlockState;
+import java.util.ArrayList;
+import java.util.List;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import codechicken.lib.model.bakedmodels.WrappedItemModel;
 import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
@@ -15,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import mrtjp.projectred.core.client.RecordingBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
@@ -25,7 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class IllumarSmartLampItemRenderer extends WrappedItemModel extends ProjectRedItemRenderer {
+public class IllumarSmartLampItemRenderer extends ProjectRedItemRenderer {
 
     private static final Cuboid6 BLOCK_BOUNDS = Cuboid6.full.copy().expand(-0.02D);
     private static final Cuboid6 GLOW_BOUNDS = Cuboid6.full.copy().expand(0.02D);
@@ -34,8 +37,7 @@ public class IllumarSmartLampItemRenderer extends WrappedItemModel extends Proje
     private final byte[] signal = new byte[16];
     private long lastSignalAnimateTime = -1L;
 
-    public IllumarSmartLampItemRenderer(BakedModel wrapped) {
-        super(wrapped);
+    public IllumarSmartLampItemRenderer() {
     }
 
     @Override
@@ -51,7 +53,7 @@ public class IllumarSmartLampItemRenderer extends WrappedItemModel extends Proje
         // Obtain texture from original block model
         TextureAtlasSprite[] icons = new TextureAtlasSprite[6];
         for (Direction dir : Direction.values()) {
-            icons[dir.get3DDataValue()] = wrapped.getQuads(null, dir, random).get(0).getSprite();
+            icons[dir.get3DDataValue()] = sideSprite(block.defaultBlockState(), dir);
         }
         MultiIconTransformation iconT = new MultiIconTransformation(icons);
 
@@ -93,4 +95,15 @@ public class IllumarSmartLampItemRenderer extends WrappedItemModel extends Proje
         }
     }
 
+
+    // The sprite on the given face of the block's model (the item used to wrap the lit block model).
+    private static TextureAtlasSprite sideSprite(BlockState state, Direction side) {
+        List<BlockStateModelPart> parts = new ArrayList<>();
+        Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(state).collectParts(random, parts);
+        for (BlockStateModelPart part : parts) {
+            var quads = part.getQuads(side);
+            if (!quads.isEmpty()) return quads.get(0).materialInfo().sprite();
+        }
+        return Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(state).sprite();
+    }
 }

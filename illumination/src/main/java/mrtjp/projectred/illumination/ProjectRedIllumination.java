@@ -70,7 +70,14 @@ public class ProjectRedIllumination {
         PART_TYPES.register(modEventBus);
         CREATIVE_TABS.register(modEventBus);
 
-      private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        modEventBus.register(new IlluminationMicroMaterials());
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+
+    }
+
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
         event.createProvider(IlluminationBlockStateModelProvider::new);
         event.createProvider(IlluminationItemModelProvider::new);
         event.createProvider(IlluminationLanguageProvider::new);
@@ -79,8 +86,5 @@ public class ProjectRedIllumination {
 
     private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
         event.add(Registries.LOOT_TABLE, new IlluminationLootTableProvider());
-    }
-leProvider(output, provider));
-        generator.addProvider(event.includeServer(), new IlluminationRecipeProvider(provider, output));
     }
 }

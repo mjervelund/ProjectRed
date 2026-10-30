@@ -189,7 +189,7 @@ public class ExplorationBlocks {
 
     public static void onRegisterMicroMaterials(RegisterEvent event) {
 
-        event.register(MicroMaterialRegistry.microMaterials().key(), r -> {
+        event.register(MicroMaterial.MICRO_MATERIAL_TYPES, r -> {
             registerBlockMicro(r, new BlockMicroMaterial(MARBLE_BLOCK.get()));
             registerBlockMicro(r, new BlockMicroMaterial(MARBLE_BRICK_BLOCK.get()));
             registerBlockMicro(r, new BlockMicroMaterial(BASALT_BLOCK.get()));

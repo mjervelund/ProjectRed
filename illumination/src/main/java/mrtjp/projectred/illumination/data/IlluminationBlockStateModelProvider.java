@@ -1,5 +1,9 @@
 package mrtjp.projectred.illumination.data;
 
+import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.resources.Identifier;
+import java.util.HashMap;
+import java.util.Map;
 import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.illumination.BlockLightType;
@@ -9,9 +13,6 @@ import mrtjp.projectred.illumination.block.IllumarSmartLampBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 
 import static mrtjp.projectred.illumination.init.IlluminationBlocks.ILLUMAR_SMART_LAMP;
 
@@ -38,35 +39,30 @@ public class IlluminationBlockStateModelProvider extends ProjectRedModelProvider
                 createSmartLampModel(ILLUMAR_SMART_LAMP.get(), true));
     }
 
+    private final Map<String, Identifier> lampModels = new HashMap<>();
+
     private void addIllumarLampVariants(Block block) {
-        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
-                .modelFile(createLampModel(block, state.getValue(IllumarLampBlock.LIT)))
-                .build());
+        forAllStates(block, state -> new Variant(createLampModel(block, state.getValue(IllumarLampBlock.LIT))));
     }
 
-    private BlockModelBuilder createLampModel(Block block, boolean lit) {
+    private Identifier createLampModel(Block block, boolean lit) {
         String textureName = BlockLightType.ILLUMAR_LAMP.getRegistryID(((IllumarLampBlock) block).getColor(), false) + (lit ? "_on" : ""); // Always use non-inverted unlocal name for textures
-        return models().cubeAll(textureName, modLoc("block/" + textureName));
+        return lampModels.computeIfAbsent(textureName, n -> cubeAll(n, modLoc("block/" + n)));
     }
 
-    private void addSidedBlockVariants(Block block, ModelFile offModel, ModelFile onModel) {
-        getVariantBuilder(block).forAllStates(state -> {
+    private void addSidedBlockVariants(Block block, Identifier offModel, Identifier onModel) {
+        forAllStates(block, state -> {
             int s = state.getValue(ProjectRedBlock.SIDE);
             boolean lit = state.getValue(IllumarSmartLampBlock.LEVEL) > 0;
-
-            return ConfiguredModel.builder()
-                    .modelFile(lit ? onModel : offModel)
-                    .rotationX(DEVICE_SIDED_ROTATIONS[s][0] * 90)
-                    .rotationY(DEVICE_SIDED_ROTATIONS[s][1] * 90)
-                    .build();
+            return rotateY(rotateX(new Variant(lit ? onModel : offModel), DEVICE_SIDED_ROTATIONS[s][0] * 90), DEVICE_SIDED_ROTATIONS[s][1] * 90);
         });
     }
 
-    private BlockModelBuilder createSmartLampModel(Block block, boolean lit) {
+    private Identifier createSmartLampModel(Block block, boolean lit) {
         String texture = BuiltInRegistries.BLOCK.getKey(block).getPath();
         String litKey = lit ? "_on" : "";
         String modelName = texture + litKey;
-        return models().cubeBottomTop(modelName,
+        return cubeBottomTop(modelName,
                 modLoc("block/" + texture + "_side" + litKey),
                 modLoc("block/" + texture + "_bottom"),
                 modLoc("block/" + texture + "_top" + litKey));

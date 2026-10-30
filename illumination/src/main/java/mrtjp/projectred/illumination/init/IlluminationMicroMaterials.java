@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.init;
 
+import codechicken.microblock.api.MicroMaterial;
 import codechicken.microblock.api.BlockMicroMaterial;
 import codechicken.microblock.util.MicroMaterialRegistry;
 import mrtjp.projectred.illumination.BlockLightType;
@@ -16,7 +17,7 @@ public class IlluminationMicroMaterials {
 
     @SubscribeEvent
     public void onRegisterMicroMaterials(RegisterEvent event) {
-        event.register(MicroMaterialRegistry.microMaterials().key(), r -> {
+        event.register(MicroMaterial.MICRO_MATERIAL_TYPES, r -> {
             for (int color = 0; color < 16; color++) {
                 int colorFinal = color;
                 IllumarLampMicroMaterial material = new IllumarLampMicroMaterial(() -> BlockLightType.ILLUMAR_LAMP.getBlock(colorFinal, true));

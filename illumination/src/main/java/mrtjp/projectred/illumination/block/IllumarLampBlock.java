@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.block;
 
+import net.minecraft.world.level.redstone.Orientation;
 import codechicken.multipart.api.RedstoneConnectorBlock;
 import mrtjp.projectred.illumination.tile.IllumarLampBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -60,8 +61,7 @@ public class IllumarLampBlock extends Block implements EntityBlock, RedstoneConn
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos neighbor, boolean isMoving) {
-        super.onNeighborChange(state, world, pos, neighbor);
+    protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean isMoving) {
         if (world.isClientSide()) return;
 
         boolean isLit = state.getValue(LIT);

@@ -1,18 +1,22 @@
 package mrtjp.projectred.illumination.init;
 
-import codechicken.multipart.api.MultipartClientRegistry;
+import codechicken.multipart.api.RegisterMultipartRenderersEvent;
+import mrtjp.projectred.core.client.ProjectRedItemRenderer;
+import mrtjp.projectred.core.part.IconHitEffectsPart;
+import mrtjp.projectred.illumination.MultipartLightProperties;
+import mrtjp.projectred.illumination.client.IllumarLampItemRenderer;
+import mrtjp.projectred.illumination.client.IllumarSmartLampItemRenderer;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
+import static mrtjp.projectred.illumination.ProjectRedIllumination.MOD_ID;
 import mrtjp.projectred.illumination.BlockLightType;
 import mrtjp.projectred.illumination.MultipartLightType;
 import mrtjp.projectred.illumination.client.*;
 import net.covers1624.quack.util.SneakyUtils;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
 
 import java.util.Objects;
 
@@ -20,7 +24,8 @@ public class IlluminationClientInit {
 
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(IlluminationClientInit::clientSetup);
-        modEventBus.addListener(IlluminationClientInit::onModelBake);
+        modEventBus.addListener(IlluminationClientInit::onRegisterMultipartRenderers);
+        modEventBus.addListener(IlluminationClientInit::onRegisterSpecialModelRenderers);
 
         // Register Sprites
         for (MultipartLightType type : MultipartLightType.values()) {
@@ -39,33 +44,25 @@ public class IlluminationClientInit {
         }
 
         BlockEntityRenderers.register(SneakyUtils.unsafeCast(IlluminationBlocks.ILLUMAR_SMART_LAMP_BLOCK_ENTITY.get()), c -> IllumarSmartLampBlockEntityRenderer.INSTANCE);
+    }
 
-        // Register light part renderers
+    private static void onRegisterMultipartRenderers(RegisterMultipartRenderersEvent event) {
         for (MultipartLightType type : MultipartLightType.values()) {
             for (int colour = 0; colour < 16; colour++) {
-                MultipartClientRegistry.register(type.getPartType(colour, false), MultipartLightPartRenderer.INSTANCE);
-                MultipartClientRegistry.register(type.getPartType(colour, true), MultipartLightPartRenderer.INSTANCE);
+                event.registerDynamicPartRenderer(type.getPartType(colour, false), () -> MultipartLightPartRenderer.INSTANCE);
+                event.registerDynamicPartRenderer(type.getPartType(colour, true), () -> MultipartLightPartRenderer.INSTANCE);
+                event.registerParticleHandler(type.getPartType(colour, false), IconHitEffectsPart.HANDLER);
+                event.registerParticleHandler(type.getPartType(colour, true), IconHitEffectsPart.HANDLER);
             }
         }
     }
 
-    public static void onModelBake(ModelEvent.ModifyBakingResult event) {
+    public static final ProjectRedItemRenderer.Unbaked LAMP_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(IllumarLampItemRenderer::new);
+    public static final ProjectRedItemRenderer.Unbaked SMART_LAMP_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(IllumarSmartLampItemRenderer::new);
 
-        // Replace item models for inverted lamps with a wrapped renderer that renders the lamp glow
-        for (int color = 0; color < 16; color++) {
-            Identifier blockRL = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(BlockLightType.ILLUMAR_LAMP.getBlock(color, true)));
-            // Override default BlockItem renderer for the lit variants to render lamp glow
-            BakedModel litModel = event.getModels().get(new ModelResourceLocation(blockRL, "lit=true"));
-            event.getModels().put(
-                    new ModelResourceLocation(blockRL, "inventory"),
-                    new IllumarLampItemRenderer(litModel));
-        }
-
-        // Illumar smart lamp renderer
-        Identifier smartLampRl = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(IlluminationBlocks.ILLUMAR_SMART_LAMP.get()));
-        BakedModel smartLampModel = event.getModels().get(new ModelResourceLocation(smartLampRl, "level=15,side=0"));
-        event.getModels().put(
-                new ModelResourceLocation(smartLampRl, "inventory"),
-                new IllumarSmartLampItemRenderer(smartLampModel));
+    private static void onRegisterSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "lamp"), LAMP_ITEM_RENDERER.type());
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "smart_lamp"), SMART_LAMP_ITEM_RENDERER.type());
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "light"), MultipartLightProperties.DEFAULT_ITEM_RENDERER.type());
     }
 }

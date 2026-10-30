@@ -82,7 +82,15 @@ public class ProjectRedExploration {
         RECIPE_SERIALIZERS.register(modEventBus);
         MICRO_MATERIALS.register(modEventBus);
         CREATIVE_TABS.register(modEventBus);
-        DATA_COMPONENT_TYPES.register    private void onGatherDataEvent(final GatherDataEvent.Client event) {
+        DATA_COMPONENT_TYPES.register(modEventBus);
+        ARMOR_MATERIALS.register(modEventBus);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+
+    }
+
+    private void onGatherDataEvent(final GatherDataEvent.Client event) {
         event.createProvider(ExplorationBlockStateModelProvider::new);
         event.createProvider(ExplorationItemModelProvider::new);
         event.createProvider(ExplorationLanguageProvider::new);
@@ -94,8 +102,5 @@ public class ProjectRedExploration {
     private void onGatherDataRegistryEntries(final GatherDataRegistryEntriesEvent event) {
         event.add(Registries.LOOT_TABLE, new ExplorationLootTableProvider());
         // TODO 26.3: worldgen entries (ExplorationBuiltInEntriesProvider) need porting to registry bootstraps
-    }
-bleProvider(output, provider));
-        generator.addProvider(event.includeServer(), new ExplorationRecipeProvider(provider, output));
     }
 }

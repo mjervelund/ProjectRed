@@ -140,6 +140,21 @@ public class HaloRenderer {
         });
     }
 
+    // Same as above, for renderers drawing through a RecordingBufferSource (the old MultiBufferSource call shape).
+    public static void renderInventoryHalo(CCRenderState ccrs, PoseStack mStack, RecordingBufferSource buffers, Cuboid6 cuboid, Vector3 pos, int colourIndex) {
+        renderInventoryHaloRgba(ccrs, mStack, buffers, cuboid, pos, getBaseColour(colourIndex, HaloContext.ITEM_GLOW));
+    }
+
+    public static void renderInventoryMultiHalo(CCRenderState ccrs, PoseStack mStack, RecordingBufferSource buffers, Cuboid6 cuboid, Vector3 pos, byte[] alphas) {
+        renderInventoryHaloRgba(ccrs, mStack, buffers, cuboid, pos, getBlendedColour(alphas, HaloContext.ITEM_GLOW));
+    }
+
+    private static void renderInventoryHaloRgba(CCRenderState ccrs, PoseStack mStack, RecordingBufferSource buffers, Cuboid6 cuboid, Vector3 pos, int rgba) {
+        ccrs.reset();
+        buffers.bind(ccrs, HALO_GLOW_RENDER_TYPE, mStack);
+        renderToCCRS(ccrs, cuboid, pos.translation(), rgba);
+    }
+
     public static void addItemRendererBloom(ItemDisplayContext transformType, PoseStack stack, Vector3 pos, Cuboid6 box, int colourIndex) {
         if (isEntityItemRenderType(transformType)) {
             addItemRendererBloom(stack, pos, box, colourIndex);
