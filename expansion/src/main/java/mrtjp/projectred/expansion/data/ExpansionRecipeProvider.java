@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.data;
 
+import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
+import net.neoforged.neoforge.common.conditions.NotCondition;
 import codechicken.lib.datagen.recipe.RecipeProvider;
 import mrtjp.projectred.expansion.TubeType;
 import net.minecraft.core.HolderLookup;
@@ -142,7 +144,9 @@ public class ExpansionRecipeProvider extends RecipeProvider {
                 .patternLine("BGB");
 
         // Items
+        // Tin comes from another mod (Project Red Exploration, Mekanism, ...); 26.x rejects recipes with missing tags
         shapedRecipe(BATTERY_ITEM.get(), 1)
+                .withCondition(new NotCondition(new TagEmptyCondition<>(TIN_INGOT_TAG)))
                 .key('E', ELECTROTINE_DUST_TAG)
                 .key('T', TIN_INGOT_TAG)
                 .key('C', Tags.Items.INGOTS_COPPER)
