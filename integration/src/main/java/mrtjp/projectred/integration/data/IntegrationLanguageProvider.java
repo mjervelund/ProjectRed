@@ -49,9 +49,9 @@ public class IntegrationLanguageProvider extends LanguageProvider {
         add(GateType.AND_CELL.getItem(), "AND Cell");
         add(GateType.BUS_RANDOMIZER.getItem(), "Bus Randomizer");
         add(GateType.BUS_CONVERTER.getItem(), "Bus Converter");
-        add(GateType.BUS_INPUT_PANEL.makeStack(), "Bus Input Panel");
-        add(GateType.TRANSPARENT_LATCH_CELL.makeStack(), "Transparent Latch Cell");
-        add(GateType.SEGMENT_DISPLAY.makeStack(), "Segment Display");
-        add(GateType.DEC_RANDOMIZER.makeStack(), "Dec Randomizer");
+        add(GateType.BUS_INPUT_PANEL.getItem(), "Bus Input Panel");
+        add(GateType.TRANSPARENT_LATCH_CELL.getItem(), "Transparent Latch Cell");
+        add(GateType.SEGMENT_DISPLAY.getItem(), "Segment Display");
+        add(GateType.DEC_RANDOMIZER.getItem(), "Dec Randomizer");
     }
 }

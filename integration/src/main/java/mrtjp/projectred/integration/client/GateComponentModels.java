@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.client;
 
+import net.minecraft.network.chat.FontDescription;
 import codechicken.lib.colour.Colour;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.math.MathHelper;
@@ -1495,7 +1496,7 @@ public class GateComponentModels {
 
         public static final FabricatedICModel INSTANCE = new FabricatedICModel();
 
-        private static final Style UNIFORM = Style.EMPTY.withFont(Identifier.fromNamespaceAndPath("minecraft", "uniform"));
+        private static final Style UNIFORM = Style.EMPTY.withFont(new FontDescription.Resource(Identifier.fromNamespaceAndPath("minecraft", "uniform")));
         private static final CCModel[] platformModel = bakeOrients(fabIC.get("platform"));
         private static final CCModel[] icChipModel = bakeOrients(fabIC.get("ic"));
 
@@ -1529,7 +1530,7 @@ public class GateComponentModels {
             // Draw text
             mStack.pushPose();
             mStack.mulPose(m.toMatrix4f());
-            fr.drawInBatch(nameComponent, 0, 0, argb, false, mStack.last().pose(), bufferSource, Font.DisplayMode.NORMAL, 0, packedLight);
+            // TODO 26.3: draw the IC name (Font.drawInBatch is gone; text needs SubmitNodeCollector.submitText)
             mStack.popPose();
         }
 

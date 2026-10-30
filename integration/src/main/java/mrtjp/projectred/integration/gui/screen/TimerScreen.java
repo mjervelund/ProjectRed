@@ -62,7 +62,7 @@ public class TimerScreen extends RedUIScreen {
 
         String s = String.format("Timer interval: %.2fs", timerGate.getTimerMax() * 0.05);
         int sw = getFontRenderer().width(s);
-        graphics.text(getFontRenderer(), s, x + (getFrame().width() - sw)/2f, y + 8f, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (getFrame().width() - sw) / 2, y + 8, 0xFF404040, false);
     }
 
     @Override

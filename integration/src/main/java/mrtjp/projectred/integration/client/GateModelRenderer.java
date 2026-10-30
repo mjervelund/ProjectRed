@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.client;
 
+import net.minecraft.util.ARGB;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.CCRenderState;
@@ -225,7 +226,7 @@ public class GateModelRenderer {
                     float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
                     float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
 
-                    gate.level().addParticle(new DustParticleOptions(new Vector3f(f1, f2, f3), 1.0F), pos.x, pos.y, pos.z, 0, 0, 0);
+                    gate.level().addParticle(new DustParticleOptions(ARGB.colorFromFloat(1.0F, f1, f2, f3), 1.0F), pos.x, pos.y, pos.z, 0, 0, 0);
                 }
             }
         }

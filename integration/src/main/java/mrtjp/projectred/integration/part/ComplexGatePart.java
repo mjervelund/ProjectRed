@@ -573,7 +573,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         @Override
         public int pointerValue() {
-            return (int) (level().getDayTime() % (pointer_max * 4L));
+            return (int) (level().getDefaultClockTime() % (pointer_max * 4L));
         }
 
         @Override
@@ -601,7 +601,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
             if (level().isClientSide()) return;
 
             int oldOut = state() >> 4;
-            int out = 1 << level().getDayTime() % (pointer_max * 4L) / pointer_max;
+            int out = 1 << level().getDefaultClockTime() % (pointer_max * 4L) / pointer_max;
             if (shape() == 1) out = flipMaskZ(out);
             if (oldOut != out) {
                 setState(out << 4);
@@ -1068,13 +1068,13 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
             int i = getDiodeSignal(2);
 
             if (state1.hasAnalogOutputSignal()) {
-                i = state1.getAnalogOutputSignal(level(), pos1);
+                i = state1.getAnalogOutputSignal(level(), pos1, absDir.getOpposite());
             } else if (i < 15 && state1.isRedstoneConductor(level(), pos1)) {
                 BlockPos pos2 = pos1.relative(absDir);
                 BlockState state2 = level().getBlockState(pos2);
 
                 if (state2.hasAnalogOutputSignal()) {
-                    i = Math.max(state2.getAnalogOutputSignal(level(), pos2), i);
+                    i = Math.max(state2.getAnalogOutputSignal(level(), pos2, absDir.getOpposite()), i);
                 }
 
                 ItemFrame entityitemframe = getItemFrame(level(), absDir, pos2);

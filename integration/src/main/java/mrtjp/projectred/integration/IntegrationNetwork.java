@@ -76,14 +76,14 @@ public class IntegrationNetwork {
         private void handleOpenTimerGuiMessage(Minecraft mc, MCDataInput data) {
             MultiPart part = readPartIndex(Objects.requireNonNull(mc.level), data);
             if (part instanceof ComplexGatePart.ITimerGuiLogic) {
-                mc.setScreen(new TimerScreen((GatePart) part));
+                mc.gui.setScreen(new TimerScreen((GatePart) part));
             }
         }
 
         private void handleOpenCounterGuiMessage(Minecraft mc, MCDataInput data) {
             MultiPart part = readPartIndex(Objects.requireNonNull(mc.level), data);
             if (part instanceof ComplexGatePart.ICounterGuiLogic) {
-                mc.setScreen(new CounterScreen((GatePart) part));
+                mc.gui.setScreen(new CounterScreen((GatePart) part));
             }
         }
     }

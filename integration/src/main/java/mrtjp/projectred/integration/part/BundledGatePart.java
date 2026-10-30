@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.part;
 
+import codechicken.lib.raytracer.SubHitBlockHitResult;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
@@ -869,9 +870,10 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         @Override
         protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
             if (!held.isEmpty() && held.getItem() instanceof IScrewdriver) return false;
-            if (hit.subHit > -1) {
+            int subHit = hit.hit instanceof SubHitBlockHitResult sh ? sh.subHit : -1;
+            if (subHit > -1) {
                 if (!level().isClientSide()) {
-                    pressMask ^= (1 << hit.subHit);
+                    pressMask ^= (1 << subHit);
                     gateLogicOnChange();
                 }
                 return true;

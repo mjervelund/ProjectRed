@@ -66,13 +66,13 @@ public class CounterScreen extends RedUIScreen {
 
         graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, y, (float) (0), (float) (0), getFrame().width(), getFrame().height(), 256, 256);
         String s = "Maximum: " + counterGate.getCounterMax();
-        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2f, y + 5, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2, y + 5, 0xFF404040, false);
         s = "Increment: " + counterGate.getCounterIncr();
-        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2f, y + 45, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2, y + 45, 0xFF404040, false);
         s = "Decrement: " + counterGate.getCounterDecr();
-        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2f, y + 85, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2, y + 85, 0xFF404040, false);
         s = "State: " + counterGate.getCounterValue();
-        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2f, y + 125, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (w - getFontRenderer().width(s)) / 2, y + 125, 0xFF404040, false);
     }
 
     @Override

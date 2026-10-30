@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.data;
 
+import mrtjp.projectred.integration.init.IntegrationClientInit;
 import mrtjp.projectred.core.data.ProjectRedModelProvider;
 import mrtjp.projectred.integration.GateType;
 import mrtjp.projectred.integration.client.GatePartItemRenderer;
@@ -18,7 +19,7 @@ public class IntegrationItemModelProvider extends ProjectRedModelProvider {
 
         for (GateType type : GateType.values()) {
             if (type.isExternalGate()) continue;
-            clazz(type.getItem(), GatePartItemRenderer.class);
+            specialItem(type.getItem(), IntegrationClientInit.GATE_ITEM_RENDERER);
         }
     }
 }

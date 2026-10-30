@@ -104,11 +104,11 @@ public abstract class RedstoneGatePart extends GatePart implements FaceRedstoneP
             int absSide = absoluteDir(r);
             BlockPos pos2 = pos().relative(Direction.values()[absSide]);
 
-            level().neighborChanged(pos2, CBMultipartModContent.MULTIPART_BLOCK.get(), pos());
+            level().neighborChanged(pos2, CBMultipartModContent.MULTIPART_BLOCK.get(), null);
             for (int s = 0; s < 6; s++) {
                 if (s != (absSide ^ 1) && (smask & 1 << s) == 0) {
                     level().neighborChanged(
-                            pos2.relative(Direction.values()[s]), CBMultipartModContent.MULTIPART_BLOCK.get(), pos2);
+                            pos2.relative(Direction.values()[s]), CBMultipartModContent.MULTIPART_BLOCK.get(), null);
                 }
             }
             smask |= 1 << absSide;

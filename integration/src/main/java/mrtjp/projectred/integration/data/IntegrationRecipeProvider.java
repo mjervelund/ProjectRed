@@ -180,7 +180,7 @@ public class IntegrationRecipeProvider extends RecipeProvider {
         shapedRecipe(GateType.RAIN_SENSOR.getItem(), 1)
                 .key('P', PLATE_ITEM.get())
                 .key('W', CONDUCTIVE_PLATE_ITEM.get())
-                .key('S', Tags.Items.SLIMEBALLS)
+                .key('S', Tags.Items.SLIME_BALLS)
                 .patternLine("PPP")
                 .patternLine("SSS")
                 .patternLine("PWP");
