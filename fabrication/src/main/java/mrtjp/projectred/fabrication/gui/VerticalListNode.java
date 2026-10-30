@@ -6,7 +6,7 @@ import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.RedUINode;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.function.Supplier;
@@ -36,7 +36,7 @@ public class VerticalListNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         //Background
         graphics.fill(getFrame().x(), getFrame().y(), getFrame().x() + getFrame().width(), getFrame().y() + getFrame().height(), 0x7F000000);
 
@@ -177,13 +177,13 @@ public class VerticalListNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             Font fontRenderer = getRoot().getFontRenderer();
             Component text = textSupplier.get();
 
             int x = getXForAlignment(fontRenderer, text);
             int y = getYForAlignment(fontRenderer);
-            graphics.drawString(fontRenderer, text, x, y, textColor);
+            graphics.text(fontRenderer, text, x, y, textColor);
         }
 
         private Rect getPaddedFrame() {
@@ -229,7 +229,7 @@ public class VerticalListNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             //Line
             graphics.fill(getFrame().x(), getFrame().y(), getFrame().x() + getFrame().width(), getFrame().y() + 1, 0xFF000000);
 
@@ -237,7 +237,7 @@ public class VerticalListNode extends AbstractGuiNode {
 
             int x = getFrame().midX() - fontRenderer.width(title) / 2;
             int y = getFrame().midY() - fontRenderer.lineHeight / 2;
-            graphics.drawString(fontRenderer, title, x, y, TITLE_COLOR);
+            graphics.text(fontRenderer, title, x, y, TITLE_COLOR);
 
             //Line
             graphics.fill(getFrame().x(), getFrame().y() + getFrame().height() - 1, getFrame().x() + getFrame().width(), getFrame().y() + getFrame().height(), 0xFF000000);

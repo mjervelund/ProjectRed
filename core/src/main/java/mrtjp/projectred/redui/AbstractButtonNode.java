@@ -1,5 +1,6 @@
 package mrtjp.projectred.redui;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.lib.Point;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -75,7 +76,7 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
         int width = getFrame().width();
         int height = getFrame().height();
 
-        graphics.blitSprite(buttonSprites[state], x, y, width, height);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, buttonSprites[state], x, y, width, height);
     }
 
     protected abstract void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover);

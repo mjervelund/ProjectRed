@@ -16,7 +16,7 @@ import mrtjp.projectred.redui.RedUISprite;
 import mrtjp.projectred.redui.ScrollBarNode;
 import mrtjp.projectred.redui.SpriteButtonNode;
 import net.covers1624.quack.collection.FastStream;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -129,14 +129,14 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 92, 223, getFrame().width(), getFrame().height(), 512, 512);
 
         // Title of current node
         if (currentNode != null) {
             var fr = getRoot().getFontRenderer();
             Component c = getTitleForCTNNode(currentNode).copy().withStyle(UNIFORM_DARK_GRAY);
-            graphics.drawString(fr, c, getFrame().x() + 6, getFrame().y() + 21, 0xFFFFFF, false);
+            graphics.text(fr, c, getFrame().x() + 6, getFrame().y() + 21, 0xFFFFFF, false);
         }
     }
 
@@ -321,7 +321,7 @@ public class CompileTreeTab extends AbstractGuiNode implements ICompileOverlayRe
         }
 
         @Override
-        protected void drawSlider(GuiGraphics graphics, Rect sliderFrame) {
+        protected void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame) {
             graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), 305, 58, sliderFrame.width(), sliderFrame.height(), 512, 512);
         }
 

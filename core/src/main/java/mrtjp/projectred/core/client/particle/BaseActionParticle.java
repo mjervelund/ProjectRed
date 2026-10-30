@@ -8,6 +8,9 @@ import java.util.LinkedList;
 
 public abstract class BaseActionParticle extends Particle {
 
+    // 26.x Particle has no alpha (only SingleQuadParticle); action particles keep their own.
+    protected float alpha = 1.0F;
+
     private final LinkedList<ParticleAction> actionQueue = new LinkedList<>();
     private @Nullable ParticleAction currentAction = null;
 
@@ -53,7 +56,6 @@ public abstract class BaseActionParticle extends Particle {
         return alpha;
     }
 
-    @Override
     public void setAlpha(float alpha) {
         this.alpha = alpha;
     }

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 
 
 public abstract class TextBoxNode extends AbstractGuiNode {
@@ -96,7 +97,7 @@ public abstract class TextBoxNode extends AbstractGuiNode {
 
         boolean changed = false;
 
-        if (Screen.isPaste(glfwKeyCode)) {
+        if (new KeyEvent(glfwKeyCode, glfwScanCode, glfwFlags).isPaste()) {
             String clipboard = Minecraft.getInstance().keyboardHandler.getClipboard();
             changed = appendText(clipboard);
         } else {

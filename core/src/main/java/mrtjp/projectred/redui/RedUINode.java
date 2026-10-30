@@ -578,7 +578,7 @@ public interface RedUINode {
             Point relativePos = getPosition(); //Position is always relative
             double relativeZ = child.getRelativeZPosition();
 
-            graphics.pose().translate(relativePos.x, relativePos.y, relativeZ);
+            graphics.pose().translate((float) (relativePos.x), (float) (relativePos.y));
             child.renderBackForSubtree(graphics, relativeMouse, partialFrame);
 
             graphics.pose().popMatrix();
@@ -602,7 +602,7 @@ public interface RedUINode {
             Point relativePos = getPosition(); //Position is always relative
             double relativeZ = child.getRelativeZPosition();
 
-            graphics.pose().translate(relativePos.x, relativePos.y, relativeZ);
+            graphics.pose().translate((float) (relativePos.x), (float) (relativePos.y));
             child.renderFrontForSubtree(graphics, relativeMouse, partialFrame);
 
             graphics.pose().popMatrix();
@@ -795,9 +795,9 @@ public interface RedUINode {
         Point mouseScreenSpace = screenOffset.add(mouse);
 
         graphics.pose().pushMatrix();
-        graphics.pose().translate(-screenOffset.x, -screenOffset.y, 0);
+        graphics.pose().translate((float) (-screenOffset.x), (float) (-screenOffset.y));
 
-        graphics.renderComponentTooltip(getRoot().getFontRenderer(), tooltip, mouseScreenSpace.x, mouseScreenSpace.y);
+        graphics.setComponentTooltipForNextFrame(getRoot().getFontRenderer(), tooltip, mouseScreenSpace.x, mouseScreenSpace.y);
 
         graphics.pose().popMatrix();
     }

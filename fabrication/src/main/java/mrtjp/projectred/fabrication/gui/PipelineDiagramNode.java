@@ -6,7 +6,7 @@ import mrtjp.projectred.fabrication.lithography.YieldCalculator;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ItemStackNode;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class PipelineDiagramNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
     }
 
@@ -80,7 +80,7 @@ public class PipelineDiagramNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             // Draw the diagram centered in this node
             graphics.blit(ICWorkbenchInfoTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 1, 223, 280, 56, 512, 512);
         }

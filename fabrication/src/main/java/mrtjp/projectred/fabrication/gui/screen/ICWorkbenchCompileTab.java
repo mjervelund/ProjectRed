@@ -17,7 +17,7 @@ import mrtjp.projectred.redui.AbstractButtonNode;
 import mrtjp.projectred.redui.AbstractCheckboxNode;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -99,12 +99,12 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         RenderSystem.setShaderTexture(0, TAB_BACKGROUND);
         graphics.blit(TAB_BACKGROUND, getFrame().x(), getFrame().y(), 0, 0, getFrame().width(), getFrame().height(), 512, 512);
 
         // Blueprint name in top left corner
-        graphics.drawString(getRoot().getFontRenderer(), editor.getIcName(), getFrame().x() + 8, getFrame().y() + 6, EnumColour.GRAY.argb(), false);
+        graphics.text(getRoot().getFontRenderer(), editor.getIcName(), getFrame().x() + 8, getFrame().y() + 6, EnumColour.GRAY.argb(), false);
 
         // Progress bar
         RenderSystem.setShaderTexture(0, TAB_BACKGROUND);
@@ -115,7 +115,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
 
         // Progress text
         ICCompilerLog log = editor.getStateMachine().getCompilerLog();
-        graphics.drawString(getRoot().getFontRenderer(),
+        graphics.text(getRoot().getFontRenderer(),
                 Component.translatable(editor.getStateMachine().isCompiling() ? UL_COMPILE_PROGRESS : UL_COMPILE_DONE, log.getCompletedSteps(), log.getTotalSteps())
                         .withStyle(UNIFORM_DARK_GRAY),
                 getFrame().x() + 208, getFrame().y() + 42, EnumColour.GRAY.argb(), false);
@@ -139,8 +139,8 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
                         .append(Component.translatable(UL_UNIT_WARNINGS, log.getWarningCount())
                                 .withStyle(UNIFORM_DARK_GRAY));
 
-        graphics.drawString(getRoot().getFontRenderer(), errorText, getFrame().x() + 208, getFrame().y() + 52, EnumColour.GRAY.argb(), false);
-        graphics.drawString(getRoot().getFontRenderer(), warningText, getFrame().x() + 208, getFrame().y() + 60, EnumColour.GRAY.argb(), false);
+        graphics.text(getRoot().getFontRenderer(), errorText, getFrame().x() + 208, getFrame().y() + 52, EnumColour.GRAY.argb(), false);
+        graphics.text(getRoot().getFontRenderer(), warningText, getFrame().x() + 208, getFrame().y() + 60, EnumColour.GRAY.argb(), false);
     }
 
     //TODO Reduce this reused code (ICEditorToolManager)
@@ -287,7 +287,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
         }
 
         @Override
-        protected void drawButtonBody(GuiGraphics graphics, boolean mouseover) {
+        protected void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover) {
             if (editor.getStateMachine().isCompiling()) {
                 // Spinner
                 long time = Minecraft.getInstance().level.getGameTime();
@@ -301,7 +301,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
             }
         }
 
-        private void blitCentered(GuiGraphics graphics, Identifier background, int u, int v, int width, int height) {
+        private void blitCentered(GuiGraphicsExtractor graphics, Identifier background, int u, int v, int width, int height) {
             graphics.blit(background,
                     getFrame().x() + (getFrame().width() - width) / 2,
                     getFrame().y() + (getFrame().height() - height) / 2, u, v,

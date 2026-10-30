@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -72,7 +72,7 @@ public class SimpleUVTab implements TabControllerNode.IToolbarTab {
     public TabButtonNode createButtonNode() {
         return new TabButtonNode(this, tabSide) {
             @Override
-            public void renderIcon(GuiGraphics graphics, Point mouse, float partialFrame) {
+            public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
                 graphics.blit(texture, getFrame().x() + 3, getFrame().y() + 3, u, v, 14, 14, 512, 512);
 
                 StatusDot statusDot = SimpleUVTab.this.getStatusDot();

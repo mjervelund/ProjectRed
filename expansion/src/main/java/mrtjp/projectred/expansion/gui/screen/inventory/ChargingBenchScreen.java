@@ -1,10 +1,11 @@
 package mrtjp.projectred.expansion.gui.screen.inventory;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.expansion.inventory.container.ChargingBenchMenu;
 import mrtjp.projectred.lib.GuiLib;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.RedUIContainerScreen;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,24 +24,24 @@ public class ChargingBenchScreen extends RedUIContainerScreen<ChargingBenchMenu>
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         int x = getFrame().x();
         int y = getFrame().y();
 
-        graphics.blit(BACKGROUND, x, y, 0, 0, getFrame().width(), getFrame().height());
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, y, (float) (0), (float) (0), getFrame().width(), getFrame().height(), 256, 256);
 
         if (getMenu().canConductorWork())
-            graphics.blit(BACKGROUND, x + 14, y + 17, 176, 1, 7, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 14, y + 17, (float) (176), (float) (1), 7, 9, 256, 256);
         GuiLib.drawVerticalTank(graphics, BACKGROUND, x + 14, y + 27, 176, 10, 7, 48, getMenu().getChargeScaled(48));
 
         if (getMenu().isPowerStorageFull())
-            graphics.blit(BACKGROUND, x + 41, y + 17, 184, 1, 14, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 41, y + 17, (float) (184), (float) (1), 14, 9, 256, 256);
         GuiLib.drawVerticalTank(graphics, BACKGROUND, x + 41, y + 27, 184, 10, 14, 48, getMenu().getPowerStoredScaled(48));
 
         if (getMenu().isStorageCharging())
-            graphics.blit(BACKGROUND, x + 26, y + 48, 199, 0, 10, 8);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 26, y + 48, (float) (199), (float) (0), 10, 8, 256, 256);
 
         if (getMenu().areItemsCharging())
-            graphics.blit(BACKGROUND, x + 63, y + 29, 210, 0, 17, 10);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 63, y + 29, (float) (210), (float) (0), 17, 10, 256, 256);
     }
 }

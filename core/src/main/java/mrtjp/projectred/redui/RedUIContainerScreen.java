@@ -91,7 +91,7 @@ public class RedUIContainerScreen<T extends AbstractContainerMenu> extends Abstr
         int glfwMouseButton = event.button();
         lastClickTime = System.currentTimeMillis();
 //        boolean consumed = super.mouseClicked(event, doubleClick); //TODO Check consumption somehow. This always returns true
-        super.mouseClicked(x, y, glfwMouseButton);
+        super.mouseClicked(event, doubleClick);
         boolean consumed = false;
         return operateOnZOrderedSubtree(new Point((int) x, (int) y), (n, p, c) -> n.mouseClicked(p, glfwMouseButton, c), consumed);
     }

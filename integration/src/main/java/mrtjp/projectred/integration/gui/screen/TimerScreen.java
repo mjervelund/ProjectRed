@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.gui.screen;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import codechicken.lib.packet.PacketCustom;
 import mrtjp.projectred.integration.IntegrationNetwork;
 import mrtjp.projectred.integration.part.ComplexGatePart;
@@ -8,7 +9,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.ButtonNode;
 import mrtjp.projectred.redui.RedUIScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -51,17 +52,17 @@ public class TimerScreen extends RedUIScreen {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         super.drawBack(graphics, mouse, partialFrame);
 
         int x = getFrame().x();
         int y = getFrame().y();
 
-        graphics.blit(BACKGROUND, x, y, 0, 0, getFrame().width(), getFrame().height());
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, y, (float) (0), (float) (0), getFrame().width(), getFrame().height(), 256, 256);
 
         String s = String.format("Timer interval: %.2fs", timerGate.getTimerMax() * 0.05);
         int sw = getFontRenderer().width(s);
-        graphics.drawString(getFontRenderer(), s, x + (getFrame().width() - sw)/2f, y + 8f, 0x404040, false);
+        graphics.text(getFontRenderer(), s, x + (getFrame().width() - sw)/2f, y + 8f, 0x404040, false);
     }
 
     @Override

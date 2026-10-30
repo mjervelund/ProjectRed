@@ -36,7 +36,7 @@ public class ItemStackNode extends AbstractGuiNode {
 
         // Draw tooltip
         if (isFirstHit(mouse)) {
-            AbstractContainerScreen.renderSlotHighlight(graphics, getPosition().x, getPosition().y, 0);
+            graphics.fill(getPosition().x, getPosition().y, getPosition().x + 16, getPosition().y + 16, 0x80FFFFFF);
         }
     }
 

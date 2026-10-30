@@ -3,7 +3,7 @@ package mrtjp.projectred.fabrication.gui;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -70,7 +70,7 @@ public class SelectionGridNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             boolean mouseover = getFrame().contains(mouse) && isFirstHit(mouse);
 
             int state = SelectionGridNode.this.selectionCheckFunction.test(i) ? 2 :
@@ -88,7 +88,7 @@ public class SelectionGridNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
             if (!isFirstHit(mouse)) return;
 

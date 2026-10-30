@@ -3,7 +3,7 @@ package mrtjp.projectred.fabrication.gui;
 import mrtjp.projectred.fabrication.editor.tools.EraseTool;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class EraserToolTab extends ICEditorToolTab {
     public TabButtonNode createButtonNode() {
         return new TabButtonNode(this, TabButtonNode.TabSide.LEFT) {
             @Override
-            public void renderIcon(GuiGraphics graphics, Point mouse, float partialFrame) {
+            public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
                 graphics.blit(ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, 390, 16, 14, 14, 512, 512);
             }
 

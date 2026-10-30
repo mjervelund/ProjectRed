@@ -12,7 +12,7 @@ import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.transmission.client.WireModelRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -39,7 +39,7 @@ public class WirePlacerToolTab extends ICEditorToolTab {
             @Override public boolean isSelected() { return tool.getWireType() == type; }
 
             @Override
-            public void renderIcon(GuiGraphics graphics, Point absPos, float partialFrame) {
+            public void renderIcon(GuiGraphicsExtractor graphics, Point absPos, float partialFrame) {
                 MultiBufferSource.BufferSource getter = Minecraft.getInstance().renderBuffers().bufferSource();
                 CCRenderState ccrs = CCRenderState.instance();
                 ccrs.reset();
@@ -93,7 +93,7 @@ public class WirePlacerToolTab extends ICEditorToolTab {
     public TabButtonNode createButtonNode() {
         return new TabButtonNode(this, TabButtonNode.TabSide.LEFT) {
             @Override
-            public void renderIcon(GuiGraphics graphics, Point mouse, float partialFrame) {
+            public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
                 graphics.blit(ICWorkbenchScreen.BACKGROUND, getFrame().x() + 3, getFrame().y() + 3, 390, 46, 14, 14, 512, 512);
             }
 

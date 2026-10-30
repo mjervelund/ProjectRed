@@ -3,7 +3,7 @@ package mrtjp.projectred.fabrication.gui;
 import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -46,7 +46,7 @@ public abstract class TabButtonNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         int x = getPosition().x;
         int y = getPosition().y;
         int u = side.u;
@@ -80,7 +80,7 @@ public abstract class TabButtonNode extends AbstractGuiNode {
     }
 
     @Override
-    public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
         if (!isFirstHit(mouse))
             return;
@@ -120,7 +120,7 @@ public abstract class TabButtonNode extends AbstractGuiNode {
         }
     }
 
-    public abstract void renderIcon(GuiGraphics graphics, Point mouse, float partialFrame);
+    public abstract void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame);
 
     public abstract void buildTooltip(List<Component> tooltip);
 

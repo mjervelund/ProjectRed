@@ -6,7 +6,7 @@ import mrtjp.projectred.fabrication.gui.screen.ICWorkbenchScreen;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -94,7 +94,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         graphics.blit(ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, 305, 0, 84, 222, 512, 512);
 
         //TODO: Render tool name on header
@@ -126,7 +126,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         return new TabButtonNode(this, TabButtonNode.TabSide.LEFT) {
 
             @Override
-            public void renderIcon(GuiGraphics graphics, Point mouse, float partialFrame) {
+            public void renderIcon(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             }
 
             @Override
@@ -140,7 +140,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         void getTooltip(List<Component> tooltip);
         void onClick();
         boolean isSelected();
-        void renderIcon(GuiGraphics graphics, Point absPos, float partialFrame);
+        void renderIcon(GuiGraphicsExtractor graphics, Point absPos, float partialFrame);
     }
 
     private static class GroupHeaderNode extends AbstractGuiNode {
@@ -153,12 +153,12 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
             graphics.blit(ICWorkbenchScreen.BACKGROUND, getPosition().x, getPosition().y, GROUP_U, GROUP_V, getFrame().width(), getFrame().height(), 512, 512);
 
             Font fontRenderer = getRoot().getFontRenderer();
-            graphics.drawString(fontRenderer, title, getPosition().x + 2, getPosition().y + GROUP_HEIGHT / 2 - fontRenderer.lineHeight / 2, 0xFFFFFF);
+            graphics.text(fontRenderer, title, getPosition().x + 2, getPosition().y + GROUP_HEIGHT / 2 - fontRenderer.lineHeight / 2, 0xFFFFFF);
         }
     }
 
@@ -178,7 +178,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             RenderSystem.enableBlend();
 
             boolean mouseover = getFrame().contains(mouse) && isFirstHit(mouse);
@@ -208,7 +208,7 @@ public class ICEditorToolTab extends AbstractGuiNode implements TabControllerNod
         }
 
         @Override
-        public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
 
             if (!isFirstHit(mouse)) return;
 

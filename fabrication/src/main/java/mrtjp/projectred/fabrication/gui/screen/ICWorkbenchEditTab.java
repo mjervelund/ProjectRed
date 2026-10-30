@@ -9,7 +9,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ICWorkbenchEditTab extends AbstractGuiNode {
 
@@ -74,14 +74,14 @@ public class ICWorkbenchEditTab extends AbstractGuiNode {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         Rect frame = getFrame();
         Font fontRenderer = getRoot().getFontRenderer();
 
         graphics.blit(ICWorkbenchScreen.BACKGROUND, frame.x(), frame.y(), 0, 0, frame.width(), frame.height(), 512, 512);
 
         // Blueprint name in top left corner
-        graphics.drawString(fontRenderer, editor.getIcName(), frame.x() + 8, frame.y() + 6, EnumColour.GRAY.argb(), false);
+        graphics.text(fontRenderer, editor.getIcName(), frame.x() + 8, frame.y() + 6, EnumColour.GRAY.argb(), false);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class ButtonNode extends AbstractButtonNode {
     @Override
     protected void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover) {
 
-        graphics.drawCenteredString(getRoot().getFontRenderer(), buttonText,
+        graphics.centeredText(getRoot().getFontRenderer(), buttonText,
                 getPosition().x + getFrame().width()/2,
                 getPosition().y+(getFrame().height()-8)/2,
                 getTextColor(mouseover));

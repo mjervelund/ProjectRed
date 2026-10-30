@@ -7,6 +7,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
+import mrtjp.projectred.redui.ViewportRenderNode;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
@@ -23,6 +25,7 @@ public class CoreClientInit {
 
         modEventBus.addListener(CoreClientInit::clientSetup);
         modEventBus.addListener(CoreClientInit::onRegisterScreens);
+        modEventBus.addListener(CoreClientInit::onRegisterPictureInPictureRenderers);
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
@@ -36,5 +39,9 @@ public class CoreClientInit {
     private static void onRegisterScreens(RegisterMenuScreensEvent event) {
         // Register screens
         event.register(ELECTROTINE_GENERATOR_MENU.get(), ElectrotineGeneratorScreen::new);
+    }
+
+    private static void onRegisterPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {
+        event.register(ViewportRenderNode.ViewportRenderState.class, ViewportRenderNode.Renderer::new);
     }
 }

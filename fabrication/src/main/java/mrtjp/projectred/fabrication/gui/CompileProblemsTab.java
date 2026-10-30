@@ -13,7 +13,7 @@ import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.ScrollBarNode;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 
@@ -47,7 +47,7 @@ public class CompileProblemsTab extends AbstractGuiNode implements ICompileOverl
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, getFrame().x(), getFrame().y(), 184, 223, getFrame().width(), getFrame().height(), 512, 512);
     }
 
@@ -88,7 +88,7 @@ public class CompileProblemsTab extends AbstractGuiNode implements ICompileOverl
         }
 
         @Override
-        protected void drawSlider(GuiGraphics graphics, Rect sliderFrame) {
+        protected void drawSlider(GuiGraphicsExtractor graphics, Rect sliderFrame) {
             graphics.blit(ICWorkbenchCompileTab.TAB_BACKGROUND, sliderFrame.x(), sliderFrame.y(), 305, 58, sliderFrame.width(), sliderFrame.height(), 512, 512);
         }
 

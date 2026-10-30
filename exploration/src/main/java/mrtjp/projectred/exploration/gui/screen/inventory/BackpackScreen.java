@@ -1,9 +1,10 @@
 package mrtjp.projectred.exploration.gui.screen.inventory;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.exploration.inventory.container.BackpackMenu;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.RedUIContainerScreen;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,13 +23,13 @@ public class BackpackScreen extends RedUIContainerScreen<BackpackMenu> {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         super.drawBack(graphics, mouse, partialFrame);
 
         int x = getFrame().x();
         int y = getFrame().y();
 
-        graphics.blit(BACKGROUND, x, y, 0, 0, getFrame().width(), getFrame().height());
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, y, (float) (0), (float) (0), getFrame().width(), getFrame().height(), 256, 256);
     }
 
     @Override

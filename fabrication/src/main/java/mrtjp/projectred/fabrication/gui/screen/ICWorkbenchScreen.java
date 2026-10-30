@@ -15,7 +15,7 @@ import mrtjp.projectred.redui.ItemStackNode;
 import mrtjp.projectred.redui.RedUIScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -92,7 +92,7 @@ public class ICWorkbenchScreen extends RedUIScreen {
     }
 
     @Override
-    public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+    public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
         super.drawBack(graphics, mouse, partialFrame);
     }
 
@@ -157,13 +157,13 @@ public class ICWorkbenchScreen extends RedUIScreen {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             graphics.blit(BACKGROUND, getFrame().x(), getFrame().y(), 0, 222, getFrame().width(), getFrame().height(), 512, 512);
 
             Font fontRenderer = getRoot().getFontRenderer();
             Component text = Component.translatable(UL_PLACE_BLUEPRINT);
 
-            graphics.drawString(fontRenderer, text,
+            graphics.text(fontRenderer, text,
                     getFrame().midX() - fontRenderer.width(text) / 2,
                     getFrame().y() + 6, EnumColour.GRAY.argb(), false);
         }

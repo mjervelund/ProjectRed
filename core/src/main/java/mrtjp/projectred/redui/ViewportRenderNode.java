@@ -2,18 +2,21 @@ package mrtjp.projectred.redui;
 
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.vec.Vector3;
-import com.mojang.renderpearl.backend.opengl.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexSorting;
 import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.lib.Size;
 import mrtjp.projectred.lib.Vec2;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import org.joml.Matrix4fStack;
-import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
+import net.minecraft.client.renderer.Projection;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.state.gui.pip.PictureInPictureRenderState;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.List;
 
@@ -24,7 +27,11 @@ public abstract class ViewportRenderNode extends AbstractGuiNode {
 
     private final PVMMatrix pvMatrix = new PVMMatrix();
 
-    protected abstract void renderInViewport(PoseStack renderStack, Vec2 ndcMouse, float partialFrame, boolean isFirstHit);
+    /**
+     * Renders the viewport contents. {@code renderStack} maps world coordinates straight to the viewport's clip
+     * space (projection and view are folded in), so submit geometry through {@code collector} with it.
+     */
+    protected abstract void renderInViewport(PoseStack renderStack, SubmitNodeCollector collector, Vec2 ndcMouse, float partialFrame, boolean isFirstHit);
 
     protected abstract List<Component> getToolTip(Point mousePosition, boolean isFirstHit);
 
@@ -73,49 +80,35 @@ public abstract class ViewportRenderNode extends AbstractGuiNode {
 
     @Override
     public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
-
-        // Set up projection and view matrices
+        // Set up projection and view matrices (also used on the CPU for mouse picking)
         Rect glFrame = getGlFrame();
         pvMatrix.setProjection(getVerticalFOV(), glFrame.width(), glFrame.height(), 0.2F, getMaxRenderDist());
         pvMatrix.setView(getCameraPosition().x, getCameraPosition().y, getCameraPosition().z, 90 * MathHelper.torad, 0);
 
-        // Save viewport state
-        int glvpH = GlStateManager.Viewport.height();
-        int glvpW = GlStateManager.Viewport.width();
-        int glvpX = GlStateManager.Viewport.x();
-        int glvpY = GlStateManager.Viewport.y();
+        // 26.x: GUI geometry is collected and drawn later, so 3D content goes through a picture-in-picture
+        // renderer (an offscreen target blitted into the GUI at this node's frame).
+        // The PIP blit isn't transformed by the GUI pose: use absolute screen coordinates.
+        Rect screenFrame = convertParentRectToScreen(getFrame());
+        int x0 = screenFrame.x();
+        int y0 = screenFrame.y();
+        graphics.submitPictureInPictureRenderState(new ViewportRenderState(this, getFrame().ndc(mouse), partialFrame, isFirstHit(mouse),
+                x0, y0, x0 + screenFrame.width(), y0 + screenFrame.height(), graphics.peekScissorStack()));
+    }
 
-        // Create a new viewport
-        RenderSystem.viewport(glFrame.x(), glFrame.y(), glFrame.width(), glFrame.height());
+    private void renderToTexture(ViewportRenderState state, PoseStack poseStack, SubmitNodeCollector collector, int width, int height) {
+        // The PIP target uses an orthographic projection; undo it and apply ours instead.
+        Projection ortho = new Projection();
+        ortho.setupOrtho(-1000.0F, 1000.0F, width, height, true);
+        Projection perspective = new Projection();
+        perspective.setupPerspective(0.2F, (float) getMaxRenderDist(), (float) Math.toDegrees(getVerticalFOV()), width, height);
 
-        // Apply projection matrix
-        RenderSystem.backupProjectionMatrix();
-        RenderSystem.setProjectionMatrix(pvMatrix.getProjectionMatrix().toMatrix4f(), VertexSorting.ORTHOGRAPHIC_Z);
+        Matrix4f m = ortho.getMatrix(new Matrix4f()).invert()
+                .mul(perspective.getMatrix(new Matrix4f()))
+                .mul(pvMatrix.getViewMatrix().toMatrix4f());
+        poseStack.last().pose().set(m);
+        poseStack.last().normal().identity();
 
-        Matrix4fStack mvStack = RenderSystem.getModelViewStack();
-        mvStack.pushMatrix();
-        mvStack.identity();
-        RenderSystem.applyModelViewMatrix();
-
-        /*
-          TODO Figure out how to sandwich the viewport at this node's z position, +- some small range.
-               For now, this only renders properly if correctly ordered in the tree (i.e. everything
-               under it renders before, and everything above it renders after).
-         */
-        RenderSystem.clear(GL11.GL_DEPTH_BUFFER_BIT, false);
-
-        // Render
-        PoseStack pStack = pvMatrix.getModelViewMatrixStack();
-        renderInViewport(pStack, getFrame().ndc(mouse), partialFrame, isFirstHit(mouse));
-
-        // Restore previous matrices
-        mvStack.popMatrix();
-        RenderSystem.applyModelViewMatrix();
-
-        RenderSystem.restoreProjectionMatrix();
-
-        // Restore previous viewport
-        RenderSystem.viewport(glvpX, glvpY, glvpW, glvpH);
+        renderInViewport(poseStack, collector, state.ndcMouse(), state.partialFrame(), state.isFirstHit());
     }
 
     @Override
@@ -124,5 +117,47 @@ public abstract class ViewportRenderNode extends AbstractGuiNode {
         List<Component> tooltip = getToolTip(mouse, isFirstHit(mouse));
 
         renderTooltip(graphics, mouse, tooltip);
+    }
+
+    public record ViewportRenderState(ViewportRenderNode node, Vec2 ndcMouse, float partialFrame, boolean isFirstHit,
+                                      int x0, int y0, int x1, int y1, @Nullable ScreenRectangle scissorArea, @Nullable ScreenRectangle bounds) implements PictureInPictureRenderState {
+
+        public ViewportRenderState(ViewportRenderNode node, Vec2 ndcMouse, float partialFrame, boolean isFirstHit, int x0, int y0, int x1, int y1, @Nullable ScreenRectangle scissorArea) {
+            this(node, ndcMouse, partialFrame, isFirstHit, x0, y0, x1, y1, scissorArea, PictureInPictureRenderState.getBounds(x0, y0, x1, y1, scissorArea));
+        }
+
+        @Override
+        public float scale() {
+            return 1.0F;
+        }
+    }
+
+    /**
+     * Registered with {@code RegisterPictureInPictureRenderersEvent}.
+     */
+    public static class Renderer extends PictureInPictureRenderer<ViewportRenderState> {
+
+        private int guiScale = 1;
+
+        @Override
+        public Class<ViewportRenderState> getRenderStateClass() {
+            return ViewportRenderState.class;
+        }
+
+        @Override
+        public void prepare(ViewportRenderState renderState, net.minecraft.client.renderer.state.gui.GuiRenderState guiRenderState, net.minecraft.client.renderer.feature.FeatureRenderDispatcher featureRenderDispatcher, int guiScale) {
+            this.guiScale = guiScale;
+            super.prepare(renderState, guiRenderState, featureRenderDispatcher, guiScale);
+        }
+
+        @Override
+        protected void renderToTexture(ViewportRenderState state, PoseStack poseStack, SubmitNodeCollector collector) {
+            state.node().renderToTexture(state, poseStack, collector, (state.x1() - state.x0()) * guiScale, (state.y1() - state.y0()) * guiScale);
+        }
+
+        @Override
+        protected String getTextureLabel() {
+            return "projectred_viewport";
+        }
     }
 }

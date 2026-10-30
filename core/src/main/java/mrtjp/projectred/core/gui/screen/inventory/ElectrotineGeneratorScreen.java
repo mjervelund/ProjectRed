@@ -1,5 +1,6 @@
 package mrtjp.projectred.core.gui.screen.inventory;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import mrtjp.projectred.core.inventory.container.ElectrotineGeneratorMenu;
 import mrtjp.projectred.lib.GuiLib;
 import mrtjp.projectred.lib.Point;
@@ -29,37 +30,37 @@ public class ElectrotineGeneratorScreen extends RedUIContainerScreen<Electrotine
         int x = getFrame().x();
         int y = getFrame().y();
         // Background
-        graphics.blit(BACKGROUND, x, y, 0, 0, getFrame().width(), getFrame().height());
+        graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x, y, (float) (0), (float) (0), getFrame().width(), getFrame().height(), 256, 256);
 
         // Charge icon
         if (getMenu().canConductorWork()) {
-            graphics.blit(BACKGROUND, x + 22, y + 16, 176, 1, 7, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 22, y + 16, (float) (176), (float) (1), 7, 9, 256, 256);
         }
         // Charge Bar
         GuiLib.drawVerticalTank(graphics, BACKGROUND, x + 22, y + 26, 176, 10, 7, 48, getMenu().getChargeScaled(48));
 
         // Storage icon
         if (getMenu().isPowerStorageFull()) {
-            graphics.blit(BACKGROUND, x + 54, y + 16, 184, 1, 14, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 54, y + 16, (float) (184), (float) (1), 14, 9, 256, 256);
         }
         // Storage Bar
         GuiLib.drawVerticalTank(graphics, BACKGROUND, x + 54, y + 26, 184, 10, 14, 48, getMenu().getPowerStoredScaled(48));
 
         // Burning icon
         if (getMenu().isBurning()) {
-            graphics.blit(BACKGROUND, x + 93, y + 16, 199, 1, 7, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 93, y + 16, (float) (199), (float) (1), 7, 9, 256, 256);
         }
         // Burning Bar
         GuiLib.drawVerticalTank(graphics, BACKGROUND, x + 93, y + 26, 199, 10, 7, 48, getMenu().getBurnTimeScaled(48));
 
         // Storage charging arrow
         if (getMenu().isChargingStorage()) {
-            graphics.blit(BACKGROUND, x + 69, y + 45, 211, 10, 23, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 69, y + 45, (float) (211), (float) (10), 23, 9, 256, 256);
         }
 
         // Conductor charging arrow
         if (getMenu().isChargingConductor()) {
-            graphics.blit(BACKGROUND, x + 30, y + 46, 211, 0, 23, 9);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, x + 30, y + 46, (float) (211), (float) (0), 23, 9, 256, 256);
         }
     }
 }

@@ -87,7 +87,7 @@ public abstract class FullyOrientableBlockModel implements DynamicBlockStateMode
         // Bake and separate sides. Full block, so no uncullable quads.
         List<List<BakedQuad>> sides = new ArrayList<>(6);
         for (int s = 0; s < 6; s++) sides.add(new ArrayList<>());
-        for (BakedQuad quad : builder.bake()) {
+        for (BakedQuad quad : builder.getQuads()) {
             sides.get(quad.direction().ordinal()).add(quad);
         }
         return new Part(sides, particleMaterial());

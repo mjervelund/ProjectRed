@@ -8,7 +8,7 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.lib.Rect;
 import mrtjp.projectred.redui.AbstractGuiNode;
 import mrtjp.projectred.redui.RedUISprite;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
 import java.util.LinkedList;
@@ -96,16 +96,16 @@ public class ProblemListNode extends AbstractGuiNode {
         }
 
         @Override
-        public void drawBack(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawBack(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             blitSprite(graphics, BACKGROUND_UNSELECTED);
 
             var fr = getRoot().getFontRenderer();
             Component c = issue.getName().copy().withStyle(ICWorkbenchEditor.UNIFORM);
-            graphics.drawString(fr, c, getFrame().x() + 2, getFrame().y() + getFrame().height() / 2 - fr.lineHeight / 2, 0xFFFFFF, false);
+            graphics.text(fr, c, getFrame().x() + 2, getFrame().y() + getFrame().height() / 2 - fr.lineHeight / 2, 0xFFFFFF, false);
         }
 
         @Override
-        public void drawFront(GuiGraphics graphics, Point mouse, float partialFrame) {
+        public void drawFront(GuiGraphicsExtractor graphics, Point mouse, float partialFrame) {
             if (!isFirstHit(mouse)) return;
 
             List<Component> toolTip = new LinkedList<>();
