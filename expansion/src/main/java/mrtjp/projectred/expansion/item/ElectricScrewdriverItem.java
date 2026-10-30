@@ -37,7 +37,7 @@ public class ElectricScrewdriverItem extends Item implements IScrewdriver, IChar
 
     @Override
     public void damageScrewdriver(Player player, InteractionHand hand) {
-        player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+        player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
     }
 
     @Override

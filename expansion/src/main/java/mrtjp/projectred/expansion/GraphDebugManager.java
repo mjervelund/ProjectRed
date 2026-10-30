@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion;
 
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.data.MCDataInput;
@@ -10,18 +11,14 @@ import codechicken.lib.render.RenderUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.renderpearl.api.vertex.VertexFormat;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import mrtjp.projectred.expansion.graphs.ClientSideLinkCache;
 import mrtjp.projectred.expansion.graphs.GraphContainer;
 import mrtjp.projectred.expansion.part.PneumaticTubePart;
-import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import mrtjp.projectred.core.client.RecordingBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -109,42 +105,8 @@ public class GraphDebugManager {
     //endregion
 
     //region Client-side rendering
-    private static class GraphDebugManagerClientRenderTypes {
 
-        private static RenderType DEBUG_CUBE_RENDER_TYPE = RenderType.create(MOD_ID + ":graph_debug_cube", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RenderStateShard.POSITION_COLOR_SHADER)
-                        .setTextureState(RenderStateShard.NO_TEXTURE)
-                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                        .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                        .setCullState(RenderStateShard.NO_CULL)
-                        .setLightmapState(RenderStateShard.NO_LIGHTMAP)
-                        .setOverlayState(RenderStateShard.NO_OVERLAY)
-                        .setLayeringState(RenderStateShard.NO_LAYERING)
-                        .setOutputState(RenderStateShard.PARTICLES_TARGET)
-                        .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                        .setLineState(RenderStateShard.DEFAULT_LINE)
-                        .createCompositeState(true));
-
-        public static Function<Double, RenderType> DEBUG_LINES_RENDER_TYPE = Util.memoize(a -> RenderType.create(MOD_ID + ":graph_debug_lines", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256, false, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
-                        .setTextureState(RenderStateShard.NO_TEXTURE)
-                        .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-                        .setDepthTestState(RenderStateShard.LEQUAL_DEPTH_TEST)
-                        .setCullState(RenderStateShard.NO_CULL)
-                        .setLightmapState(RenderStateShard.NO_LIGHTMAP)
-                        .setOverlayState(RenderStateShard.NO_OVERLAY)
-                        .setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-                        .setOutputState(RenderStateShard.PARTICLES_TARGET)
-                        .setTexturingState(RenderStateShard.DEFAULT_TEXTURING)
-                        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-                        .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(a)))
-                        .createCompositeState(false)));
-    }
-
-    public static void onRenderLevelStage(RenderLevelStageEvent event) {
+    public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
         // Return if debug rendering is disabled. This can be toggled via command
         if (!enableRendering) return;
 
@@ -162,17 +124,15 @@ public class GraphDebugManager {
         }
 
         if (links.isEmpty()) return;
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES) return;
-
         // Translate pose to camera position
-        Vec3 cam = event.getCamera().getPosition();
+        Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
         PoseStack stack = event.getPoseStack();
         stack.pushPose();
         stack.translate(-cam.x, -cam.y, -cam.z);
 
-        RecordingBufferSource buffers = Minecraft.getInstance().renderBuffers().bufferSource();
-
+        RecordingBufferSource buffers = new RecordingBufferSource();
         renderLinks(stack, buffers, links);
+        buffers.submit(event.getSubmitNodeCollector());
     }
 
     private static void renderLinks(PoseStack stack, RecordingBufferSource buffers, Map<BlockPos, ClientSideLinkCache> links) {
@@ -180,14 +140,14 @@ public class GraphDebugManager {
         ccrs.reset();
 
         // Render node cube outlines
-        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(2.0), stack);
+        buffers.bind(ccrs, RenderTypes.lines(), stack);
         ccrs.baseColour = EnumColour.ORANGE.rgba();
         for (var entry : links.entrySet()) {
             RenderUtils.bufferCuboidOutline(ccrs.getConsumer(), Cuboid6.full.copy().expand(-2/16D).add(entry.getKey()), 1, 1, 1, 1);
         }
 
         // Render link lines
-        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_LINES_RENDER_TYPE.apply(1.5), stack);
+        buffers.bind(ccrs, RenderTypes.lines(), stack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba();
         for (var entry : links.entrySet()) {
             for (var link : entry.getValue().links) {
@@ -217,7 +177,7 @@ public class GraphDebugManager {
         }
 
         // Render cubes at ends of segments
-        buffers.bind(ccrs, GraphDebugManagerClientRenderTypes.DEBUG_CUBE_RENDER_TYPE, stack);
+        buffers.bind(ccrs, RenderTypes.debugQuads(), stack);
         ccrs.baseColour = EnumColour.LIGHT_BLUE.rgba(128);
         double b = 0.5/16D;
         Cuboid6 box = new Cuboid6(-b, -b, -b, b, b, b);
@@ -232,7 +192,6 @@ public class GraphDebugManager {
             }
         }
 
-        buffers.endBatch();
         stack.popPose();
     }
 
@@ -240,8 +199,8 @@ public class GraphDebugManager {
         Vector3 v1 = new Vector3(x1, y1, z1).subtract(x2, y2, z2);
         double d = v1.mag();
         v1.divide(d);
-        builder.addVertex((float) x1, (float) y1, (float) z1).setColor(r, g, b, a).setNormal((float) v1.x, (float) v1.y, (float) v1.z);
-        builder.addVertex((float) x2, (float) y2, (float) z2).setColor(r, g, b, a).setNormal((float) v1.x, (float) v1.y, (float) v1.z);
+        builder.addVertex((float) x1, (float) y1, (float) z1).setColor(r, g, b, a).setNormal((float) v1.x, (float) v1.y, (float) v1.z).setLineWidth(1.5F);
+        builder.addVertex((float) x2, (float) y2, (float) z2).setColor(r, g, b, a).setNormal((float) v1.x, (float) v1.y, (float) v1.z).setLineWidth(1.5F);
     }
     //endregion
 }

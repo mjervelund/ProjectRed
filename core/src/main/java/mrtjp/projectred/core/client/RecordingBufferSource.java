@@ -60,7 +60,7 @@ public final class RecordingBufferSource {
     }
 
     /**
-     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, no overlay, full light, up normal).
+     * Records vertex attributes. Unset attributes replay as defaults (white, no UVs, no overlay, full light, up normal, 1px lines).
      */
     private static final class Recorder implements VertexConsumer {
 
@@ -79,7 +79,7 @@ public final class RecordingBufferSource {
             floats.add(x);
             floats.add(y);
             floats.add(z);
-            for (int i = 3; i < F; i++) floats.add(i == 8 ? 1 : 0);
+            for (int i = 3; i < F; i++) floats.add(i == 8 || i == 10 ? 1 : 0); // up normal, 1px line width
             ints.add(-1);
             ints.add(OverlayTexture.NO_OVERLAY);
             ints.add(0xF000F0);

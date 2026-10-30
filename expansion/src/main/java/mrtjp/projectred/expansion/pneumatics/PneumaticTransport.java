@@ -43,7 +43,7 @@ public class PneumaticTransport {
 
     public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
         payloads.clear();
-        ListTag payloadList = tag.getList("payloads", ListTag.TAG_COMPOUND);
+        ListTag payloadList = tag.getListOrEmpty("payloads");
         for (int i = 0; i < payloadList.size(); i++) {
             CompoundTag payloadTag = payloadList.getCompoundOrEmpty(i);
             int id = payloadTag.getIntOr("id", 0);

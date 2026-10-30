@@ -67,7 +67,7 @@ public class FrameModelRenderer {
 
         // Generate a static class with vertex array for server to use
         // Note: Temporary until OBJParser is made server-safe
-        if (!FMLEnvironment.production) {
+        if (!FMLEnvironment.isProduction()) {
             try {
 
                 String className = path.substring(0, 1).toUpperCase() + path.substring(1) + "ModelVerts";

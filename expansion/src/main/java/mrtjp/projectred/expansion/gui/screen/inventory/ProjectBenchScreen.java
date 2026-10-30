@@ -60,7 +60,6 @@ public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
 
             @Override
             protected void drawButtonBody(GuiGraphicsExtractor graphics, boolean mouseover) {
-                RenderSystem.setShaderTexture(0, BACKGROUND);
                 graphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, getPosition().x, getPosition().y, (float) (176), (float) (15), 8, 8, 256, 256);
             }
         };
@@ -122,7 +121,7 @@ public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
                 graphics.fillGradient(xPos + slot.x, yPos + slot.y, xPos + slot.x + 16, yPos + slot.y + 16, colour, colour);
 
                 // Render item at Z +200
-                graphics.item(output, xPos + slot.x, yPos + slot.y, 0, 200);
+                graphics.item(output, xPos + slot.x, yPos + slot.y);
             }
         }
     }

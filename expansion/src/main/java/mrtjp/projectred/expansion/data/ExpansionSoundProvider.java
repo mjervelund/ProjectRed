@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.data;
 
+import mrtjp.projectred.expansion.init.ExpansionSounds;
 import mrtjp.projectred.expansion.init.ExpansionUnlocal;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -31,7 +32,7 @@ public class ExpansionSoundProvider extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
 
-        add(PRESSURIZE, definition()
+        add(Identifier.fromNamespaceAndPath(MOD_ID, ExpansionSounds.SOUND_PRESSURIZE), definition()
                 .subtitle(ExpansionUnlocal.UL_SUBTITLE_PRESSURIZE)
                 .with(
                         sound(PRESSURIZE_1).volume(0.15).pitch(1.0),
@@ -46,7 +47,7 @@ public class ExpansionSoundProvider extends SoundDefinitionsProvider {
                 )
         );
 
-        add(DEPRESSURIZE, definition()
+        add(Identifier.fromNamespaceAndPath(MOD_ID, ExpansionSounds.SOUND_DEPRESSURIZE), definition()
                 .subtitle(ExpansionUnlocal.UL_SUBTITLE_DEPRESSURIZE)
                 .with(
                         sound(DEPRESSURIZE_1).volume(0.15).pitch(1.0),

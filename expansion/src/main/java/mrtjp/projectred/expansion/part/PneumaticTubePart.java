@@ -260,7 +260,7 @@ public class PneumaticTubePart extends GraphContainerTubePart implements Pneumat
 
         var itemCap = level().getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
-            return itemCap.getSlots() > 0;
+            return itemCap.size() > 0;
         }
 
         return false;

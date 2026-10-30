@@ -61,7 +61,7 @@ public class MovementManager {
 
     public MovementManager(ResourceKey<Level> dimension) {
         this.dimension = dimension;
-        LOGGER.debug("Created MovementManager for dimension {}", dimension.location());
+        LOGGER.debug("Created MovementManager for dimension {}", dimension.identifier());
     }
 
     private int getNextStructureId() {

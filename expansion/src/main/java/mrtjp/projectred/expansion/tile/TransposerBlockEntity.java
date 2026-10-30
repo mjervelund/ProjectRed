@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.tile;
 
+import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import codechicken.multipart.api.tile.RedstoneConnector;
 import mrtjp.projectred.core.CenterLookup;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
@@ -63,12 +65,18 @@ public class TransposerBlockEntity extends BasePneumaticDeviceBlockEntity implem
         var itemCap = level.getCapability(Capabilities.Item.BLOCK, lookup.tile.getBlockPos(), Direction.values()[lookup.otherDirection]);
         if (itemCap != null) {
 
-            for (int s = 0; s < itemCap.getSlots(); s++) {
-                var extracted = itemCap.extractItem(s, containerImportStackSize(), false);
-                if (extracted.isEmpty()) continue;
+            for (int s = 0; s < itemCap.size(); s++) {
+                ItemResource resource = itemCap.getResource(s);
+                if (resource.isEmpty()) continue;
+                int extracted;
+                try (var tx = Transaction.openRoot()) {
+                    extracted = itemCap.extract(s, resource, containerImportStackSize(), tx);
+                    tx.commit();
+                }
+                if (extracted == 0) continue;
 
                 // Item extracted! Add to queue and return
-                itemQueue.add(new PneumaticTubePayload(extracted));
+                itemQueue.add(new PneumaticTubePayload(resource.toStack(extracted)));
                 return true;
             }
         }

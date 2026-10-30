@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.tile;
 
+import net.minecraft.world.item.ToolMaterial;
 import codechicken.multipart.api.tile.RedstoneConnector;
 import com.mojang.authlib.GameProfile;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
@@ -9,8 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,7 +47,7 @@ public class BlockBreakerBlockEntity extends BasePneumaticDeviceBlockEntity impl
         var state = getLevel().getBlockState(pos);
 
         if (state.isAir() || state.is(Blocks.BEDROCK)) return;
-        if (state.is(getBreakingTier().getIncorrectBlocksForDrops())) return;
+        if (state.is(getBreakingTier().incorrectBlocksForDrops())) return;
 
         // Get drops
         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) getLevel(), pos, getLevel().getBlockEntity(pos));
@@ -82,7 +81,7 @@ public class BlockBreakerBlockEntity extends BasePneumaticDeviceBlockEntity impl
     }
     //endregion
 
-    protected Tier getBreakingTier() {
-        return Tiers.IRON;
+    protected ToolMaterial getBreakingTier() {
+        return ToolMaterial.IRON;
     }
 }

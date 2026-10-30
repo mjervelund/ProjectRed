@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion;
 
+import net.minecraft.util.Prediction;
+import net.minecraft.server.level.ServerLevel;
 import mrtjp.projectred.core.inventory.BaseContainer;
 import mrtjp.projectred.core.inventory.OverlayContainer;
 import mrtjp.projectred.lib.InventoryLib;
@@ -101,10 +103,12 @@ public class CraftingHelper {
     }
 
     private void loadRecipe() {
-        recipe = inputSource.getWorld().getRecipeManager()
-                .getRecipeFor(RecipeType.CRAFTING, posCraftingInput.input(), inputSource.getWorld()).orElse(null);
+        // Recipes are server-side only since 1.21.2; clients get the result through the menu sync
+        recipe = inputSource.getWorld() instanceof ServerLevel serverLevel
+                ? serverLevel.recipeAccess().getRecipeFor(RecipeType.CRAFTING, posCraftingInput.input(), serverLevel).orElse(null)
+                : null;
 
-        craftResultInventory.setItem(0, recipe == null ? ItemStack.EMPTY : recipe.value().assemble(posCraftingInput.input(), inputSource.getWorld().registryAccess()));
+        craftResultInventory.setItem(0, recipe == null ? ItemStack.EMPTY : recipe.value().assemble(posCraftingInput.input()));
     }
 
     private void loadOutput() {
@@ -216,7 +220,7 @@ public class CraftingHelper {
             // Otherwise try to put it somewhere
             InventoryLib.injectItemStack(storage, remaining, true); // In storage
             if (!remaining.isEmpty()) player.addItem(remaining);    // In player inventory
-            if (!remaining.isEmpty()) player.drop(remaining, false);// Or as last resort, on ground
+            if (!remaining.isEmpty()) player.drop(remaining, false, Prediction.SERVER_ONLY);// Or as last resort, on ground
         }
 
         return true;
@@ -260,7 +264,7 @@ public class CraftingHelper {
 
         if (!recipe.value().matches(posCraftingInput.input(), inputSource.getWorld())) return CraftingResult.EMPTY;
 
-        ItemStack result = recipe.value().assemble(posCraftingInput.input(), inputSource.getWorld().registryAccess());
+        ItemStack result = recipe.value().assemble(posCraftingInput.input());
         if (result.isEmpty()) return CraftingResult.EMPTY;
 
         // Try to consume all ingredients
@@ -279,7 +283,7 @@ public class CraftingHelper {
                 var tmpCraftingInput = craftingInventory.asCraftInput();
                 boolean canStillCraft =
                         recipe.value().matches(tmpCraftingInput, inputSource.getWorld()) &&
-                        ItemStack.isSameItem(result, recipe.value().assemble(tmpCraftingInput, inputSource.getWorld().registryAccess()));
+                        ItemStack.isSameItem(result, recipe.value().assemble(tmpCraftingInput));
                 craftingInventory.setItem(slot, previousInput);
 
                 return canStillCraft;

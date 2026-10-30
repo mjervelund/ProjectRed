@@ -1,5 +1,9 @@
 package mrtjp.projectred.core.inventory;
 
+import java.util.function.Consumer;
+import java.util.List;
+import java.util.ArrayList;
+import net.minecraft.world.Container;
 import mrtjp.projectred.core.ProjectRedCore;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -19,8 +23,23 @@ public class BaseContainer extends SimpleContainer {
     private static final String TAG_ITEMS = "items";
     private static final String TAG_SLOT = "slot";
 
+    // SimpleContainer's change listeners were removed in 26.x
+    private final List<Consumer<Container>> listeners = new ArrayList<>();
+
     public BaseContainer(int size) {
         super(size);
+    }
+
+    public void addListener(Consumer<Container> listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        for (Consumer<Container> listener : listeners) {
+            listener.accept(this);
+        }
     }
 
     public BaseContainer(ItemStack... stacks) {

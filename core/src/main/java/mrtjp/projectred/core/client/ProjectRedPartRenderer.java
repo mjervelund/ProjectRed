@@ -38,6 +38,13 @@ public abstract class ProjectRedPartRenderer<P extends MultiPart> implements Dyn
         RecordingBufferSource buffers = new RecordingBufferSource();
         renderDynamic(part, poseStack, buffers, beState.packedLight(), OverlayTexture.NO_OVERLAY, state.partialTick);
         buffers.submit(collector);
+        submitExtra(part, poseStack, collector, beState.packedLight(), state.partialTick);
+    }
+
+    /**
+     * For content that has to go through the collector directly (items, text), after {@link #renderDynamic}.
+     */
+    protected void submitExtra(P part, PoseStack poseStack, SubmitNodeCollector collector, int packedLight, float partialTicks) {
     }
 
     public abstract void renderDynamic(P part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks);

@@ -23,8 +23,6 @@ public class ExpansionParts {
 
         FRAME_PART = PART_TYPES.register(ID_FRAME, () -> new SimpleMultipartType<>(c -> new FramePart()));
 
-        PART_CONVERTERS.register(ID_FRAME, () -> FramePartConverter.INSTANCE);
-
         for (TubeType type : TubeType.values()) {
             type.registerParts(PART_TYPES, ITEMS);
         }

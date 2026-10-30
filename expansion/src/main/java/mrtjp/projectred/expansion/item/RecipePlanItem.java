@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion.item;
 
+import java.util.function.Consumer;
+import net.minecraft.world.item.component.TooltipDisplay;
 import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.expansion.init.ExpansionDataComponents;
 import net.minecraft.network.chat.Component;
@@ -16,7 +18,8 @@ public class RecipePlanItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        stack.addToTooltip(ExpansionDataComponents.RECIPE_PLAN_COMPONENT_TYPE, context, tooltip::add, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> tooltip, TooltipFlag flag) {
+        var component = RecipePlanComponent.getComponent(stack);
+        if (component != null) component.addToTooltip(context, tooltip, flag, stack);
     }
 }

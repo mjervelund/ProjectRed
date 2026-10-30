@@ -232,7 +232,7 @@ public class MovingStructure implements MovingStructureInfo {
             BlockState state = level.getBlockState(pos);
             state.updateNeighbourShapes(level, pos, 0, 0);
             state.updateIndirectNeighbourShapes(level, pos, 0, 0);
-            level.neighborChanged(pos, Blocks.AIR, pos); //TODO use better context here
+            level.neighborChanged(pos, Blocks.AIR, null); //TODO use better context here
         }
 
         // Update lighting
@@ -245,7 +245,7 @@ public class MovingStructure implements MovingStructureInfo {
 
         // Mark chunks as changed
         for (ChunkPos p : getChunkSet()) {
-            level.getChunk(p.x, p.z).setUnsaved(true);
+            level.getChunk(p.x(), p.z()).markUnsaved();
         }
 
         //TODO Tick rescheduling
@@ -271,7 +271,7 @@ public class MovingStructure implements MovingStructureInfo {
     //region Private utils
     private HashSet<ChunkPos> computeIntersectingChunks() {
         HashSet<ChunkPos> chunks = new HashSet<>();
-        FastStream.of(rows).forEach(r -> r.forEachAll(p -> chunks.add(new ChunkPos(p))));
+        FastStream.of(rows).forEach(r -> r.forEachAll(p -> chunks.add(ChunkPos.containing(p))));
         return chunks;
     }
 
@@ -408,7 +408,7 @@ public class MovingStructure implements MovingStructureInfo {
             // Gather touching entities
             var firstPos = pos.relative(Direction.values()[dir].getOpposite());
             var lastPos = pos.relative(Direction.values()[dir].getOpposite(), size);
-            var norm = Direction.values()[dir].getNormal();
+            var norm = Direction.values()[dir].getUnitVec3i();
             AABB aabb = AABB.encapsulatingFullBlocks(firstPos, lastPos)
                     .move(Vector3.fromVec3i(norm).multiply(progress).vec3());
 
@@ -436,7 +436,7 @@ public class MovingStructure implements MovingStructureInfo {
                 var pushDist = (collides ? Math.max(collisionDist, delta) : delta);
 
                 // Push entity
-                Vector3 push = Vector3.fromVec3i(Direction.values()[dir].getNormal()).multiply(pushDist);
+                Vector3 push = Vector3.fromVec3i(Direction.values()[dir].getUnitVec3i()).multiply(pushDist);
                 e.move(MoverType.PISTON, push.vec3());
             });
         }

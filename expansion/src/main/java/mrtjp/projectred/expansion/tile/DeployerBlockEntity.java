@@ -189,7 +189,7 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
             InteractionResult interactionResult = blockstate.useItemOn(player.getItemInHand(InteractionHand.MAIN_HAND), getLevel(), player, InteractionHand.MAIN_HAND, hit);
             if (interactionResult.consumesAction()) {
                 // If the block consumed the action, return the result
-                return interactionResult.result();
+                return interactionResult;
             }
         }
 
@@ -213,15 +213,17 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
         // Try to use the held item directly
         player.useItem = ItemStack.EMPTY;
         player.useItemRemaining = 0;
-        InteractionResultHolder<ItemStack> resultHolder = player.getMainHandItem().use(getLevel(), player, InteractionHand.MAIN_HAND);
-        if (resultHolder.getResult().consumesAction()) {
-            player.setItemInHand(InteractionHand.MAIN_HAND, resultHolder.getObject());
+        InteractionResult useResult = player.getMainHandItem().use(getLevel(), player, InteractionHand.MAIN_HAND);
+        if (useResult.consumesAction()) {
+            if (useResult instanceof InteractionResult.Success success && success.heldItemTransformedTo() != null) {
+                player.setItemInHand(InteractionHand.MAIN_HAND, success.heldItemTransformedTo());
+            }
             // If this is a hold-able item like a bow, release it
             if (!player.useItem.isEmpty()) {
                 player.useItemRemaining = 0; // Fast-forward to max use time
                 player.releaseUsingItem();
             }
-            return resultHolder.getResult();
+            return useResult;
         }
 
         return InteractionResult.PASS;
@@ -232,19 +234,9 @@ public class DeployerBlockEntity extends BaseDeviceBlockEntity {
         List<Entity> entities = getLevel().getEntities(player, new AABB(usePos)); // Get entities excluding player
 
         for (var entity : entities) {
-            // First, try player interact
-            InteractionResult result = player.interactOn(entity, InteractionHand.MAIN_HAND);
-            if (result.consumesAction()) {
-                return result;
-            }
-
-            // Then try direct interaction
+            // Player interaction (26.x merged interact and interactAt, including NeoForge's hooks)
             Vec3 vec3 = hit.getLocation().subtract(entity.getX(), entity.getY(), entity.getZ());
-            result = CommonHooks.onInteractEntityAt(player, entity, vec3, InteractionHand.MAIN_HAND);
-            if (result != null) {
-                return result;
-            }
-            result = entity.interactAt(player, vec3, InteractionHand.MAIN_HAND);
+            InteractionResult result = player.interactOn(entity, InteractionHand.MAIN_HAND, vec3);
             if (result.consumesAction()) {
                 return result;
             }

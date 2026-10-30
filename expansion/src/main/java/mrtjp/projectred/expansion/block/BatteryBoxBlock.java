@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.block;
 
+import java.util.function.Consumer;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
 import mrtjp.projectred.expansion.item.BatteryBoxStorageComponent;
@@ -70,20 +71,19 @@ public class BatteryBoxBlock extends ProjectRedBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader world, BlockPos pos, Player player) {
+    protected ItemStack getCloneItemStack(LevelReader world, BlockPos pos, BlockState state, boolean includeData) {
         BlockEntity tile = world.getBlockEntity(pos);
         if (tile instanceof BatteryBoxBlockEntity)
             return ((BatteryBoxBlockEntity) tile).createStackWithStoredPower(); // Pick block with stored power
 
-        return super.getCloneItemStack(state, target, world, pos, player);
+        return super.getCloneItemStack(world, pos, state, includeData);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> toolTip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, toolTip, flag);
+    // Blocks have no hover text in 26.x: the stored power line is added by ExpansionClientInit's tooltip listener.
+    public static void appendStoredPower(ItemStack stack, Consumer<Component> toolTip) {
         var component = BatteryBoxStorageComponent.getComponent(stack);
         if (component != null) {
-            toolTip.add(Component.translatable(UL_STORED_POWER_TOOLTIP)
+            toolTip.accept(Component.translatable(UL_STORED_POWER_TOOLTIP)
                     .append(": " + component.storedPower() + " / " + 8000) //TODO Remove magic number
                     .withStyle(ChatFormatting.GRAY));
         }

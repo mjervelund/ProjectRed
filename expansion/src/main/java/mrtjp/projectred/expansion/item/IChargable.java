@@ -1,7 +1,7 @@
 package mrtjp.projectred.expansion.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.Tuple;
+import mrtjp.projectred.lib.Tuple;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;

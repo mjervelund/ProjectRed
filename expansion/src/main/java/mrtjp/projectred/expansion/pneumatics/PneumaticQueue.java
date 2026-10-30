@@ -60,7 +60,7 @@ public class PneumaticQueue {
         // Load from list
         var payloads = tag.getListOrEmpty("payloads");
         for (int i = 0; i < payloads.size(); i++) {
-            var payloadTag = payloads.getCompound(i);
+            var payloadTag = payloads.getCompoundOrEmpty(i);
             var payload = new PneumaticTubePayload();
             payload.load(payloadTag, lookupProvider);
             queue.addLast(payload);

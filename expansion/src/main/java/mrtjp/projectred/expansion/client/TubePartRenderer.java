@@ -1,5 +1,8 @@
 package mrtjp.projectred.expansion.client;
 
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
@@ -21,6 +24,8 @@ import javax.annotation.Nullable;
 public class TubePartRenderer extends ProjectRedPartRenderer<BaseTubePart> {
 
     public static final TubePartRenderer INSTANCE = new TubePartRenderer();
+
+    private final ItemStackRenderState itemRenderState = new ItemStackRenderState();
 
     private static final Vector3[] SIDE_OFFSETS = new Vector3[] {
             new Vector3(0.5, 0.0, 0.5), // Down
@@ -50,10 +55,14 @@ public class TubePartRenderer extends ProjectRedPartRenderer<BaseTubePart> {
             TubeModelRenderer.render(ccrs, part);
         }
 
-        renderPayloadTransport(part, mStack, buffers, packedLight, packedOverlay, partialTicks);
     }
 
-    private void renderPayloadTransport(BaseTubePart part, PoseStack mStack, RecordingBufferSource buffers, int packedLight, int packedOverlay, float partialTicks) {
+    @Override
+    protected void submitExtra(BaseTubePart part, PoseStack mStack, SubmitNodeCollector collector, int packedLight, float partialTicks) {
+        renderPayloadTransport(part, mStack, collector, packedLight, partialTicks);
+    }
+
+    private void renderPayloadTransport(BaseTubePart part, PoseStack mStack, SubmitNodeCollector collector, int packedLight, float partialTicks) {
 
         if (!(part instanceof PneumaticTransportContainer ptc)) return;
 
@@ -78,9 +87,8 @@ public class TubePartRenderer extends ProjectRedPartRenderer<BaseTubePart> {
             mStack.translate(pos.x, pos.y, pos.z);
             mStack.scale(0.5f, 0.5f, 0.5f);
 
-            var itemRenderer = Minecraft.getInstance().getItemRenderer();
-            var model = itemRenderer.getModel(p.getItemStack(), part.level(), null, 0); //TODO last int is seed
-            itemRenderer.render(p.getItemStack(), ItemDisplayContext.FIXED, false, mStack, buffers, packedLight, packedOverlay, model);
+            Minecraft.getInstance().getItemModelResolver().updateForTopItem(itemRenderState, p.getItemStack(), ItemDisplayContext.FIXED, part.level(), null, 0); //TODO last int is seed
+            itemRenderState.submit(mStack, collector, packedLight, OverlayTexture.NO_OVERLAY, 0);
 
             mStack.popPose();
         }

@@ -1,5 +1,7 @@
 package mrtjp.projectred.expansion;
 
+import mrtjp.projectred.expansion.part.FramePartConverter;
+import codechicken.multipart.api.RegisterPartConvertersEvent;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.PartConverter;
 import codechicken.multipart.util.MultipartGenerator;
@@ -49,7 +51,6 @@ public class ProjectRedExpansion {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, MOD_ID);
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, MOD_ID);
     public static final DeferredRegister<MultipartType<?>> PART_TYPES = DeferredRegister.create(MultipartType.MULTIPART_TYPES, MOD_ID);
-    public static final DeferredRegister<PartConverter> PART_CONVERTERS = DeferredRegister.create(PartConverter.PART_CONVERTERS, MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENT_TYPES = DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, MOD_ID);
 
@@ -88,7 +89,7 @@ public class ProjectRedExpansion {
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENU_TYPES.register(modEventBus);
         PART_TYPES.register(modEventBus);
-        PART_CONVERTERS.register(modEventBus);
+        modEventBus.addListener((RegisterPartConvertersEvent e) -> e.register(FramePartConverter.INSTANCE));
         CREATIVE_TABS.register(modEventBus);
         DATA_COMPONENT_TYPES.register(modEventBus);
 

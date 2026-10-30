@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.tile;
 
+import java.util.List;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.ResourceHandler;
@@ -19,7 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Tuple;
+import mrtjp.projectred.lib.Tuple;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,10 +33,11 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
 
     private final ChargingBenchInventory inventory = new ChargingBenchInventory();
 
-    private final ResourceHandler<ItemResource>[] handlers = {
+    // Generic arrays aren't allowed: list of per-side handlers
+    private final List<ResourceHandler<ItemResource>> handlers = List.of(
             new WorldlyContainerWrapper(inventory, Direction.DOWN),
             new WorldlyContainerWrapper(inventory, Direction.UP)
-    };
+    );
 
     private boolean isCharged = false;
     private int chargeSlot = 0;
@@ -178,7 +180,7 @@ public class ChargingBenchBlockEntity extends LowLoadPoweredBlockEntity {
 
     //region Capabilities
     public ResourceHandler<ItemResource> getHandler(Direction side) {
-        return handlers[side == Direction.UP ? 1 : 0];
+        return handlers.get(side == Direction.UP ? 1 : 0);
     }
     //endregion
 

@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.item;
 
+import net.minecraft.core.component.DataComponentGetter;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mrtjp.projectred.expansion.init.ExpansionDataComponents;
@@ -105,7 +106,7 @@ public class RecipePlanComponent implements TooltipProvider {
 
     //region TooltipProvider
     @Override
-    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltip, TooltipFlag flag) {
+    public void addToTooltip(Item.TooltipContext context, Consumer<Component> tooltip, TooltipFlag flag, DataComponentGetter components) {
         if (!isRecipeValid()) {
             //TODO localize
             tooltip.accept(Component.translatable("Damaged recipe!").withStyle(ChatFormatting.RED));

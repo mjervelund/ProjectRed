@@ -58,7 +58,7 @@ public interface BlockGetterMixin {
             // Hit test against the incomming block
             Direction incomingDir = movementInfo.getDirection().getOpposite();
             BlockPos incomingPos = pos.relative(incomingDir);
-            Vector3 incomingOffset = movementInfo.getMovementOffset().add(incomingDir.getNormal());
+            Vector3 incomingOffset = movementInfo.getMovementOffset().add(incomingDir.getUnitVec3i());
             gatherHits(level, ctx, fromVec, toVec, pos, incomingPos, incomingOffset, hits);
 
             return selectClosest(hits, fromVec);

@@ -112,7 +112,7 @@ public class AutoCrafterScreen extends RedUIContainerScreen<AutoCrafterMenu> {
                 graphics.fillGradient(xPos + slot.x, yPos + slot.y, xPos + slot.x + 16, yPos + slot.y + 16, colour, colour);
 
                 // Render item at Z +200
-                graphics.item(output, xPos + slot.x, yPos + slot.y, 0, 200);
+                graphics.item(output, xPos + slot.x, yPos + slot.y);
             }
         }
     }

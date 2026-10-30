@@ -7,6 +7,7 @@ import mrtjp.projectred.expansion.MovementManager;
 import mrtjp.projectred.expansion.MovingStructure;
 import mrtjp.projectred.expansion.MovingStructureInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -92,7 +93,7 @@ public class MovingBlockRenderManager {
 
                 parts.clear();
                 random.setSeed(state.getSeed(p));
-                modelSet.get(state).collectParts(level, p, state, random, parts);
+                modelSet.get(state).collectParts((ClientLevel) level, p, state, random, parts);
                 instance.setLightCoords(LightCoordsUtil.getLightCoords(level, p));
 
                 stack.pushPose();
