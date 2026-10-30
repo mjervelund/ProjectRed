@@ -21,9 +21,9 @@ import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.illumination.item.MultipartLightPartItem;
 import mrtjp.projectred.illumination.part.MultipartLightPart;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -113,7 +113,7 @@ public abstract class MultipartLightProperties {
     }
 
     public static Map<String, CCModel> parseCorrectedModel(String name) {
-        Map<String, CCModel> models = new OBJParser(ResourceLocation.fromNamespaceAndPath(MOD_ID, "obj/" + name + ".obj"))
+        Map<String, CCModel> models = new OBJParser(Identifier.fromNamespaceAndPath(MOD_ID, "obj/" + name + ".obj"))
                 .ignoreMtl()
                 .quads()
                 .parse();

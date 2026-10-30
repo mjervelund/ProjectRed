@@ -1,5 +1,3 @@
-@FieldsAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package mrtjp.projectred.integration.gui.screen;
 

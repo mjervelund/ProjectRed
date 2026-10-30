@@ -23,7 +23,7 @@ Redstone. The way it was meant to be.
 [[dependencies.projectred_exploration]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.1]"
+    versionRange="[${mc_version}]"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.projectred_exploration]]

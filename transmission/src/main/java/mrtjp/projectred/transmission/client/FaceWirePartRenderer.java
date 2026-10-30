@@ -9,7 +9,7 @@ import mrtjp.projectred.core.Configurator;
 import mrtjp.projectred.transmission.part.BaseFaceWirePart;
 import mrtjp.projectred.transmission.part.BundledCablePart;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 import javax.annotation.Nullable;
 

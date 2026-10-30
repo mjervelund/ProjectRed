@@ -2,7 +2,7 @@ package mrtjp.projectred.redui;
 
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.vec.Vector3;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.renderpearl.backend.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexSorting;

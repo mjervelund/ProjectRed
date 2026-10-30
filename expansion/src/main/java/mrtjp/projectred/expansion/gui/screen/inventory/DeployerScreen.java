@@ -6,12 +6,12 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.RedUIContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class DeployerScreen extends RedUIContainerScreen<DeployerMenu> {
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedExpansion.MOD_ID, "textures/gui/deployer.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedExpansion.MOD_ID, "textures/gui/deployer.png");
 
     public DeployerScreen(DeployerMenu menu, Inventory playerInventory, Component title) {
         super(176, 168, menu, playerInventory, title);

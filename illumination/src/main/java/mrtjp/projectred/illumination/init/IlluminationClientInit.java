@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
@@ -53,7 +53,7 @@ public class IlluminationClientInit {
 
         // Replace item models for inverted lamps with a wrapped renderer that renders the lamp glow
         for (int color = 0; color < 16; color++) {
-            ResourceLocation blockRL = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(BlockLightType.ILLUMAR_LAMP.getBlock(color, true)));
+            Identifier blockRL = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(BlockLightType.ILLUMAR_LAMP.getBlock(color, true)));
             // Override default BlockItem renderer for the lit variants to render lamp glow
             BakedModel litModel = event.getModels().get(new ModelResourceLocation(blockRL, "lit=true"));
             event.getModels().put(
@@ -62,7 +62,7 @@ public class IlluminationClientInit {
         }
 
         // Illumar smart lamp renderer
-        ResourceLocation smartLampRl = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(IlluminationBlocks.ILLUMAR_SMART_LAMP.get()));
+        Identifier smartLampRl = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(IlluminationBlocks.ILLUMAR_SMART_LAMP.get()));
         BakedModel smartLampModel = event.getModels().get(new ModelResourceLocation(smartLampRl, "level=15,side=0"));
         event.getModels().put(
                 new ModelResourceLocation(smartLampRl, "inventory"),

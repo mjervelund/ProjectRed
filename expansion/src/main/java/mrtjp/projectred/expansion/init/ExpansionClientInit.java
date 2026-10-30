@@ -11,7 +11,7 @@ import mrtjp.projectred.expansion.item.BatteryBoxStorageComponent;
 import mrtjp.projectred.expansion.item.RecipePlanComponent;
 import net.covers1624.quack.util.SneakyUtils;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -26,8 +26,8 @@ import static mrtjp.projectred.expansion.init.ExpansionParts.FRAME_PART;
 
 public class ExpansionClientInit {
 
-    public static final ResourceLocation ITEM_MODEL_PROPERTY_CHARGE_LEVEL = ResourceLocation.fromNamespaceAndPath(MOD_ID, "charge_level");
-    public static final ResourceLocation ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN = ResourceLocation.fromNamespaceAndPath(MOD_ID, "written");
+    public static final Identifier ITEM_MODEL_PROPERTY_CHARGE_LEVEL = Identifier.fromNamespaceAndPath(MOD_ID, "charge_level");
+    public static final Identifier ITEM_MODEL_PROPERTY_WRITTEN_RECIPE_PLAN = Identifier.fromNamespaceAndPath(MOD_ID, "written");
 
     public static void init(IEventBus modEventBus) {
         modEventBus.addListener(ExpansionClientInit::clientSetup);

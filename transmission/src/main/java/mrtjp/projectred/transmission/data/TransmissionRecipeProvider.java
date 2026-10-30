@@ -7,7 +7,7 @@ import mrtjp.projectred.transmission.WireType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -47,7 +47,7 @@ public class TransmissionRecipeProvider extends RecipeProvider {
                     .patternLine("WRW")
                     .patternLine("WRW");
             // Re-colouring recipe
-            shapelessRecipe(w, 1, ResourceLocation.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
+            shapelessRecipe(w, 1, Identifier.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
                     .addIngredient(INSULATED_WIRE_ITEM_TAG)
                     .addIngredient(getDyeTag(type.getColour()));
         }
@@ -62,7 +62,7 @@ public class TransmissionRecipeProvider extends RecipeProvider {
         for (WireType type : WireType.COLOURED_BUNDLED_WIRES) {
             Item w = type.getItem();
             // Recolouring recipe
-            shapelessRecipe(w, 1, ResourceLocation.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
+            shapelessRecipe(w, 1, Identifier.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
                     .addIngredient(BUNDLED_WIRE_ITEM_TAG)
                     .addIngredient(getDyeTag(type.getColour()));
         }
@@ -88,7 +88,7 @@ public class TransmissionRecipeProvider extends RecipeProvider {
             framedWireRecipe(w, WireType.INSULATED_WIRES[i].getItem());
 
             // Re-colouring recipe
-            shapelessRecipe(w, 1, ResourceLocation.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
+            shapelessRecipe(w, 1, Identifier.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
                     .addIngredient(FRAMED_INSULATED_WIRE_ITEM_TAG)
                     .addIngredient(getDyeTag(type.getColour()));
         }
@@ -102,7 +102,7 @@ public class TransmissionRecipeProvider extends RecipeProvider {
             framedWireRecipe(w, WireType.COLOURED_BUNDLED_WIRES[i].getItem());
 
             // Re-colouring recipe
-            shapelessRecipe(w, 1, ResourceLocation.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
+            shapelessRecipe(w, 1, Identifier.parse(BuiltInRegistries.ITEM.getKey(w) + "_re_color"))
                     .addIngredient(FRAMED_BUNDLED_WIRE_ITEM_TAG)
                     .addIngredient(getDyeTag(type.getColour()));
         }
@@ -111,14 +111,14 @@ public class TransmissionRecipeProvider extends RecipeProvider {
         framedWireRecipe(WireType.FRAMED_POWER_LOWLOAD.getItem(), WireType.POWER_LOWLOAD.getItem());
 
         // Wired plate
-        shapedRecipe(WIRED_PLATE_ITEM.get(), 1, ResourceLocation.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(WIRED_PLATE_ITEM.get()).getPath()))
+        shapedRecipe(WIRED_PLATE_ITEM.get(), 1, Identifier.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(WIRED_PLATE_ITEM.get()).getPath()))
                 .key('W', WireType.RED_ALLOY.getItem())
                 .key('P', PLATE_ITEM.get())
                 .patternLine("W")
                 .patternLine("P");
 
         // Bundled plate
-        shapedRecipe(BUNDLED_PLATE_ITEM.get(), 1, ResourceLocation.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(BUNDLED_PLATE_ITEM.get()).getPath()))
+        shapedRecipe(BUNDLED_PLATE_ITEM.get(), 1, Identifier.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(BUNDLED_PLATE_ITEM.get()).getPath()))
                 .key('W', BUNDLED_WIRE_ITEM_TAG)
                 .key('P', PLATE_ITEM.get())
                 .patternLine("W")

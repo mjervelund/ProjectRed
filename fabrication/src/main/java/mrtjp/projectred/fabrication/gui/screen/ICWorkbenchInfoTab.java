@@ -18,7 +18,7 @@ import mrtjp.projectred.redui.ScrollBarNode;
 import mrtjp.projectred.redui.TextBoxNode;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
 
@@ -26,7 +26,7 @@ import static mrtjp.projectred.fabrication.init.FabricationUnlocal.*;
 
 public class ICWorkbenchInfoTab extends AbstractGuiNode {
 
-    public static final ResourceLocation TAB_BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/info_tab.png");
+    public static final Identifier TAB_BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/info_tab.png");
 
     private final ICWorkbenchEditor editor;
 

@@ -9,7 +9,7 @@ import mrtjp.projectred.transmission.item.FaceWirePartItem;
 import mrtjp.projectred.transmission.part.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -211,7 +211,7 @@ public enum WireType {
             textures.add(null);
         }
         for (int i = 0; i < textureNames.size(); i++) {
-            ResourceLocation tex = ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/" + textureNames.get(i));
+            Identifier tex = Identifier.fromNamespaceAndPath(MOD_ID, "block/" + textureNames.get(i));
             textures.set(i, event.getAtlas().getSprite(tex));
         }
     }

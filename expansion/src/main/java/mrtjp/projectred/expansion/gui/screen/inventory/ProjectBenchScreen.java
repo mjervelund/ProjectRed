@@ -12,7 +12,7 @@ import mrtjp.projectred.redui.AbstractButtonNode;
 import mrtjp.projectred.redui.RedUIContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -21,7 +21,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class ProjectBenchScreen extends RedUIContainerScreen<ProjectBenchMenu> {
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedExpansion.MOD_ID, "textures/gui/project_bench.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedExpansion.MOD_ID, "textures/gui/project_bench.png");
 
     private boolean isShiftDown = false;
 

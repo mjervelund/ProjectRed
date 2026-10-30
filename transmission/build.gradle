@@ -11,7 +11,7 @@ neoForge {
 
     runs {
         data {
-            data()
+            clientData()
             programArguments.addAll '--mod', mod_id, '--all', '--output', file("src/main/generated").absolutePath, '--existing', file("src/main/resources").absolutePath
         }
 

@@ -1,7 +1,7 @@
 package mrtjp.projectred.expansion;
 
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -347,7 +347,7 @@ class CraftingHelperScenarioTest {
 
         // Wire up mocks; recipeManager delegates matching to the recipe
         RecipeHolder<CraftingRecipe> recipeHolder = new RecipeHolder<>(
-                ResourceLocation.parse("test:recipe"), s.recipe());
+                Identifier.parse("test:recipe"), s.recipe());
 
         lenient().when(level.getRecipeManager()).thenReturn(recipeManager);
         lenient().when(level.registryAccess()).thenReturn(registryAccess);

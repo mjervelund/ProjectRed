@@ -1,6 +1,6 @@
 package mrtjp.projectred.core.init;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,10 +29,10 @@ public class CoreTags {
     public static final TagKey<Item> ILLUMAR_TAG = prTag("illumars");
 
     private static TagKey<Item> tag(String path) {
-        return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", path));
+        return ItemTags.create(Identifier.fromNamespaceAndPath("c", path));
     }
 
     private static TagKey<Item> prTag(String path) {
-        return ItemTags.create(ResourceLocation.fromNamespaceAndPath(MOD_ID, path));
+        return ItemTags.create(Identifier.fromNamespaceAndPath(MOD_ID, path));
     }
 }

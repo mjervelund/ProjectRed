@@ -5,7 +5,7 @@ import codechicken.lib.render.lighting.LightModel;
 import codechicken.lib.render.model.OBJParser;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.annotation.Nullable;
 import java.util.LinkedList;
@@ -114,7 +114,7 @@ public class TubeModelBuilder {
     }
 
     public static Map<String, CCModel> loadModels(String path, BiConsumer<String, CCModel> operation) {
-        Map<String, CCModel> models = new OBJParser(ResourceLocation.fromNamespaceAndPath(MOD_ID, "obj/" + path + ".obj"))
+        Map<String, CCModel> models = new OBJParser(Identifier.fromNamespaceAndPath(MOD_ID, "obj/" + path + ".obj"))
                 .ignoreMtl()
                 .quads()
                 .parse();

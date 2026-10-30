@@ -5,7 +5,7 @@ import codechicken.lib.util.ResourceUtils;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import mrtjp.projectred.core.client.HaloRenderer;
 import mrtjp.projectred.core.gui.screen.inventory.ElectrotineGeneratorScreen;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -49,7 +49,7 @@ public class CoreClientInit {
     }
 
     private static void onRegisterShaders(RegisterShadersEvent event) {
-        event.registerShader(CCShaderInstance.create(event.getResourceProvider(), ResourceLocation.fromNamespaceAndPath(MOD_ID, "halo"), DefaultVertexFormat.POSITION_COLOR), e -> {
+        event.registerShader(CCShaderInstance.create(event.getResourceProvider(), Identifier.fromNamespaceAndPath(MOD_ID, "halo"), DefaultVertexFormat.POSITION_COLOR), e -> {
             HALO_SHADER = (CCShaderInstance) e;
         });
     }

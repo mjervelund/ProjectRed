@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.joml.Matrix4f;
 
@@ -26,11 +26,11 @@ public class FixedScalePostChain extends PostChain {
 
     private final Map<String, Double> fixedRenderTargetScales = new HashMap<>();
 
-    public FixedScalePostChain(TextureManager textureManager, ResourceManager resourceManager, RenderTarget renderTarget, ResourceLocation location) throws IOException, JsonSyntaxException {
+    public FixedScalePostChain(TextureManager textureManager, ResourceManager resourceManager, RenderTarget renderTarget, Identifier location) throws IOException, JsonSyntaxException {
         super(textureManager, resourceManager, renderTarget, location);
     }
 
-    public FixedScalePostChain(ResourceLocation location) throws IOException {
+    public FixedScalePostChain(Identifier location) throws IOException {
         this(Minecraft.getInstance().getTextureManager(),
                 Minecraft.getInstance().getResourceManager(),
                 Minecraft.getInstance().getMainRenderTarget(),
@@ -38,7 +38,7 @@ public class FixedScalePostChain extends PostChain {
     }
 
     public FixedScalePostChain(String modId, String filename) throws IOException {
-        this(ResourceLocation.fromNamespaceAndPath(modId, "shaders/post/" + filename + ".json"));
+        this(Identifier.fromNamespaceAndPath(modId, "shaders/post/" + filename + ".json"));
     }
 
     /**

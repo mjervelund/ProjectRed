@@ -17,7 +17,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.glfw.GLFW;
 
@@ -33,7 +33,7 @@ import static mrtjp.projectred.fabrication.init.FabricationUnlocal.*;
 
 public class ICWorkbenchScreen extends RedUIScreen {
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/ic_workbench.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/ic_workbench.png");
 
     private final ICWorkbenchBlockEntity tile;
     private final ICWorkbenchEditor editor;

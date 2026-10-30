@@ -13,7 +13,7 @@ import mrtjp.projectred.fabrication.item.component.ICDataComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
@@ -23,7 +23,7 @@ import static mrtjp.projectred.fabrication.editor.EditorDataUtils.*;
 
 public class ICWorkbenchEditor implements ICEditorStateMachine.StateMachineCallback {
 
-    public static final Style UNIFORM = Style.EMPTY.withFont(ResourceLocation.fromNamespaceAndPath("minecraft", "uniform"));
+    public static final Style UNIFORM = Style.EMPTY.withFont(Identifier.fromNamespaceAndPath("minecraft", "uniform"));
     public static final Style UNIFORM_DARK_GRAY = UNIFORM.withColor(ChatFormatting.DARK_GRAY);
     public static final Style UNIFORM_GRAY = UNIFORM.withColor(ChatFormatting.GRAY);
     public static final Style UNIFORM_RED = UNIFORM.withColor(ChatFormatting.RED);

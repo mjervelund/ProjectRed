@@ -10,7 +10,7 @@ import mrtjp.projectred.redui.RedUIScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ import static mrtjp.projectred.integration.ProjectRedIntegration.MOD_ID;
 
 public class TimerScreen extends RedUIScreen {
 
-    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/timer_gate.png");
+    private static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/timer_gate.png");
 
     private final GatePart gate;
     private final ComplexGatePart.ITimerGuiLogic timerGate;

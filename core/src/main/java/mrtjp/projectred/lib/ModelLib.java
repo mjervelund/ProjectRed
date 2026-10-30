@@ -3,7 +3,7 @@ package mrtjp.projectred.lib;
 import codechicken.lib.vec.Vertex5;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.*;
@@ -49,7 +49,7 @@ public class ModelLib {
         }
     }
 
-    public static Map<String, Vertex5[]> importVertsFromJson(ResourceManager resourceManager, ResourceLocation resource) {
+    public static Map<String, Vertex5[]> importVertsFromJson(ResourceManager resourceManager, Identifier resource) {
         try (InputStream stream = resourceManager.getResource(resource).get().open()) {
 
             return importVertsFromJson(new InputStreamReader(stream));

@@ -1,7 +1,7 @@
 package mrtjp.projectred.api;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -13,12 +13,12 @@ public interface IExpansionAPI {
     /**
      * The capability instance for {@link Frame}
      */
-    BlockCapability<Frame, Void> FRAME_CAPABILITY = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(ProjectRedAPI.EXPANSION_MOD_ID, "frame"), Frame.class);
+    BlockCapability<Frame, Void> FRAME_CAPABILITY = BlockCapability.createVoid(Identifier.fromNamespaceAndPath(ProjectRedAPI.EXPANSION_MOD_ID, "frame"), Frame.class);
 
     /**
      * The capability instance for {@link MovementController}
      */
-    BlockCapability<MovementController, Void> MOVEMENT_CONTROLLER_CAPABILITY = BlockCapability.createVoid(ResourceLocation.fromNamespaceAndPath(ProjectRedAPI.EXPANSION_MOD_ID, "movement_controller"), MovementController.class);
+    BlockCapability<MovementController, Void> MOVEMENT_CONTROLLER_CAPABILITY = BlockCapability.createVoid(Identifier.fromNamespaceAndPath(ProjectRedAPI.EXPANSION_MOD_ID, "movement_controller"), MovementController.class);
 
     /**
      * Used to register a {@link BlockMover} to a specific block. This BlockMover will be engaged every time

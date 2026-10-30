@@ -19,7 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
@@ -30,7 +30,7 @@ import static mrtjp.projectred.fabrication.init.FabricationUnlocal.*;
 
 public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNode.IICRenderNodeEventReceiver {
 
-    public static final ResourceLocation TAB_BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/compile_tab.png");
+    public static final Identifier TAB_BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/compile_tab.png");
 
     private final ICWorkbenchEditor editor;
 
@@ -301,7 +301,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
             }
         }
 
-        private void blitCentered(GuiGraphics graphics, ResourceLocation background, int u, int v, int width, int height) {
+        private void blitCentered(GuiGraphics graphics, Identifier background, int u, int v, int width, int height) {
             graphics.blit(background,
                     getFrame().x() + (getFrame().width() - width) / 2,
                     getFrame().y() + (getFrame().height() - height) / 2, u, v,
@@ -349,7 +349,7 @@ public class ICWorkbenchCompileTab extends AbstractGuiNode implements ICRenderNo
 
     private class ProblemsTab extends SimpleUVTab {
 
-        public ProblemsTab(AbstractGuiNode tabBodyNode, String unlocalTabName, TabButtonNode.TabSide side, int u, int v, ResourceLocation texture) {
+        public ProblemsTab(AbstractGuiNode tabBodyNode, String unlocalTabName, TabButtonNode.TabSide side, int u, int v, Identifier texture) {
             super(tabBodyNode, unlocalTabName, side, u, v, texture);
         }
 

@@ -1,8 +1,8 @@
 package mrtjp.projectred.redui;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
-public record RedUISprite(ResourceLocation texture, int u, int v, int w, int h, int textureWidth, int textureHeight) {
+public record RedUISprite(Identifier texture, int u, int v, int w, int h, int textureWidth, int textureHeight) {
 
 
 }

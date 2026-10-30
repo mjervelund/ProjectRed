@@ -4,7 +4,7 @@ import mrtjp.projectred.lib.Point;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 
 import java.util.LinkedList;
@@ -16,10 +16,10 @@ public abstract class AbstractButtonNode extends AbstractGuiNode {
     public static final int BUTTON_STATE_IDLE = 1;
     public static final int BUTTON_STATE_HIGHLIGHT = 2;
 
-    private static final ResourceLocation[] buttonSprites = {
-        ResourceLocation.withDefaultNamespace("widget/button_disabled"),
-        ResourceLocation.withDefaultNamespace("widget/button"),
-        ResourceLocation.withDefaultNamespace("widget/button_highlighted")
+    private static final Identifier[] buttonSprites = {
+        Identifier.withDefaultNamespace("widget/button_disabled"),
+        Identifier.withDefaultNamespace("widget/button"),
+        Identifier.withDefaultNamespace("widget/button_highlighted")
     };
 
     protected abstract void onButtonClicked();

@@ -3,7 +3,7 @@ package mrtjp.projectred.expansion.graphs;
 import codechicken.lib.data.MCDataInput;
 import codechicken.lib.data.MCDataOutput;
 import codechicken.lib.vec.Vector3;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 
 import javax.annotation.Nullable;

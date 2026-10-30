@@ -13,7 +13,7 @@ import mrtjp.projectred.integration.part.ComplexGatePart;
 import mrtjp.projectred.integration.part.GatePart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
@@ -25,7 +25,7 @@ import static mrtjp.projectred.integration.ProjectRedIntegration.MOD_ID;
 
 public class IntegrationNetwork {
 
-    public static final ResourceLocation NET_CHANNEL = ResourceLocation.fromNamespaceAndPath(MOD_ID, "network");
+    public static final Identifier NET_CHANNEL = Identifier.fromNamespaceAndPath(MOD_ID, "network");
 
     // Server to client messages
     public static final int OPEN_TIMER_GUI_FROM_SERVER = 1;

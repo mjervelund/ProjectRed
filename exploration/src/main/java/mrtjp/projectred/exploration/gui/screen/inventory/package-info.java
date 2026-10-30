@@ -1,5 +1,3 @@
-@FieldsAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 package mrtjp.projectred.exploration.gui.screen.inventory;
 

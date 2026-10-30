@@ -8,13 +8,13 @@ import mrtjp.projectred.lib.Point;
 import mrtjp.projectred.redui.RedUIContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class PackagingTableScreen extends RedUIContainerScreen<PackagingTableMenu> {
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/packaging_table.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(ProjectRedFabrication.MOD_ID, "textures/gui/packaging_table.png");
 
     public PackagingTableScreen(PackagingTableMenu container, Inventory playerInventory, Component title) {
         super(176, 171, container, playerInventory, title);

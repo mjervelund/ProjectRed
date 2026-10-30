@@ -2,7 +2,7 @@ package mrtjp.projectred.expansion;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +46,7 @@ public class CraftingHelperTest {
         matrix  = new SimpleContainer(9);
         storage = new SimpleContainer(18);
 
-        recipeHolder = new RecipeHolder<>(ResourceLocation.parse("test:recipe"), mockRecipe);
+        recipeHolder = new RecipeHolder<>(Identifier.parse("test:recipe"), mockRecipe);
 
         lenient().when(level.getRecipeManager()).thenReturn(recipeManager);
         lenient().when(level.registryAccess()).thenReturn(registryAccess);

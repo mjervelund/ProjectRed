@@ -6,7 +6,7 @@ import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.microblock.api.MicroMaterial;
 import codechicken.microblock.api.MicroMaterialClient;
 import codechicken.microblock.util.MaskedCuboid;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 import java.util.Arrays;
 import java.util.List;

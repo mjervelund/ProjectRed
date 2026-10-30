@@ -3,7 +3,7 @@ package mrtjp.projectred.expansion.client;
 import codechicken.lib.colour.EnumColour;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.*;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.renderpearl.backend.opengl.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import mrtjp.projectred.core.client.particle.BaseActionParticle;
@@ -13,7 +13,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 @SuppressWarnings("NotNullFieldNotInitialized")
 public class PneumaticSmokeParticle extends BaseActionParticle {
 
-    public static ResourceLocation SMOKE_PARTICLE_LOCATION = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/particle/smoke.png");
+    public static Identifier SMOKE_PARTICLE_LOCATION = Identifier.fromNamespaceAndPath(MOD_ID, "textures/particle/smoke.png");
 
     public static TextureAtlasSprite SMOKE_PARTICLE_SPRITE;
 
@@ -134,6 +134,6 @@ public class PneumaticSmokeParticle extends BaseActionParticle {
 
     public static void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
-        SMOKE_PARTICLE_SPRITE = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "particle/smoke"));
+        SMOKE_PARTICLE_SPRITE = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "particle/smoke"));
     }
 }

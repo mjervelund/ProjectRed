@@ -6,7 +6,7 @@ import mrtjp.projectred.illumination.MultipartLightProperties;
 import mrtjp.projectred.illumination.MultipartLightType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
@@ -51,7 +51,7 @@ public class FalloutLightProperties extends MultipartLightProperties {
     @OnlyIn(Dist.CLIENT)
     public void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
-        icon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/fallout"));
+        icon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/fallout"));
     }
 
     @Override

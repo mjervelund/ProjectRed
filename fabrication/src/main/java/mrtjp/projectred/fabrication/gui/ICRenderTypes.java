@@ -8,18 +8,18 @@ import codechicken.lib.vec.Vector3;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import com.mojang.math.Axis;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 import org.joml.Matrix4f;
 
@@ -31,9 +31,9 @@ import static mrtjp.projectred.fabrication.ProjectRedFabrication.MOD_ID;
 @SuppressWarnings("NotNullFieldNotInitialized")
 public class ICRenderTypes {
 
-    public static ResourceLocation PERFBOARD_TEXTURE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard.png");
-    public static ResourceLocation PERFBOARD_EDGE_TEXTURE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_edge.png");
-    public static ResourceLocation PERFBOARD_CORNER_TEXTURE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_corner.png");
+    public static Identifier PERFBOARD_TEXTURE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard.png");
+    public static Identifier PERFBOARD_EDGE_TEXTURE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_edge.png");
+    public static Identifier PERFBOARD_CORNER_TEXTURE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/block/workbench_ui/perfboard_corner.png");
 
     public static RenderType layersRenderType = RenderType.create(MOD_ID + ":ic_block", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 10000, false, true,
             RenderType.CompositeState.builder()
@@ -355,10 +355,10 @@ public class ICRenderTypes {
     public static void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
 
-        icSurfaceIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard"));
-        icSurfaceBorderIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard_edge"));
-        icSurfaceCornerIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard_corner"));
-        rotateIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/rotate"));
-        reflectIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/reflect"));
+        icSurfaceIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard"));
+        icSurfaceBorderIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard_edge"));
+        icSurfaceCornerIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/perfboard_corner"));
+        rotateIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/rotate"));
+        reflectIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/workbench_ui/reflect"));
     }
 }

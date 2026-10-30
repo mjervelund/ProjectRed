@@ -10,7 +10,7 @@ import mrtjp.projectred.redui.AbstractButtonNode;
 import mrtjp.projectred.redui.RedUIContainerScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ import static mrtjp.projectred.expansion.ProjectRedExpansion.MOD_ID;
 
 public class AutoCrafterScreen extends RedUIContainerScreen<AutoCrafterMenu> {
 
-    public static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/auto_crafter.png");
+    public static final Identifier BACKGROUND = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/auto_crafter.png");
 
     private boolean isShiftDown = false;
 

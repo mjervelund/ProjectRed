@@ -1,12 +1,12 @@
 package mrtjp.projectred.exploration.init;
 
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.EnumMap;
@@ -80,7 +80,7 @@ public class ExplorationArmorMaterials {
             Supplier<Ingredient> repairIngredient,
             String layerTextureName
     ) {
-        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(MOD_ID, layerTextureName)));
+        List<ArmorMaterial.Layer> list = List.of(new ArmorMaterial.Layer(Identifier.fromNamespaceAndPath(MOD_ID, layerTextureName)));
         return create(defenseMap, enchantmentValue, equipSound, toughness, knockbackResistance, repairIngredient, list);
     }
 

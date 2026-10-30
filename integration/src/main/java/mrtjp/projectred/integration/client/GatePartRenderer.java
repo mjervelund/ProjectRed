@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mrtjp.projectred.core.Configurator;
 import mrtjp.projectred.integration.part.GatePart;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 import javax.annotation.Nullable;
 

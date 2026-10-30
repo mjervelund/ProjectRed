@@ -1,11 +1,11 @@
 package mrtjp.projectred.redui;
 
 import mrtjp.projectred.core.ProjectRedCore;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class RedUISprites {
 
-    public static final ResourceLocation REDUI_WIDGETS_TEXTURE = ResourceLocation.fromNamespaceAndPath(ProjectRedCore.MOD_ID, "textures/gui/redui_widgets.png");
+    public static final Identifier REDUI_WIDGETS_TEXTURE = Identifier.fromNamespaceAndPath(ProjectRedCore.MOD_ID, "textures/gui/redui_widgets.png");
     public static final int REDUI_WIDGETS_TEX_SIZE = 256;
 
     // Checkbox

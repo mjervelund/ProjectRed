@@ -2,7 +2,7 @@ package mrtjp.projectred.expansion.data;
 
 import mrtjp.projectred.expansion.init.ExpansionUnlocal;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
@@ -13,12 +13,12 @@ import static mrtjp.projectred.expansion.init.ExpansionSounds.PRESSURIZE;
 public class ExpansionSoundProvider extends SoundDefinitionsProvider {
 
     // Sound files
-    private static final ResourceLocation PRESSURIZE_1 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "pressurize_1");
-    private static final ResourceLocation PRESSURIZE_2 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "pressurize_2");
-    private static final ResourceLocation PRESSURIZE_3 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "pressurize_3");
-    private static final ResourceLocation DEPRESSURIZE_1 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "depressurize_1");
-    private static final ResourceLocation DEPRESSURIZE_2 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "depressurize_2");
-    private static final ResourceLocation DEPRESSURIZE_3 = ResourceLocation.fromNamespaceAndPath(MOD_ID, "depressurize_3");
+    private static final Identifier PRESSURIZE_1 = Identifier.fromNamespaceAndPath(MOD_ID, "pressurize_1");
+    private static final Identifier PRESSURIZE_2 = Identifier.fromNamespaceAndPath(MOD_ID, "pressurize_2");
+    private static final Identifier PRESSURIZE_3 = Identifier.fromNamespaceAndPath(MOD_ID, "pressurize_3");
+    private static final Identifier DEPRESSURIZE_1 = Identifier.fromNamespaceAndPath(MOD_ID, "depressurize_1");
+    private static final Identifier DEPRESSURIZE_2 = Identifier.fromNamespaceAndPath(MOD_ID, "depressurize_2");
+    private static final Identifier DEPRESSURIZE_3 = Identifier.fromNamespaceAndPath(MOD_ID, "depressurize_3");
 
     public ExpansionSoundProvider(PackOutput output, ExistingFileHelper helper) {
         super(output, MOD_ID, helper);

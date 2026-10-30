@@ -11,7 +11,7 @@ import mrtjp.projectred.expansion.part.PneumaticTubePayload;
 import mrtjp.projectred.expansion.pneumatics.PneumaticTransportContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 

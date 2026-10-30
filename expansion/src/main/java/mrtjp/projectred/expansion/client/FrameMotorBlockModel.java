@@ -4,10 +4,10 @@ import codechicken.lib.vec.uv.MultiIconTransformation;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.core.client.FullyOrientableBlockModel;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
@@ -64,13 +64,13 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
 
     public static void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
-        topIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_top"));
-        frontBack0Icon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_0"));
-        frontBack1Icon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_1"));
-        frontBack2Icon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_2"));
-        leftIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_left"));
-        rightIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_right"));
-        bottomIcon = event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame_motor_bottom"));
+        topIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_top"));
+        frontBack0Icon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_0"));
+        frontBack1Icon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_1"));
+        frontBack2Icon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_front_back_2"));
+        leftIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_left"));
+        rightIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_right"));
+        bottomIcon = event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame_motor_bottom"));
 
         iconT1 = new MultiIconTransformation(bottomIcon, topIcon, frontBack0Icon, frontBack0Icon, leftIcon, rightIcon);
         iconT2 = new MultiIconTransformation(bottomIcon, topIcon, frontBack1Icon, frontBack1Icon, leftIcon, rightIcon);

@@ -9,7 +9,7 @@ import codechicken.lib.vec.Vertex5;
 import codechicken.lib.vec.uv.IconTransformation;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
@@ -47,11 +47,11 @@ public class FrameModelRenderer {
 
     public static void onTextureStitchEvent(TextureAtlasStitchedEvent event) {
         if (!event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) return;
-        frameIcon = new IconTransformation(event.getAtlas().getSprite(ResourceLocation.fromNamespaceAndPath(MOD_ID, "block/frame")));
+        frameIcon = new IconTransformation(event.getAtlas().getSprite(Identifier.fromNamespaceAndPath(MOD_ID, "block/frame")));
     }
 
     private static Map<String, CCModel> loadModels(String path) {
-        ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(MOD_ID, "obj/" + path + ".obj");
+        Identifier rl = Identifier.fromNamespaceAndPath(MOD_ID, "obj/" + path + ".obj");
         Map<String, CCModel> models = new OBJParser(rl)
                 .ignoreMtl()
                 .quads()

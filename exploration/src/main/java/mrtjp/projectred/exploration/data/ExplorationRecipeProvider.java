@@ -8,7 +8,7 @@ import mrtjp.projectred.exploration.item.crafting.BackpackDyeRecipe;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -91,7 +91,7 @@ public class ExplorationRecipeProvider extends RecipeProvider {
                 .patternLine("SSS")
                 .patternLine(" S ");
 
-        shapedRecipe(Items.STRING, 4, ResourceLocation.fromNamespaceAndPath(MOD_ID, "string_from_wool_gin"))
+        shapedRecipe(Items.STRING, 4, Identifier.fromNamespaceAndPath(MOD_ID, "string_from_wool_gin"))
                 .key('W', ItemTags.WOOL)
                 .key('G', WOOL_GIN.get())
                 .patternLine("GW");
@@ -161,7 +161,7 @@ public class ExplorationRecipeProvider extends RecipeProvider {
             backpackRecipe(getBackpackByColor(i));
         }
 
-        special(ResourceLocation.fromNamespaceAndPath(MOD_ID, "backpack_dye"), () -> new BackpackDyeRecipe(CraftingBookCategory.MISC));
+        special(Identifier.fromNamespaceAndPath(MOD_ID, "backpack_dye"), () -> new BackpackDyeRecipe(CraftingBookCategory.MISC));
     }
 
     private void oreSmeltingRecipe(ItemLike result, Collection<ItemLike> sources, float xp) {
@@ -170,7 +170,7 @@ public class ExplorationRecipeProvider extends RecipeProvider {
         for (ItemLike source : sources) {
             String sourceName = BuiltInRegistries.ITEM.getKey(source.asItem()).getPath();
 
-            smelting(result, 1, ResourceLocation.fromNamespaceAndPath(MOD_ID, resultName + "_from_" + sourceName + "_smelting"))
+            smelting(result, 1, Identifier.fromNamespaceAndPath(MOD_ID, resultName + "_from_" + sourceName + "_smelting"))
                     .ingredient(source)
                     .experience(xp);
         }
@@ -185,7 +185,7 @@ public class ExplorationRecipeProvider extends RecipeProvider {
                 .patternLine("SSS");
 
         // Block to item
-        shapelessRecipe(item, 9, ResourceLocation.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(item.asItem()).getPath() + "_from_nineblock"))
+        shapelessRecipe(item, 9, Identifier.fromNamespaceAndPath(MOD_ID, BuiltInRegistries.ITEM.getKey(item.asItem()).getPath() + "_from_nineblock"))
                 .addIngredient(block);
     }
 

@@ -10,7 +10,7 @@ import mrtjp.projectred.fabrication.item.component.ICDataComponent;
 import mrtjp.projectred.integration.client.GateModelRenderer;
 import mrtjp.projectred.integration.part.IGateRenderData;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 

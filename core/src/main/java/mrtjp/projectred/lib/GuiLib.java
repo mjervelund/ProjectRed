@@ -7,14 +7,14 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
 
 import static com.mojang.blaze3d.vertex.VertexFormat.Mode.QUADS;
 
 public class GuiLib {
 
-    public static void drawVerticalTank(GuiGraphics graphics, ResourceLocation loc, int x, int y, int u, int v, int w, int h, int prog) {
+    public static void drawVerticalTank(GuiGraphics graphics, Identifier loc, int x, int y, int u, int v, int w, int h, int prog) {
         graphics.blit(loc, x, y + h - prog, u, v + h - prog, w, prog);
     }
 
