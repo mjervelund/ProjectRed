@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.ItemMultipart;
 import codechicken.multipart.api.part.MultiPart;
 import codechicken.multipart.util.MultipartPlaceContext;
@@ -16,7 +17,7 @@ public class MultipartLightPartItem extends ItemMultipart {
     private final boolean inverted;
 
     public MultipartLightPartItem(MultipartLightProperties lightProperties, int color, boolean inverted) {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
         this.properties = lightProperties;
         this.color = color;
         this.inverted = inverted;

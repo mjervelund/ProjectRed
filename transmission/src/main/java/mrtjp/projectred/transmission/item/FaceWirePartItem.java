@@ -1,5 +1,6 @@
 package mrtjp.projectred.transmission.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.ItemMultipart;
 import codechicken.multipart.api.part.MultiPart;
 import codechicken.multipart.util.MultipartPlaceContext;
@@ -15,7 +16,7 @@ public class FaceWirePartItem extends ItemMultipart {
     private final WireType type;
 
     public FaceWirePartItem(WireType type) {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
         this.type = type;
     }
 

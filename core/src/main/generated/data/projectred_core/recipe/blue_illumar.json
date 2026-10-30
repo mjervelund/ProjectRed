@@ -1,22 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
-    {
-      "tag": "c:dusts/glowstone"
-    },
-    {
-      "tag": "c:dusts/glowstone"
-    },
-    {
-      "tag": "c:dyes/blue"
-    },
-    {
-      "tag": "c:dyes/blue"
-    }
+    "#c:dusts/glowstone",
+    "#c:dusts/glowstone",
+    "#c:dyes/blue",
+    "#c:dyes/blue"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_core:blue_illumar"
   }
 }

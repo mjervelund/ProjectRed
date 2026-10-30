@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +10,7 @@ import net.minecraft.world.item.Tier;
 public class AthameItem extends SwordItem {
 
     public AthameItem(Tier itemTier, int attackDamage, float attackSpeed) {
-        super(itemTier, new Item.Properties().attributes(SwordItem.createAttributes(itemTier, attackDamage, attackSpeed)));
+        super(itemTier, RegistryIds.itemProps().attributes(SwordItem.createAttributes(itemTier, attackDamage, attackSpeed)));
     }
 
     @Override

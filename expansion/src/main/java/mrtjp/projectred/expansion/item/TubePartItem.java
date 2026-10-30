@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.ItemMultipart;
 import codechicken.multipart.api.part.MultiPart;
 import codechicken.multipart.util.MultipartPlaceContext;
@@ -12,7 +13,7 @@ public class TubePartItem extends ItemMultipart {
     private final TubeType type;
 
     public TubePartItem(TubeType type) {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
         this.type = type;
     }
 

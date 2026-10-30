@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.expansion.item.BatteryItem;
 import mrtjp.projectred.expansion.item.ElectricScrewdriverItem;
 import mrtjp.projectred.expansion.item.EmptyBatteryItem;
@@ -26,9 +27,9 @@ public class ExpansionItems {
 
     public static void register() {
 
-        RECIPE_PLAN_ITEM = ITEMS.register(ID_RECIPE_PLAN, RecipePlanItem::new);
-        BATTERY_ITEM = ITEMS.register(ID_BATTERY, BatteryItem::new);
-        EMPTY_BATTERY_ITEM = ITEMS.register(ID_EMPTY_BATTERY, EmptyBatteryItem::new);
-        ELECTRIC_SCREWDRIVER_ITEM = ITEMS.register(ID_ELECTRIC_SCREWDRIVER, ElectricScrewdriverItem::new);
+        RECIPE_PLAN_ITEM = ITEMS.register(ID_RECIPE_PLAN, RegistryIds.item(RecipePlanItem::new));
+        BATTERY_ITEM = ITEMS.register(ID_BATTERY, RegistryIds.item(BatteryItem::new));
+        EMPTY_BATTERY_ITEM = ITEMS.register(ID_EMPTY_BATTERY, RegistryIds.item(EmptyBatteryItem::new));
+        ELECTRIC_SCREWDRIVER_ITEM = ITEMS.register(ID_ELECTRIC_SCREWDRIVER, RegistryIds.item(ElectricScrewdriverItem::new));
     }
 }

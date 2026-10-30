@@ -11,7 +11,7 @@
 //public class EtchedSiliconWaferItem extends Item {
 //
 //    public EtchedSiliconWaferItem() {
-//        super(new Item.Properties()
+//        super(RegistryIds.itemProps()
 //                .stacksTo(1));
 //    }
 //

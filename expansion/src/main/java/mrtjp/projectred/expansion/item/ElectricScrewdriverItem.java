@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.api.IScrewdriver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.LevelReader;
 public class ElectricScrewdriverItem extends Item implements IScrewdriver, IChargable {
 
     public ElectricScrewdriverItem() {
-        super(new Item.Properties()
+        super(RegistryIds.itemProps()
                 .durability(400));
     }
 

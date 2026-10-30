@@ -1,5 +1,6 @@
 package mrtjp.projectred.core.block;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.core.tile.IBlockEventBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -33,18 +34,23 @@ public abstract class ProjectRedBlock extends Block implements EntityBlock {
     public static final BooleanProperty WORKING = BooleanProperty.create("working");
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-    public static final BlockBehaviour.Properties WOODEN_MACHINE_PROPERTIES = BlockBehaviour.Properties.of()
+    // Fresh per block: properties carry the block's registry id (see RegistryIds).
+    public static BlockBehaviour.Properties woodenMachineProperties() {
+        return RegistryIds.blockProps()
             .mapColor(MapColor.WOOD)
             .instrument(NoteBlockInstrument.BASS)
             .strength(2.5F)
             .sound(SoundType.WOOD);
+    }
 
-    public static final BlockBehaviour.Properties STONE_MACHINE_PROPERTIES = BlockBehaviour.Properties.of()
+    public static BlockBehaviour.Properties stoneMachineProperties() {
+        return RegistryIds.blockProps()
             .mapColor(MapColor.STONE)
             .instrument(NoteBlockInstrument.BASEDRUM)
             .requiresCorrectToolForDrops()
             .strength(3.5F)
             .sound(SoundType.STONE);
+    }
 
     public ProjectRedBlock(BlockBehaviour.Properties properties) {
         super(properties);

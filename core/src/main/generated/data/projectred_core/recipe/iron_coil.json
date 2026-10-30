@@ -1,19 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "D": {
-      "item": "projectred_core:draw_plate"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "D": "projectred_core:draw_plate",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     "ID"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_core:iron_coil"
   }
 }

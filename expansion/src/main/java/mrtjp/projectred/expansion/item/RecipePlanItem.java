@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.expansion.init.ExpansionDataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -11,7 +12,7 @@ import java.util.List;
 public class RecipePlanItem extends Item {
 
     public RecipePlanItem() {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
     }
 
     @Override

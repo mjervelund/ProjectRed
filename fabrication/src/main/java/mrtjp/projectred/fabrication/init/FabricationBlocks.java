@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.block.ICWorkbenchBlock;
 import mrtjp.projectred.fabrication.block.LithographyTableBlock;
 import mrtjp.projectred.fabrication.block.PackagingTableBlock;
@@ -39,16 +40,16 @@ public class FabricationBlocks {
     public static void register() {
 
         // Blocks
-        IC_WORKBENCH_BLOCK = BLOCKS.register(ID_IC_WORKBENCH, ICWorkbenchBlock::new);
-        PLOTTING_TABLE_BLOCK = BLOCKS.register(ID_PLOTTING_TABLE, PlottingTableBlock::new);
-        LITHOGRAPHY_TABLE_BLOCK = BLOCKS.register(ID_LITHOGRAPHY_TABLE, LithographyTableBlock::new);
-        PACKAGING_TABLE_BLOCK = BLOCKS.register(ID_PACKAGING_TABLE, PackagingTableBlock::new);
+        IC_WORKBENCH_BLOCK = BLOCKS.register(ID_IC_WORKBENCH, RegistryIds.block(ICWorkbenchBlock::new));
+        PLOTTING_TABLE_BLOCK = BLOCKS.register(ID_PLOTTING_TABLE, RegistryIds.block(PlottingTableBlock::new));
+        LITHOGRAPHY_TABLE_BLOCK = BLOCKS.register(ID_LITHOGRAPHY_TABLE, RegistryIds.block(LithographyTableBlock::new));
+        PACKAGING_TABLE_BLOCK = BLOCKS.register(ID_PACKAGING_TABLE, RegistryIds.block(PackagingTableBlock::new));
 
         // Block Items
-        ITEMS.register(ID_IC_WORKBENCH, () -> new BlockItem(IC_WORKBENCH_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_PLOTTING_TABLE, () -> new BlockItem(PLOTTING_TABLE_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_LITHOGRAPHY_TABLE, () -> new BlockItem(LITHOGRAPHY_TABLE_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_PACKAGING_TABLE, () -> new BlockItem(PACKAGING_TABLE_BLOCK.get(), new Item.Properties()));
+        ITEMS.register(ID_IC_WORKBENCH, RegistryIds.item(() -> new BlockItem(IC_WORKBENCH_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_PLOTTING_TABLE, RegistryIds.item(() -> new BlockItem(PLOTTING_TABLE_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_LITHOGRAPHY_TABLE, RegistryIds.item(() -> new BlockItem(LITHOGRAPHY_TABLE_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_PACKAGING_TABLE, RegistryIds.item(() -> new BlockItem(PACKAGING_TABLE_BLOCK.get(), RegistryIds.blockItemProps())));
 
         // Tiles
         IC_WORKBENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_IC_WORKBENCH, () -> new BlockEntityType<>(ICWorkbenchBlockEntity::new, IC_WORKBENCH_BLOCK.get()));

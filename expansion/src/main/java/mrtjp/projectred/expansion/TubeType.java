@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.SimpleMultipartType;
 import com.google.common.collect.ImmutableList;
@@ -90,7 +91,7 @@ public enum TubeType {
     }
 
     public void registerParts(DeferredRegister<MultipartType<?>> partRegistry, DeferredRegister<Item> itemRegistry) {
-        itemSupplier = itemRegistry.register(unlocalName, () -> new TubePartItem(this));
+        itemSupplier = itemRegistry.register(unlocalName, RegistryIds.item(() -> new TubePartItem(this)));
         partSupplier = partRegistry.register(unlocalName, () -> new SimpleMultipartType<>(isClient -> partFactory.apply(this)));
     }
 }

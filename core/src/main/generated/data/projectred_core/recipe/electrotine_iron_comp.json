@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "B": {
-      "tag": "c:dusts/electrotine"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "B": "#c:dusts/electrotine",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     "BBB",
@@ -15,7 +10,6 @@
     "BBB"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_core:electrotine_iron_comp"
   }
 }

@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.block;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.illumination.init.IlluminationBlocks;
 import mrtjp.projectred.illumination.tile.IllumarSmartLampBlockEntity;
@@ -26,7 +27,7 @@ public class IllumarSmartLampBlock extends ProjectRedBlock implements EntityBloc
     public static final ToIntFunction<BlockState> LIGHT_EMISSION = LightBlock.LIGHT_EMISSION;
 
     public IllumarSmartLampBlock() {
-        super(BlockBehaviour.Properties.of()
+        super(RegistryIds.blockProps()
                 .mapColor(state -> state.getValue(LEVEL) > 0 ? MapColor.TERRACOTTA_WHITE : MapColor.COLOR_GRAY) // TODO Actual color
                 .sound(SoundType.GLASS)
                 .strength(0.5F)

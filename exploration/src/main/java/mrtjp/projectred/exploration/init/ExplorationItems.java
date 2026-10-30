@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.microblock.item.SawItem;
 import mrtjp.projectred.exploration.item.AthameItem;
 import mrtjp.projectred.exploration.item.BackpackItem;
@@ -213,122 +214,122 @@ public class ExplorationItems {
     public static void register() {
 
         // Ingots/dusts/gems
-        RAW_TIN_ITEM = ITEMS.register(ID_RAW_TIN, createSimpleItemSupplier());
-        TIN_INGOT_ITEM = ITEMS.register(ID_TIN_INGOT, createSimpleItemSupplier());
-        RAW_SILVER_ITEM = ITEMS.register(ID_RAW_SILVER, createSimpleItemSupplier());
-        SILVER_INGOT_ITEM = ITEMS.register(ID_SILVER_INGOT, createSimpleItemSupplier());
+        RAW_TIN_ITEM = ITEMS.register(ID_RAW_TIN, RegistryIds.item(createSimpleItemSupplier()));
+        TIN_INGOT_ITEM = ITEMS.register(ID_TIN_INGOT, RegistryIds.item(createSimpleItemSupplier()));
+        RAW_SILVER_ITEM = ITEMS.register(ID_RAW_SILVER, RegistryIds.item(createSimpleItemSupplier()));
+        SILVER_INGOT_ITEM = ITEMS.register(ID_SILVER_INGOT, RegistryIds.item(createSimpleItemSupplier()));
 
-        WOOL_GIN = ITEMS.register(ID_WOOL_GIN, WoolGinItem::new);
-        ATHAME = ITEMS.register(ID_ATHAME, () -> new AthameItem(ATHAME_ITEM_TIER, 3, -2.4F));
+        WOOL_GIN = ITEMS.register(ID_WOOL_GIN, RegistryIds.item(WoolGinItem::new));
+        ATHAME = ITEMS.register(ID_ATHAME, RegistryIds.item(() -> new AthameItem(ATHAME_ITEM_TIER, 3, -2.4F)));
 
         /* Tools */
 
-        RUBY_AXE         = ITEMS.register(ID_RUBY_AXE,         () -> createAxeItem(RUBY_ITEM_TIER, 5.0F, -3.0F));
-        SAPPHIRE_AXE     = ITEMS.register(ID_SAPPHIRE_AXE,     () -> createAxeItem(SAPPHIRE_ITEM_TIER, 5.0F, -3.0F));
-        PERIDOT_AXE      = ITEMS.register(ID_PERIDOT_AXE,      () -> createAxeItem(PERIDOT_ITEM_TIER, 5.0F, -3.0F));
+        RUBY_AXE         = ITEMS.register(ID_RUBY_AXE, RegistryIds.item(() -> createAxeItem(RUBY_ITEM_TIER, 5.0F, -3.0F)));
+        SAPPHIRE_AXE     = ITEMS.register(ID_SAPPHIRE_AXE, RegistryIds.item(() -> createAxeItem(SAPPHIRE_ITEM_TIER, 5.0F, -3.0F)));
+        PERIDOT_AXE      = ITEMS.register(ID_PERIDOT_AXE, RegistryIds.item(() -> createAxeItem(PERIDOT_ITEM_TIER, 5.0F, -3.0F)));
 
-        RUBY_PICKAXE     = ITEMS.register(ID_RUBY_PICKAXE,     () -> createPickaxeItem(RUBY_ITEM_TIER, 1, -2.8F));
-        SAPPHIRE_PICKAXE = ITEMS.register(ID_SAPPHIRE_PICKAXE, () -> createPickaxeItem(SAPPHIRE_ITEM_TIER, 1, -2.8F));
-        PERIDOT_PICKAXE  = ITEMS.register(ID_PERIDOT_PICKAXE,  () -> createPickaxeItem(PERIDOT_ITEM_TIER, 1, -2.8F));
+        RUBY_PICKAXE     = ITEMS.register(ID_RUBY_PICKAXE, RegistryIds.item(() -> createPickaxeItem(RUBY_ITEM_TIER, 1, -2.8F)));
+        SAPPHIRE_PICKAXE = ITEMS.register(ID_SAPPHIRE_PICKAXE, RegistryIds.item(() -> createPickaxeItem(SAPPHIRE_ITEM_TIER, 1, -2.8F)));
+        PERIDOT_PICKAXE  = ITEMS.register(ID_PERIDOT_PICKAXE, RegistryIds.item(() -> createPickaxeItem(PERIDOT_ITEM_TIER, 1, -2.8F)));
 
-        RUBY_SHOVEL      = ITEMS.register(ID_RUBY_SHOVEL,      () -> createShovelItem(RUBY_ITEM_TIER, 1.5F, -3.0F));
-        SAPPHIRE_SHOVEL  = ITEMS.register(ID_SAPPHIRE_SHOVEL,  () -> createShovelItem(SAPPHIRE_ITEM_TIER, 1.5F, -3.0F));
-        PERIDOT_SHOVEL   = ITEMS.register(ID_PERIDOT_SHOVEL,   () -> createShovelItem(PERIDOT_ITEM_TIER, 1.5F, -3.0F));
+        RUBY_SHOVEL      = ITEMS.register(ID_RUBY_SHOVEL, RegistryIds.item(() -> createShovelItem(RUBY_ITEM_TIER, 1.5F, -3.0F)));
+        SAPPHIRE_SHOVEL  = ITEMS.register(ID_SAPPHIRE_SHOVEL, RegistryIds.item(() -> createShovelItem(SAPPHIRE_ITEM_TIER, 1.5F, -3.0F)));
+        PERIDOT_SHOVEL   = ITEMS.register(ID_PERIDOT_SHOVEL, RegistryIds.item(() -> createShovelItem(PERIDOT_ITEM_TIER, 1.5F, -3.0F)));
 
-        RUBY_HOE         = ITEMS.register(ID_RUBY_HOE,         () -> createHoeItem(RUBY_ITEM_TIER, -3, 0.0F));
-        SAPPHIRE_HOE     = ITEMS.register(ID_SAPPHIRE_HOE,     () -> createHoeItem(SAPPHIRE_ITEM_TIER, -3, 0.0F));
-        PERIDOT_HOE      = ITEMS.register(ID_PERIDOT_HOE,      () -> createHoeItem(PERIDOT_ITEM_TIER, -3, 0.0F));
+        RUBY_HOE         = ITEMS.register(ID_RUBY_HOE, RegistryIds.item(() -> createHoeItem(RUBY_ITEM_TIER, -3, 0.0F)));
+        SAPPHIRE_HOE     = ITEMS.register(ID_SAPPHIRE_HOE, RegistryIds.item(() -> createHoeItem(SAPPHIRE_ITEM_TIER, -3, 0.0F)));
+        PERIDOT_HOE      = ITEMS.register(ID_PERIDOT_HOE, RegistryIds.item(() -> createHoeItem(PERIDOT_ITEM_TIER, -3, 0.0F)));
 
-        RUBY_SWORD       = ITEMS.register(ID_RUBY_SWORD,       () -> createSwordItem(RUBY_ITEM_TIER, 3, -2.4F));
-        SAPPHIRE_SWORD   = ITEMS.register(ID_SAPPHIRE_SWORD,   () -> createSwordItem(SAPPHIRE_ITEM_TIER, 3, -2.4F));
-        PERIDOT_SWORD    = ITEMS.register(ID_PERIDOT_SWORD,    () -> createSwordItem(PERIDOT_ITEM_TIER, 3, -2.4F));
+        RUBY_SWORD       = ITEMS.register(ID_RUBY_SWORD, RegistryIds.item(() -> createSwordItem(RUBY_ITEM_TIER, 3, -2.4F)));
+        SAPPHIRE_SWORD   = ITEMS.register(ID_SAPPHIRE_SWORD, RegistryIds.item(() -> createSwordItem(SAPPHIRE_ITEM_TIER, 3, -2.4F)));
+        PERIDOT_SWORD    = ITEMS.register(ID_PERIDOT_SWORD, RegistryIds.item(() -> createSwordItem(PERIDOT_ITEM_TIER, 3, -2.4F)));
 
-        GOLD_SAW         = ITEMS.register(ID_GOLD_SAW,         () -> createSawItem(Tiers.GOLD));
-        RUBY_SAW         = ITEMS.register(ID_RUBY_SAW,         () -> createSawItem(RUBY_ITEM_TIER));
-        SAPPHIRE_SAW     = ITEMS.register(ID_SAPPHIRE_SAW,     () -> createSawItem(SAPPHIRE_ITEM_TIER));
-        PERIDOT_SAW      = ITEMS.register(ID_PERIDOT_SAW,      () -> createSawItem(PERIDOT_ITEM_TIER));
+        GOLD_SAW         = ITEMS.register(ID_GOLD_SAW, RegistryIds.item(() -> createSawItem(Tiers.GOLD)));
+        RUBY_SAW         = ITEMS.register(ID_RUBY_SAW, RegistryIds.item(() -> createSawItem(RUBY_ITEM_TIER)));
+        SAPPHIRE_SAW     = ITEMS.register(ID_SAPPHIRE_SAW, RegistryIds.item(() -> createSawItem(SAPPHIRE_ITEM_TIER)));
+        PERIDOT_SAW      = ITEMS.register(ID_PERIDOT_SAW, RegistryIds.item(() -> createSawItem(PERIDOT_ITEM_TIER)));
 
-        WOOD_SICKLE      = ITEMS.register(ID_WOOD_SICKLE,      () -> createSickleItem(Tiers.WOOD, 1, -2.8F));
-        STONE_SICKLE     = ITEMS.register(ID_STONE_SICKLE,     () -> createSickleItem(Tiers.STONE, 1, -2.8F));
-        IRON_SICKLE      = ITEMS.register(ID_IRON_SICKLE,      () -> createSickleItem(Tiers.IRON, 1, -2.8F));
-        GOLD_SICKLE      = ITEMS.register(ID_GOLD_SICKLE,      () -> createSickleItem(Tiers.GOLD, 1, -2.8F));
-        DIAMOND_SICKLE   = ITEMS.register(ID_DIAMOND_SICKLE,   () -> createSickleItem(Tiers.DIAMOND, 1, -2.8F));
-        RUBY_SICKLE      = ITEMS.register(ID_RUBY_SICKLE,      () -> createSickleItem(RUBY_ITEM_TIER, 1, -2.8F));
-        SAPPHIRE_SICKLE  = ITEMS.register(ID_SAPPHIRE_SICKLE,  () -> createSickleItem(SAPPHIRE_ITEM_TIER, 1, -2.8F));
-        PERIDOT_SICKLE   = ITEMS.register(ID_PERIDOT_SICKLE,   () -> createSickleItem(PERIDOT_ITEM_TIER, 1, -2.8F));
+        WOOD_SICKLE      = ITEMS.register(ID_WOOD_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.WOOD, 1, -2.8F)));
+        STONE_SICKLE     = ITEMS.register(ID_STONE_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.STONE, 1, -2.8F)));
+        IRON_SICKLE      = ITEMS.register(ID_IRON_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.IRON, 1, -2.8F)));
+        GOLD_SICKLE      = ITEMS.register(ID_GOLD_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.GOLD, 1, -2.8F)));
+        DIAMOND_SICKLE   = ITEMS.register(ID_DIAMOND_SICKLE, RegistryIds.item(() -> createSickleItem(Tiers.DIAMOND, 1, -2.8F)));
+        RUBY_SICKLE      = ITEMS.register(ID_RUBY_SICKLE, RegistryIds.item(() -> createSickleItem(RUBY_ITEM_TIER, 1, -2.8F)));
+        SAPPHIRE_SICKLE  = ITEMS.register(ID_SAPPHIRE_SICKLE, RegistryIds.item(() -> createSickleItem(SAPPHIRE_ITEM_TIER, 1, -2.8F)));
+        PERIDOT_SICKLE   = ITEMS.register(ID_PERIDOT_SICKLE, RegistryIds.item(() -> createSickleItem(PERIDOT_ITEM_TIER, 1, -2.8F)));
 
         /* Armor */
 
-        RUBY_HELMET         = ITEMS.register(ID_RUBY_HELMET,           () -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16));
-        SAPPHIRE_HELMET     = ITEMS.register(ID_SAPPHIRE_HELMET,       () -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16));
-        PERIDOT_HELMET      = ITEMS.register(ID_PERIDOT_HELMET,        () -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 14));
+        RUBY_HELMET         = ITEMS.register(ID_RUBY_HELMET, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16)));
+        SAPPHIRE_HELMET     = ITEMS.register(ID_SAPPHIRE_HELMET, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 16)));
+        PERIDOT_HELMET      = ITEMS.register(ID_PERIDOT_HELMET, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, 14)));
 
-        RUBY_CHESTPLATE     = ITEMS.register(ID_RUBY_CHESTPLATE,       () -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16));
-        SAPPHIRE_CHESTPLATE = ITEMS.register(ID_SAPPHIRE_CHESTPLATE,   () -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16));
-        PERIDOT_CHESTPLATE  = ITEMS.register(ID_PERIDOT_CHESTPLATE,    () -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 14));
+        RUBY_CHESTPLATE     = ITEMS.register(ID_RUBY_CHESTPLATE, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16)));
+        SAPPHIRE_CHESTPLATE = ITEMS.register(ID_SAPPHIRE_CHESTPLATE, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 16)));
+        PERIDOT_CHESTPLATE  = ITEMS.register(ID_PERIDOT_CHESTPLATE, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, 14)));
 
-        RUBY_LEGGINGS       = ITEMS.register(ID_RUBY_LEGGINGS,         () -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16));
-        SAPPHIRE_LEGGINGS   = ITEMS.register(ID_SAPPHIRE_LEGGINGS,     () -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16));
-        PERIDOT_LEGGINGS    = ITEMS.register(ID_PERIDOT_LEGGINGS,      () -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 14));
+        RUBY_LEGGINGS       = ITEMS.register(ID_RUBY_LEGGINGS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16)));
+        SAPPHIRE_LEGGINGS   = ITEMS.register(ID_SAPPHIRE_LEGGINGS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 16)));
+        PERIDOT_LEGGINGS    = ITEMS.register(ID_PERIDOT_LEGGINGS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.LEGGINGS, 14)));
 
-        RUBY_BOOTS          = ITEMS.register(ID_RUBY_BOOTS,            () -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16));
-        SAPPHIRE_BOOTS      = ITEMS.register(ID_SAPPHIRE_BOOTS,        () -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16));
-        PERIDOT_BOOTS       = ITEMS.register(ID_PERIDOT_BOOTS,         () -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 14));
+        RUBY_BOOTS          = ITEMS.register(ID_RUBY_BOOTS, RegistryIds.item(() -> createArmorItem(RUBY_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16)));
+        SAPPHIRE_BOOTS      = ITEMS.register(ID_SAPPHIRE_BOOTS, RegistryIds.item(() -> createArmorItem(SAPPHIRE_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 16)));
+        PERIDOT_BOOTS       = ITEMS.register(ID_PERIDOT_BOOTS, RegistryIds.item(() -> createArmorItem(PERIDOT_ARMOR_MATERIAL, ArmorItem.Type.BOOTS, 14)));
 
         /* Backpacks */
 
-        WHITE_BACKPACK        = ITEMS.register(ID_WHITE_BACKPACK,       () -> new BackpackItem(0));
-        ORANGE_BACKPACK       = ITEMS.register(ID_ORANGE_BACKPACK,      () -> new BackpackItem(1));
-        MAGENTA_BACKPACK      = ITEMS.register(ID_MAGENTA_BACKPACK,     () -> new BackpackItem(2));
-        LIGHT_BLUE_BACKPACK   = ITEMS.register(ID_LIGHT_BLUE_BACKPACK,  () -> new BackpackItem(3));
-        YELLOW_BACKPACK       = ITEMS.register(ID_YELLOW_BACKPACK,      () -> new BackpackItem(4));
-        LIME_BACKPACK         = ITEMS.register(ID_LIME_BACKPACK,        () -> new BackpackItem(5));
-        PINK_BACKPACK         = ITEMS.register(ID_PINK_BACKPACK,        () -> new BackpackItem(6));
-        GRAY_BACKPACK         = ITEMS.register(ID_GRAY_BACKPACK,        () -> new BackpackItem(7));
-        LIGHT_GRAY_BACKPACK   = ITEMS.register(ID_LIGHT_GRAY_BACKPACK,  () -> new BackpackItem(8));
-        CYAN_BACKPACK         = ITEMS.register(ID_CYAN_BACKPACK,        () -> new BackpackItem(9));
-        PURPLE_BACKPACK       = ITEMS.register(ID_PURPLE_BACKPACK,      () -> new BackpackItem(10));
-        BLUE_BACKPACK         = ITEMS.register(ID_BLUE_BACKPACK,        () -> new BackpackItem(11));
-        BROWN_BACKPACK        = ITEMS.register(ID_BROWN_BACKPACK,       () -> new BackpackItem(12));
-        GREEN_BACKPACK        = ITEMS.register(ID_GREEN_BACKPACK,       () -> new BackpackItem(13));
-        RED_BACKPACK          = ITEMS.register(ID_RED_BACKPACK,         () -> new BackpackItem(14));
-        BLACK_BACKPACK        = ITEMS.register(ID_BLACK_BACKPACK,       () -> new BackpackItem(15));
+        WHITE_BACKPACK        = ITEMS.register(ID_WHITE_BACKPACK, RegistryIds.item(() -> new BackpackItem(0)));
+        ORANGE_BACKPACK       = ITEMS.register(ID_ORANGE_BACKPACK, RegistryIds.item(() -> new BackpackItem(1)));
+        MAGENTA_BACKPACK      = ITEMS.register(ID_MAGENTA_BACKPACK, RegistryIds.item(() -> new BackpackItem(2)));
+        LIGHT_BLUE_BACKPACK   = ITEMS.register(ID_LIGHT_BLUE_BACKPACK, RegistryIds.item(() -> new BackpackItem(3)));
+        YELLOW_BACKPACK       = ITEMS.register(ID_YELLOW_BACKPACK, RegistryIds.item(() -> new BackpackItem(4)));
+        LIME_BACKPACK         = ITEMS.register(ID_LIME_BACKPACK, RegistryIds.item(() -> new BackpackItem(5)));
+        PINK_BACKPACK         = ITEMS.register(ID_PINK_BACKPACK, RegistryIds.item(() -> new BackpackItem(6)));
+        GRAY_BACKPACK         = ITEMS.register(ID_GRAY_BACKPACK, RegistryIds.item(() -> new BackpackItem(7)));
+        LIGHT_GRAY_BACKPACK   = ITEMS.register(ID_LIGHT_GRAY_BACKPACK, RegistryIds.item(() -> new BackpackItem(8)));
+        CYAN_BACKPACK         = ITEMS.register(ID_CYAN_BACKPACK, RegistryIds.item(() -> new BackpackItem(9)));
+        PURPLE_BACKPACK       = ITEMS.register(ID_PURPLE_BACKPACK, RegistryIds.item(() -> new BackpackItem(10)));
+        BLUE_BACKPACK         = ITEMS.register(ID_BLUE_BACKPACK, RegistryIds.item(() -> new BackpackItem(11)));
+        BROWN_BACKPACK        = ITEMS.register(ID_BROWN_BACKPACK, RegistryIds.item(() -> new BackpackItem(12)));
+        GREEN_BACKPACK        = ITEMS.register(ID_GREEN_BACKPACK, RegistryIds.item(() -> new BackpackItem(13)));
+        RED_BACKPACK          = ITEMS.register(ID_RED_BACKPACK, RegistryIds.item(() -> new BackpackItem(14)));
+        BLACK_BACKPACK        = ITEMS.register(ID_BLACK_BACKPACK, RegistryIds.item(() -> new BackpackItem(15)));
     }
 
     private static Supplier<Item> createSimpleItemSupplier() {
-        return () -> new Item(new Item.Properties());
+        return () -> new Item(RegistryIds.itemProps());
     }
 
     private static Item createAxeItem(Tier tier, float attackDamage, float attackSpeed) {
-        return new AxeItem(tier, new Item.Properties().attributes(AxeItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new AxeItem(tier, RegistryIds.itemProps().attributes(AxeItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createPickaxeItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new PickaxeItem(tier, new Item.Properties().attributes(PickaxeItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new PickaxeItem(tier, RegistryIds.itemProps().attributes(PickaxeItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createShovelItem(Tier tier, float attackDamage, float attackSpeed) {
-        return new ShovelItem(tier, new Item.Properties().attributes(ShovelItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new ShovelItem(tier, RegistryIds.itemProps().attributes(ShovelItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createHoeItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new HoeItem(tier, new Item.Properties().attributes(HoeItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new HoeItem(tier, RegistryIds.itemProps().attributes(HoeItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createSwordItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new SwordItem(tier, new Item.Properties().attributes(SwordItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new SwordItem(tier, RegistryIds.itemProps().attributes(SwordItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createSawItem(Tier tier) {
-        return new SawItem(tier, new Item.Properties());
+        return new SawItem(tier, RegistryIds.itemProps());
     }
 
     private static Item createSickleItem(Tier tier, int attackDamage, float attackSpeed) {
-        return new SickleItem(tier, new Item.Properties().attributes(SickleItem.createAttributes(tier, attackDamage, attackSpeed)));
+        return new SickleItem(tier, RegistryIds.itemProps().attributes(SickleItem.createAttributes(tier, attackDamage, attackSpeed)));
     }
 
     private static Item createArmorItem(Holder<ArmorMaterial> material, ArmorItem.Type slot, int durabilityMultiplier) {
-        return new ArmorItem(material, slot, new Item.Properties().durability(slot.getDurability(durabilityMultiplier)));
+        return new ArmorItem(material, slot, RegistryIds.itemProps().durability(slot.getDurability(durabilityMultiplier)));
     }
 
     //region Utilities

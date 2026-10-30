@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.lib.colour.EnumColour;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.SimpleMultipartType;
@@ -46,7 +47,7 @@ public enum MultipartLightType {
         for (int color = 0; color < 16; color++) {
             final int colorFinal = color;
             String regID = getRegistryID(unlocalName, color, false);
-            itemSuppliers.add(color, itemRegistry.register(regID, () -> new MultipartLightPartItem(properties, colorFinal, false)));
+            itemSuppliers.add(color, itemRegistry.register(regID, RegistryIds.item(() -> new MultipartLightPartItem(properties, colorFinal, false))));
             partSuppliers.add(color, partRegistry.register(regID, () -> new SimpleMultipartType<>(isClient -> properties.partFactory(colorFinal, false))));
         }
 
@@ -54,7 +55,7 @@ public enum MultipartLightType {
         for (int color = 0; color < 16; color++) {
             final int colorFinal = color;
             String invRegID = getRegistryID(unlocalName, color, true);
-            invertedItemSuppliers.add(color, itemRegistry.register(invRegID, () -> new MultipartLightPartItem(properties, colorFinal, true)));
+            invertedItemSuppliers.add(color, itemRegistry.register(invRegID, RegistryIds.item(() -> new MultipartLightPartItem(properties, colorFinal, true))));
             invertedPartSuppliers.add(color, partRegistry.register(invRegID, () -> new SimpleMultipartType<>(isClient -> properties.partFactory(colorFinal, true))));
         }
     }

@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.init.FabricationBlocks;
 import mrtjp.projectred.fabrication.init.FabricationDataComponents;
 import mrtjp.projectred.fabrication.init.FabricationItems;
@@ -19,7 +20,7 @@ import java.util.List;
 public class ICBlueprintItem extends Item {
 
     public ICBlueprintItem() {
-        super(new Item.Properties()
+        super(RegistryIds.itemProps()
                 .stacksTo(1));
     }
 

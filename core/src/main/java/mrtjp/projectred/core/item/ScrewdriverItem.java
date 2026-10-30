@@ -1,5 +1,6 @@
 package mrtjp.projectred.core.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.api.IScrewdriver;
 import mrtjp.projectred.core.Configurator;
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.LevelReader;
 public class ScrewdriverItem extends Item implements IScrewdriver {
 
     public ScrewdriverItem() {
-        super(new Item.Properties()
+        super(RegistryIds.itemProps()
                 .stacksTo(1)
                 .durability(128));
     }

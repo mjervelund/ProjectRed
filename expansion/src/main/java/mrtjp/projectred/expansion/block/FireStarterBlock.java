@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.block;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.core.tile.IBlockEventBlockEntity;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
 import mrtjp.projectred.expansion.tile.FireStarterBlockEntity;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class FireStarterBlock extends BaseDeviceBlock {
 
     public FireStarterBlock() {
-        super(BlockBehaviour.Properties.of()
+        super(RegistryIds.blockProps()
                 .mapColor(MapColor.NETHER)
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()

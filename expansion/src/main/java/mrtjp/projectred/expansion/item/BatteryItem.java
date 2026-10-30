@@ -1,12 +1,13 @@
 package mrtjp.projectred.expansion.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.expansion.init.ExpansionItems;
 import net.minecraft.world.item.Item;
 
 public class BatteryItem extends Item implements IRechargableBattery {
 
     public BatteryItem() {
-        super(new Item.Properties()
+        super(RegistryIds.itemProps()
                 .durability(1600));
     }
 

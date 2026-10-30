@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.lib.colour.EnumColour;
 import mrtjp.projectred.illumination.block.IllumarLampBlock;
 import mrtjp.projectred.illumination.tile.IllumarLampBlockEntity;
@@ -46,8 +47,8 @@ public enum BlockLightType {
             final int colorFinal = color;
             String registryID = getRegistryID(color, false);
 
-            blockSupplier.add(color, blockRegistry.register(registryID, () -> blockFactory.apply(colorFinal, false)));
-            itemBlockSupplier.add(color, itemRegistry.register(registryID, () -> new BlockItem(getBlock(colorFinal, false), new Item.Properties())));
+            blockSupplier.add(color, blockRegistry.register(registryID, RegistryIds.block(() -> blockFactory.apply(colorFinal, false))));
+            itemBlockSupplier.add(color, itemRegistry.register(registryID, RegistryIds.item(() -> new BlockItem(getBlock(colorFinal, false), RegistryIds.blockItemProps()))));
             tileEntityTypeSupplier.add(color, tileRegistry.register(registryID, () -> new BlockEntityType<>(
                             (pos, state) -> tileFactory.create(colorFinal, false, pos, state),
                             getBlock(colorFinal, false))));
@@ -58,8 +59,8 @@ public enum BlockLightType {
             final int colorFinal = color;
             String invertedRegistryID = getRegistryID(color, true);
 
-            invertedBlockSupplier.add(color, blockRegistry.register(invertedRegistryID, () -> blockFactory.apply(colorFinal, true)));
-            invertedItemBlockSupplier.add(color, itemRegistry.register(invertedRegistryID, () -> new BlockItem(getBlock(colorFinal, true), new Item.Properties())));
+            invertedBlockSupplier.add(color, blockRegistry.register(invertedRegistryID, RegistryIds.block(() -> blockFactory.apply(colorFinal, true))));
+            invertedItemBlockSupplier.add(color, itemRegistry.register(invertedRegistryID, RegistryIds.item(() -> new BlockItem(getBlock(colorFinal, true), RegistryIds.blockItemProps()))));
             invertedTileEntityTypeSupplier.add(color, tileRegistry.register(invertedRegistryID, () -> new BlockEntityType<>(
                             (pos, state) -> tileFactory.create(colorFinal, true, pos, state),
                             getBlock(colorFinal, true))));

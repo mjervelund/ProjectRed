@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.block;
 
+import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.fabrication.init.FabricationBlocks;
 import mrtjp.projectred.fabrication.tile.PackagingTableBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class PackagingTableBlock extends FabricationMachineBlock {
 
     public PackagingTableBlock() {
-        super(STONE_MACHINE_PROPERTIES);
+        super(ProjectRedBlock.stoneMachineProperties());
     }
 
     @Nullable

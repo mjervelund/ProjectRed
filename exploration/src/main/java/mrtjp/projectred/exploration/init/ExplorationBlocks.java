@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.microblock.api.BlockMicroMaterial;
 import codechicken.microblock.api.MicroMaterial;
 import codechicken.microblock.util.MicroMaterialRegistry;
@@ -105,86 +106,86 @@ public class ExplorationBlocks {
     public static void register() {
 
         // Ores
-        RUBY_ORE_BLOCK                  = BLOCKS.register(ID_RUBY_ORE,                    () -> createOreBlock(false, 2, 7));
-        DEEPSLATE_RUBY_ORE_BLOCK        = BLOCKS.register(ID_DEEPSLATE_RUBY_ORE,          () -> createOreBlock(true,  2, 7));
-        SAPPHIRE_ORE_BLOCK              = BLOCKS.register(ID_SAPPHIRE_ORE,                () -> createOreBlock(false, 2, 7));
-        DEEPSLATE_SAPPHIRE_ORE_BLOCK    = BLOCKS.register(ID_DEEPSLATE_SAPPHIRE_ORE,      () -> createOreBlock(true,  2, 7));
-        PERIDOT_ORE_BLOCK               = BLOCKS.register(ID_PERIDOT_ORE,                 () -> createOreBlock(false, 2, 7));
-        DEEPSLATE_PERIDOT_ORE_BLOCK     = BLOCKS.register(ID_DEEPSLATE_PERIDOT_ORE,       () -> createOreBlock(true,  2, 7));
-        TIN_ORE_BLOCK                   = BLOCKS.register(ID_TIN_ORE,                     () -> createOreBlock(false, 0, 0));
-        DEEPSLATE_TIN_ORE_BLOCK         = BLOCKS.register(ID_DEEPSLATE_TIN_ORE,           () -> createOreBlock(true,  0, 0));
-        SILVER_ORE_BLOCK                = BLOCKS.register(ID_SILVER_ORE,                  () -> createOreBlock(false, 0, 0));
-        DEEPSLATE_SILVER_ORE_BLOCK      = BLOCKS.register(ID_DEEPSLATE_SILVER_ORE,        () -> createOreBlock(true,  0, 0));
-        ELECTROTINE_ORE_BLOCK           = BLOCKS.register(ID_ELECTROTINE_ORE,             () -> createElectrotineOreBlock(false, 1, 5));
-        DEEPSLATE_ELECTROTINE_ORE_BLOCK = BLOCKS.register(ID_DEEPSLATE_ELECTROTINE_ORE,   () -> createElectrotineOreBlock(true,  1, 5));
+        RUBY_ORE_BLOCK                  = BLOCKS.register(ID_RUBY_ORE, RegistryIds.block(() -> createOreBlock(false, 2, 7)));
+        DEEPSLATE_RUBY_ORE_BLOCK        = BLOCKS.register(ID_DEEPSLATE_RUBY_ORE, RegistryIds.block(() -> createOreBlock(true,  2, 7)));
+        SAPPHIRE_ORE_BLOCK              = BLOCKS.register(ID_SAPPHIRE_ORE, RegistryIds.block(() -> createOreBlock(false, 2, 7)));
+        DEEPSLATE_SAPPHIRE_ORE_BLOCK    = BLOCKS.register(ID_DEEPSLATE_SAPPHIRE_ORE, RegistryIds.block(() -> createOreBlock(true,  2, 7)));
+        PERIDOT_ORE_BLOCK               = BLOCKS.register(ID_PERIDOT_ORE, RegistryIds.block(() -> createOreBlock(false, 2, 7)));
+        DEEPSLATE_PERIDOT_ORE_BLOCK     = BLOCKS.register(ID_DEEPSLATE_PERIDOT_ORE, RegistryIds.block(() -> createOreBlock(true,  2, 7)));
+        TIN_ORE_BLOCK                   = BLOCKS.register(ID_TIN_ORE, RegistryIds.block(() -> createOreBlock(false, 0, 0)));
+        DEEPSLATE_TIN_ORE_BLOCK         = BLOCKS.register(ID_DEEPSLATE_TIN_ORE, RegistryIds.block(() -> createOreBlock(true,  0, 0)));
+        SILVER_ORE_BLOCK                = BLOCKS.register(ID_SILVER_ORE, RegistryIds.block(() -> createOreBlock(false, 0, 0)));
+        DEEPSLATE_SILVER_ORE_BLOCK      = BLOCKS.register(ID_DEEPSLATE_SILVER_ORE, RegistryIds.block(() -> createOreBlock(true,  0, 0)));
+        ELECTROTINE_ORE_BLOCK           = BLOCKS.register(ID_ELECTROTINE_ORE, RegistryIds.block(() -> createElectrotineOreBlock(false, 1, 5)));
+        DEEPSLATE_ELECTROTINE_ORE_BLOCK = BLOCKS.register(ID_DEEPSLATE_ELECTROTINE_ORE, RegistryIds.block(() -> createElectrotineOreBlock(true,  1, 5)));
 
         // Decorative blocks
-        MARBLE_BLOCK        = BLOCKS.register(ID_MARBLE,            () -> createDecorativeStoneBlock(1F, 14F));
-        MARBLE_BRICK_BLOCK  = BLOCKS.register(ID_MARBLE_BRICK,      () -> createDecorativeStoneBlock(1F, 14F));
-        BASALT_BLOCK        = BLOCKS.register(ID_BASALT,            () -> createDecorativeStoneBlock(2.5F, 16F));
-        BASALT_COBBLE_BLOCK = BLOCKS.register(ID_BASALT_COBBLE,     () -> createDecorativeStoneBlock(2.5F, 14F));
-        BASALT_BRICK_BLOCK  = BLOCKS.register(ID_BASALT_BRICK,      () -> createDecorativeStoneBlock(2.5F, 20F));
-        RUBY_BLOCK          = BLOCKS.register(ID_RUBY_BLOCK,        () -> createDecorativeGemBlock(5F, 10F));
-        SAPPHIRE_BLOCK      = BLOCKS.register(ID_SAPPHIRE_BLOCK,    () -> createDecorativeGemBlock(5F, 10F));
-        PERIDOT_BLOCK       = BLOCKS.register(ID_PERIDOT_BLOCK,     () -> createDecorativeGemBlock(5F, 10F));
-        ELECTROTINE_BLOCK   = BLOCKS.register(ID_ELECTROTINE_BLOCK, () -> createDecorativeMetalBlock(5F, 10F));
-        RAW_TIN_BLOCK       = BLOCKS.register(ID_RAW_TIN_BLOCK,     () -> createDecorativeMetalBlock(2F, 6F));
-        RAW_SILVER_BLOCK    = BLOCKS.register(ID_RAW_SILVER_BLOCK,  () -> createDecorativeMetalBlock(2F, 6F));
-        TIN_BLOCK           = BLOCKS.register(ID_TIN_BLOCK,         () -> createDecorativeMetalBlock(3F, 6F));
-        SILVER_BLOCK        = BLOCKS.register(ID_SILVER_BLOCK,      () -> createDecorativeMetalBlock(3F, 6F));
+        MARBLE_BLOCK        = BLOCKS.register(ID_MARBLE, RegistryIds.block(() -> createDecorativeStoneBlock(1F, 14F)));
+        MARBLE_BRICK_BLOCK  = BLOCKS.register(ID_MARBLE_BRICK, RegistryIds.block(() -> createDecorativeStoneBlock(1F, 14F)));
+        BASALT_BLOCK        = BLOCKS.register(ID_BASALT, RegistryIds.block(() -> createDecorativeStoneBlock(2.5F, 16F)));
+        BASALT_COBBLE_BLOCK = BLOCKS.register(ID_BASALT_COBBLE, RegistryIds.block(() -> createDecorativeStoneBlock(2.5F, 14F)));
+        BASALT_BRICK_BLOCK  = BLOCKS.register(ID_BASALT_BRICK, RegistryIds.block(() -> createDecorativeStoneBlock(2.5F, 20F)));
+        RUBY_BLOCK          = BLOCKS.register(ID_RUBY_BLOCK, RegistryIds.block(() -> createDecorativeGemBlock(5F, 10F)));
+        SAPPHIRE_BLOCK      = BLOCKS.register(ID_SAPPHIRE_BLOCK, RegistryIds.block(() -> createDecorativeGemBlock(5F, 10F)));
+        PERIDOT_BLOCK       = BLOCKS.register(ID_PERIDOT_BLOCK, RegistryIds.block(() -> createDecorativeGemBlock(5F, 10F)));
+        ELECTROTINE_BLOCK   = BLOCKS.register(ID_ELECTROTINE_BLOCK, RegistryIds.block(() -> createDecorativeMetalBlock(5F, 10F)));
+        RAW_TIN_BLOCK       = BLOCKS.register(ID_RAW_TIN_BLOCK, RegistryIds.block(() -> createDecorativeMetalBlock(2F, 6F)));
+        RAW_SILVER_BLOCK    = BLOCKS.register(ID_RAW_SILVER_BLOCK, RegistryIds.block(() -> createDecorativeMetalBlock(2F, 6F)));
+        TIN_BLOCK           = BLOCKS.register(ID_TIN_BLOCK, RegistryIds.block(() -> createDecorativeMetalBlock(3F, 6F)));
+        SILVER_BLOCK        = BLOCKS.register(ID_SILVER_BLOCK, RegistryIds.block(() -> createDecorativeMetalBlock(3F, 6F)));
 
         // Walls
-        MARBLE_WALL            = BLOCKS.register(ID_MARBLE_WALL,            () -> createWallBlock(MARBLE_BLOCK));
-        MARBLE_BRICK_WALL      = BLOCKS.register(ID_MARBLE_BRICK_WALL,      () -> createWallBlock(MARBLE_BRICK_BLOCK));
-        BASALT_WALL            = BLOCKS.register(ID_BASALT_WALL,            () -> createWallBlock(BASALT_BLOCK));
-        BASALT_COBBLE_WALL     = BLOCKS.register(ID_BASALT_COBBLE_WALL,     () -> createWallBlock(BASALT_COBBLE_BLOCK));
-        BASALT_BRICK_WALL      = BLOCKS.register(ID_BASALT_BRICK_WALL,      () -> createWallBlock(BASALT_BRICK_BLOCK));
-        RUBY_BLOCK_WALL        = BLOCKS.register(ID_RUBY_BLOCK_WALL,        () -> createWallBlock(RUBY_BLOCK));
-        SAPPHIRE_BLOCK_WALL    = BLOCKS.register(ID_SAPPHIRE_BLOCK_WALL,    () -> createWallBlock(SAPPHIRE_BLOCK));
-        PERIDOT_BLOCK_WALL     = BLOCKS.register(ID_PERIDOT_BLOCK_WALL,     () -> createWallBlock(PERIDOT_BLOCK));
-        ELECTROTINE_BLOCK_WALL = BLOCKS.register(ID_ELECTROTINE_BLOCK_WALL, () -> createWallBlock(ELECTROTINE_BLOCK));
+        MARBLE_WALL            = BLOCKS.register(ID_MARBLE_WALL, RegistryIds.block(() -> createWallBlock(MARBLE_BLOCK)));
+        MARBLE_BRICK_WALL      = BLOCKS.register(ID_MARBLE_BRICK_WALL, RegistryIds.block(() -> createWallBlock(MARBLE_BRICK_BLOCK)));
+        BASALT_WALL            = BLOCKS.register(ID_BASALT_WALL, RegistryIds.block(() -> createWallBlock(BASALT_BLOCK)));
+        BASALT_COBBLE_WALL     = BLOCKS.register(ID_BASALT_COBBLE_WALL, RegistryIds.block(() -> createWallBlock(BASALT_COBBLE_BLOCK)));
+        BASALT_BRICK_WALL      = BLOCKS.register(ID_BASALT_BRICK_WALL, RegistryIds.block(() -> createWallBlock(BASALT_BRICK_BLOCK)));
+        RUBY_BLOCK_WALL        = BLOCKS.register(ID_RUBY_BLOCK_WALL, RegistryIds.block(() -> createWallBlock(RUBY_BLOCK)));
+        SAPPHIRE_BLOCK_WALL    = BLOCKS.register(ID_SAPPHIRE_BLOCK_WALL, RegistryIds.block(() -> createWallBlock(SAPPHIRE_BLOCK)));
+        PERIDOT_BLOCK_WALL     = BLOCKS.register(ID_PERIDOT_BLOCK_WALL, RegistryIds.block(() -> createWallBlock(PERIDOT_BLOCK)));
+        ELECTROTINE_BLOCK_WALL = BLOCKS.register(ID_ELECTROTINE_BLOCK_WALL, RegistryIds.block(() -> createWallBlock(ELECTROTINE_BLOCK)));
 
         /* Block Items */
 
         // Ores
-        ITEMS.register(ID_RUBY_ORE,                     () -> createBlockItem(RUBY_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_RUBY_ORE,           () -> createBlockItem(DEEPSLATE_RUBY_ORE_BLOCK));
-        ITEMS.register(ID_SAPPHIRE_ORE,                 () -> createBlockItem(SAPPHIRE_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_SAPPHIRE_ORE,       () -> createBlockItem(DEEPSLATE_SAPPHIRE_ORE_BLOCK));
-        ITEMS.register(ID_PERIDOT_ORE,                  () -> createBlockItem(PERIDOT_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_PERIDOT_ORE,        () -> createBlockItem(DEEPSLATE_PERIDOT_ORE_BLOCK));
-        ITEMS.register(ID_TIN_ORE,                      () -> createBlockItem(TIN_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_TIN_ORE,            () -> createBlockItem(DEEPSLATE_TIN_ORE_BLOCK));
-        ITEMS.register(ID_SILVER_ORE,                   () -> createBlockItem(SILVER_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_SILVER_ORE,         () -> createBlockItem(DEEPSLATE_SILVER_ORE_BLOCK));
-        ITEMS.register(ID_ELECTROTINE_ORE,              () -> createBlockItem(ELECTROTINE_ORE_BLOCK));
-        ITEMS.register(ID_DEEPSLATE_ELECTROTINE_ORE,    () -> createBlockItem(DEEPSLATE_ELECTROTINE_ORE_BLOCK));
+        ITEMS.register(ID_RUBY_ORE, RegistryIds.item(() -> createBlockItem(RUBY_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_RUBY_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_RUBY_ORE_BLOCK)));
+        ITEMS.register(ID_SAPPHIRE_ORE, RegistryIds.item(() -> createBlockItem(SAPPHIRE_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_SAPPHIRE_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_SAPPHIRE_ORE_BLOCK)));
+        ITEMS.register(ID_PERIDOT_ORE, RegistryIds.item(() -> createBlockItem(PERIDOT_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_PERIDOT_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_PERIDOT_ORE_BLOCK)));
+        ITEMS.register(ID_TIN_ORE, RegistryIds.item(() -> createBlockItem(TIN_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_TIN_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_TIN_ORE_BLOCK)));
+        ITEMS.register(ID_SILVER_ORE, RegistryIds.item(() -> createBlockItem(SILVER_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_SILVER_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_SILVER_ORE_BLOCK)));
+        ITEMS.register(ID_ELECTROTINE_ORE, RegistryIds.item(() -> createBlockItem(ELECTROTINE_ORE_BLOCK)));
+        ITEMS.register(ID_DEEPSLATE_ELECTROTINE_ORE, RegistryIds.item(() -> createBlockItem(DEEPSLATE_ELECTROTINE_ORE_BLOCK)));
 
         // Decorative blocks
-        ITEMS.register(ID_MARBLE,           () -> createBlockItem(MARBLE_BLOCK));
-        ITEMS.register(ID_MARBLE_BRICK,     () -> createBlockItem(MARBLE_BRICK_BLOCK));
-        ITEMS.register(ID_BASALT,           () -> createBlockItem(BASALT_BLOCK));
-        ITEMS.register(ID_BASALT_COBBLE,    () -> createBlockItem(BASALT_COBBLE_BLOCK));
-        ITEMS.register(ID_BASALT_BRICK,     () -> createBlockItem(BASALT_BRICK_BLOCK));
-        ITEMS.register(ID_RUBY_BLOCK,       () -> createBlockItem(RUBY_BLOCK));
-        ITEMS.register(ID_SAPPHIRE_BLOCK,   () -> createBlockItem(SAPPHIRE_BLOCK));
-        ITEMS.register(ID_PERIDOT_BLOCK,    () -> createBlockItem(PERIDOT_BLOCK));
-        ITEMS.register(ID_ELECTROTINE_BLOCK,() -> createBlockItem(ELECTROTINE_BLOCK));
-        ITEMS.register(ID_RAW_TIN_BLOCK,    () -> createBlockItem(RAW_TIN_BLOCK));
-        ITEMS.register(ID_RAW_SILVER_BLOCK, () -> createBlockItem(RAW_SILVER_BLOCK));
-        ITEMS.register(ID_TIN_BLOCK,        () -> createBlockItem(TIN_BLOCK));
-        ITEMS.register(ID_SILVER_BLOCK,     () -> createBlockItem(SILVER_BLOCK));
+        ITEMS.register(ID_MARBLE, RegistryIds.item(() -> createBlockItem(MARBLE_BLOCK)));
+        ITEMS.register(ID_MARBLE_BRICK, RegistryIds.item(() -> createBlockItem(MARBLE_BRICK_BLOCK)));
+        ITEMS.register(ID_BASALT, RegistryIds.item(() -> createBlockItem(BASALT_BLOCK)));
+        ITEMS.register(ID_BASALT_COBBLE, RegistryIds.item(() -> createBlockItem(BASALT_COBBLE_BLOCK)));
+        ITEMS.register(ID_BASALT_BRICK, RegistryIds.item(() -> createBlockItem(BASALT_BRICK_BLOCK)));
+        ITEMS.register(ID_RUBY_BLOCK, RegistryIds.item(() -> createBlockItem(RUBY_BLOCK)));
+        ITEMS.register(ID_SAPPHIRE_BLOCK, RegistryIds.item(() -> createBlockItem(SAPPHIRE_BLOCK)));
+        ITEMS.register(ID_PERIDOT_BLOCK, RegistryIds.item(() -> createBlockItem(PERIDOT_BLOCK)));
+        ITEMS.register(ID_ELECTROTINE_BLOCK, RegistryIds.item(() -> createBlockItem(ELECTROTINE_BLOCK)));
+        ITEMS.register(ID_RAW_TIN_BLOCK, RegistryIds.item(() -> createBlockItem(RAW_TIN_BLOCK)));
+        ITEMS.register(ID_RAW_SILVER_BLOCK, RegistryIds.item(() -> createBlockItem(RAW_SILVER_BLOCK)));
+        ITEMS.register(ID_TIN_BLOCK, RegistryIds.item(() -> createBlockItem(TIN_BLOCK)));
+        ITEMS.register(ID_SILVER_BLOCK, RegistryIds.item(() -> createBlockItem(SILVER_BLOCK)));
 
         // Walls
-        ITEMS.register(ID_MARBLE_WALL,          () -> createBlockItem(MARBLE_WALL));
-        ITEMS.register(ID_MARBLE_BRICK_WALL,    () -> createBlockItem(MARBLE_BRICK_WALL));
-        ITEMS.register(ID_BASALT_WALL,          () -> createBlockItem(BASALT_WALL));
-        ITEMS.register(ID_BASALT_COBBLE_WALL,   () -> createBlockItem(BASALT_COBBLE_WALL));
-        ITEMS.register(ID_BASALT_BRICK_WALL,    () -> createBlockItem(BASALT_BRICK_WALL));
-        ITEMS.register(ID_RUBY_BLOCK_WALL,      () -> createBlockItem(RUBY_BLOCK_WALL));
-        ITEMS.register(ID_SAPPHIRE_BLOCK_WALL,  () -> createBlockItem(SAPPHIRE_BLOCK_WALL));
-        ITEMS.register(ID_PERIDOT_BLOCK_WALL,   () -> createBlockItem(PERIDOT_BLOCK_WALL));
-        ITEMS.register(ID_ELECTROTINE_BLOCK_WALL, () -> createBlockItem(ELECTROTINE_BLOCK_WALL));
+        ITEMS.register(ID_MARBLE_WALL, RegistryIds.item(() -> createBlockItem(MARBLE_WALL)));
+        ITEMS.register(ID_MARBLE_BRICK_WALL, RegistryIds.item(() -> createBlockItem(MARBLE_BRICK_WALL)));
+        ITEMS.register(ID_BASALT_WALL, RegistryIds.item(() -> createBlockItem(BASALT_WALL)));
+        ITEMS.register(ID_BASALT_COBBLE_WALL, RegistryIds.item(() -> createBlockItem(BASALT_COBBLE_WALL)));
+        ITEMS.register(ID_BASALT_BRICK_WALL, RegistryIds.item(() -> createBlockItem(BASALT_BRICK_WALL)));
+        ITEMS.register(ID_RUBY_BLOCK_WALL, RegistryIds.item(() -> createBlockItem(RUBY_BLOCK_WALL)));
+        ITEMS.register(ID_SAPPHIRE_BLOCK_WALL, RegistryIds.item(() -> createBlockItem(SAPPHIRE_BLOCK_WALL)));
+        ITEMS.register(ID_PERIDOT_BLOCK_WALL, RegistryIds.item(() -> createBlockItem(PERIDOT_BLOCK_WALL)));
+        ITEMS.register(ID_ELECTROTINE_BLOCK_WALL, RegistryIds.item(() -> createBlockItem(ELECTROTINE_BLOCK_WALL)));
     }
 
     public static void onRegisterMicroMaterials(RegisterEvent event) {
@@ -207,7 +208,7 @@ public class ExplorationBlocks {
     }
 
     private static Block createOreBlock(boolean isDeepslate, int minxp, int maxxp) {
-        return new DropExperienceBlock(UniformInt.of(minxp, maxxp), BlockBehaviour.Properties.of()
+        return new DropExperienceBlock(UniformInt.of(minxp, maxxp), RegistryIds.blockProps()
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .strength(isDeepslate ? 4.5F : 3.0F, 3.0F)
                 .requiresCorrectToolForDrops()
@@ -216,7 +217,7 @@ public class ExplorationBlocks {
     }
 
     private static Block createElectrotineOreBlock(boolean isDeepslate, int minxp, int maxxp) {
-        return new ElectrotineOreBlock(UniformInt.of(minxp, maxxp), BlockBehaviour.Properties.of()
+        return new ElectrotineOreBlock(UniformInt.of(minxp, maxxp), RegistryIds.blockProps()
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .strength(isDeepslate ? 4.5F : 3.0F, 3.0F)
                 .requiresCorrectToolForDrops()
@@ -225,11 +226,11 @@ public class ExplorationBlocks {
     }
 
     private static WallBlock createWallBlock(Supplier<Block> block) {
-        return new WallBlock(BlockBehaviour.Properties.ofLegacyCopy(block.get()).forceSolidOn());
+        return new WallBlock(BlockBehaviour.Properties.ofLegacyCopy(block.get()).setId(RegistryIds.currentBlock()).forceSolidOn());
     }
 
     private static Block createDecorativeStoneBlock(float hardness, float resistance) {
-        return new Block(BlockBehaviour.Properties.of()
+        return new Block(RegistryIds.blockProps()
                 .mapColor(MapColor.STONE)
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .strength(hardness, resistance)
@@ -238,7 +239,7 @@ public class ExplorationBlocks {
     }
 
     private static Block createDecorativeGemBlock(float hardness, float resistance) {
-        return new Block(BlockBehaviour.Properties.of()
+        return new Block(RegistryIds.blockProps()
                 .mapColor(MapColor.METAL)
                 .strength(hardness, resistance)
                 .requiresCorrectToolForDrops()
@@ -246,7 +247,7 @@ public class ExplorationBlocks {
     }
 
     private static Block createDecorativeMetalBlock(float hardness, float resistance) {
-        return new Block(BlockBehaviour.Properties.of()
+        return new Block(RegistryIds.blockProps()
                 .mapColor(MapColor.METAL)
                 .strength(hardness, resistance)
                 .requiresCorrectToolForDrops()
@@ -254,10 +255,10 @@ public class ExplorationBlocks {
     }
 
     private static Item createBlockItem(Supplier<? extends Block> block) {
-        return new BlockItem(block.get(), new Item.Properties());
+        return new BlockItem(block.get(), RegistryIds.blockItemProps());
     }
 
     private static Item createBlockItem(Block block) {
-        return new BlockItem(block, new Item.Properties());
+        return new BlockItem(block, RegistryIds.blockItemProps());
     }
 }

@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.illumination.BlockLightType;
 import mrtjp.projectred.illumination.block.IllumarSmartLampBlock;
 import mrtjp.projectred.illumination.tile.IllumarSmartLampBlockEntity;
@@ -32,10 +33,10 @@ public class IlluminationBlocks {
         }
 
         // Blocks
-        ILLUMAR_SMART_LAMP = BLOCKS.register(ID_ILLUMAR_SMART_LAMP, IllumarSmartLampBlock::new);
+        ILLUMAR_SMART_LAMP = BLOCKS.register(ID_ILLUMAR_SMART_LAMP, RegistryIds.block(IllumarSmartLampBlock::new));
 
         // Block Items
-        ITEMS.register(ID_ILLUMAR_SMART_LAMP, () -> new BlockItem(ILLUMAR_SMART_LAMP.get(), new Item.Properties()));
+        ITEMS.register(ID_ILLUMAR_SMART_LAMP, RegistryIds.item(() -> new BlockItem(ILLUMAR_SMART_LAMP.get(), RegistryIds.blockItemProps())));
 
         // Block Entities
         ILLUMAR_SMART_LAMP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ILLUMAR_SMART_LAMP, () -> new BlockEntityType<>(IllumarSmartLampBlockEntity::new, ILLUMAR_SMART_LAMP.get()));

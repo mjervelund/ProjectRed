@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.init.FabricationDataComponents;
 import mrtjp.projectred.fabrication.item.component.ICDataComponent;
 import mrtjp.projectred.integration.GateType;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ValidDieItem extends Item {
 
     public ValidDieItem() {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
     }
 
     @Override

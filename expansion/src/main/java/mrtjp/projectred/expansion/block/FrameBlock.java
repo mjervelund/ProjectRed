@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.block;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.lib.raytracer.VoxelShapeCache;
 import codechicken.lib.vec.*;
 import com.google.common.collect.ImmutableSet;
@@ -29,7 +30,7 @@ public class FrameBlock extends Block implements Frame {
     private static final VoxelShape[] shapes = new VoxelShape[64];
 
     public FrameBlock() {
-        super(BlockBehaviour.Properties.of()
+        super(RegistryIds.blockProps()
                 .mapColor(MapColor.WOOD)
                 .strength(2.0F)
                 .sound(SoundType.WOOD)

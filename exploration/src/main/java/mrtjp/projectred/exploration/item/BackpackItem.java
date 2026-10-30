@@ -1,5 +1,6 @@
 package mrtjp.projectred.exploration.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.core.inventory.container.ProjectRedMenuType;
 import mrtjp.projectred.exploration.init.ExplorationDataComponents;
 import mrtjp.projectred.exploration.init.ExplorationTags;
@@ -25,7 +26,7 @@ public class BackpackItem extends Item {
     private final int colour;
 
     public BackpackItem(int colour) {
-        super(new Item.Properties()
+        super(RegistryIds.itemProps()
                 .stacksTo(1));
 
         this.colour = colour;

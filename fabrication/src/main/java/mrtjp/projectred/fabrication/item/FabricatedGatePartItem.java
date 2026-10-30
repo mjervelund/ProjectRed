@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.init.FabricationDataComponents;
 import mrtjp.projectred.integration.GateType;
 import mrtjp.projectred.integration.item.BaseGatePartItem;
@@ -13,7 +14,7 @@ import java.util.List;
 public class FabricatedGatePartItem extends BaseGatePartItem {
 
     public FabricatedGatePartItem(GateType gateType) {
-        super(new Item.Properties(), gateType); // No creative tab
+        super(RegistryIds.itemProps(), gateType); // No creative tab
     }
 
     @Override

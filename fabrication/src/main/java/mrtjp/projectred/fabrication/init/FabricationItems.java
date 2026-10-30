@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.item.*;
 
 import java.util.function.Supplier;
@@ -28,12 +29,12 @@ public class FabricationItems {
     public static void register() {
 
         // Items
-        IC_BLUEPRINT_ITEM = ITEMS.register(ID_IC_BLUEPRINT, ICBlueprintItem::new);
-        BLANK_PHOTOMASK_ITEM = ITEMS.register(ID_BLANK_PHOTOMASK, BlankPhotomaskItem::new);
-        PHOTOMASK_SET_ITEM = ITEMS.register(ID_PHOTOMASK_SET, PhotomaskSetItem::new);
-        ROUGH_SILICON_WAFER_ITEM = ITEMS.register(ID_ROUGH_SILICON_WAFER, RoughSiliconWaferItem::new);
-//        ETCHED_SILICON_WAFER_ITEM = ITEMS.register(ID_ETCHED_SILICON_WAFER, EtchedSiliconWaferItem::new);
-        VALID_DIE_ITEM = ITEMS.register(ID_VALID_DIE, ValidDieItem::new);
-        INVALID_DIE_ITEM = ITEMS.register(ID_INVALID_DIE, InvalidDieItem::new);
+        IC_BLUEPRINT_ITEM = ITEMS.register(ID_IC_BLUEPRINT, RegistryIds.item(ICBlueprintItem::new));
+        BLANK_PHOTOMASK_ITEM = ITEMS.register(ID_BLANK_PHOTOMASK, RegistryIds.item(BlankPhotomaskItem::new));
+        PHOTOMASK_SET_ITEM = ITEMS.register(ID_PHOTOMASK_SET, RegistryIds.item(PhotomaskSetItem::new));
+        ROUGH_SILICON_WAFER_ITEM = ITEMS.register(ID_ROUGH_SILICON_WAFER, RegistryIds.item(RoughSiliconWaferItem::new));
+//        ETCHED_SILICON_WAFER_ITEM = ITEMS.register(ID_ETCHED_SILICON_WAFER, RegistryIds.item(EtchedSiliconWaferItem::new));
+        VALID_DIE_ITEM = ITEMS.register(ID_VALID_DIE, RegistryIds.item(ValidDieItem::new));
+        INVALID_DIE_ITEM = ITEMS.register(ID_INVALID_DIE, RegistryIds.item(InvalidDieItem::new));
     }
 }

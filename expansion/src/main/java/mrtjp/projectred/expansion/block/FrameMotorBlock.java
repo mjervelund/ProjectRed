@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 public class FrameMotorBlock extends ProjectRedBlock {
 
     public FrameMotorBlock() {
-        super(STONE_MACHINE_PROPERTIES);
+        super(ProjectRedBlock.stoneMachineProperties());
     }
 
     @Nullable

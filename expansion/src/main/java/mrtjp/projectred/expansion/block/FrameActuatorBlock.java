@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public class FrameActuatorBlock extends ProjectRedBlock {
 
     public FrameActuatorBlock() {
-        super(STONE_MACHINE_PROPERTIES);
+        super(ProjectRedBlock.stoneMachineProperties());
     }
 
     @Nullable

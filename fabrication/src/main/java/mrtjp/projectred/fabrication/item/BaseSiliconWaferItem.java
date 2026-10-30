@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.lithography.WaferType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -17,7 +18,7 @@ public class BaseSiliconWaferItem extends Item {
     private final WaferType waferType;
 
     public BaseSiliconWaferItem(WaferType waferType) {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
         this.waferType = waferType;
     }
 

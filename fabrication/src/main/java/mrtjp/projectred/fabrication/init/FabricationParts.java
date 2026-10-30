@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.SimpleMultipartType;
 import mrtjp.projectred.fabrication.item.FabricatedGatePartItem;
@@ -23,7 +24,7 @@ public class FabricationParts {
     public static void register() {
 
         // Items
-        FABRICATED_GATE_ITEM = ITEMS.register(ID_FABRICATED_GATE, () -> new FabricatedGatePartItem(GateType.FABRICATED_GATE));
+        FABRICATED_GATE_ITEM = ITEMS.register(ID_FABRICATED_GATE, RegistryIds.item(() -> new FabricatedGatePartItem(GateType.FABRICATED_GATE)));
 
         // Parts
         FABRICATED_GATE_PART = PARTS.register(ID_FABRICATED_GATE, () -> new SimpleMultipartType<>(b -> new FabricatedGatePart()));

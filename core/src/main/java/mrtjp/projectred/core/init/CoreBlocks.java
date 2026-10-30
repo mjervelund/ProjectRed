@@ -28,10 +28,10 @@ public class CoreBlocks {
     public static void register() {
 
         // Blocks
-        ELECTROTINE_GENERATOR_BLOCK = BLOCKS.register(ID_ELECTROTINE_GENERATOR, ElectrotineGeneratorBlock::new);
+        ELECTROTINE_GENERATOR_BLOCK = BLOCKS.register(ID_ELECTROTINE_GENERATOR, RegistryIds.block(ElectrotineGeneratorBlock::new));
 
         // Block Items
-        ITEMS.register(ID_ELECTROTINE_GENERATOR, () -> new BlockItem(ELECTROTINE_GENERATOR_BLOCK.get(), new Item.Properties()));
+        ITEMS.register(ID_ELECTROTINE_GENERATOR, RegistryIds.item(() -> new BlockItem(ELECTROTINE_GENERATOR_BLOCK.get(), RegistryIds.blockItemProps())));
 
         // Tiles
         ELECTROTINE_GENERATOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_ELECTROTINE_GENERATOR, () -> new BlockEntityType<>(ElectrotineGeneratorBlockEntity::new, ELECTROTINE_GENERATOR_BLOCK.get()));

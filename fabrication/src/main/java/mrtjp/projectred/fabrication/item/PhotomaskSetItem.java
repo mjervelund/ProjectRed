@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.item;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.fabrication.init.FabricationDataComponents;
 import mrtjp.projectred.fabrication.init.FabricationItems;
 import mrtjp.projectred.fabrication.item.component.BlueprintDataComponent;
@@ -17,7 +18,7 @@ import java.util.List;
 public class PhotomaskSetItem extends Item {
 
     public PhotomaskSetItem() {
-        super(new Item.Properties());
+        super(RegistryIds.itemProps());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package mrtjp.projectred.transmission;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.lib.colour.EnumColour;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.SimpleMultipartType;
@@ -213,7 +214,7 @@ public enum WireType {
     }
 
     public void registerParts(DeferredRegister<MultipartType<?>> partRegistry, DeferredRegister<Item> itemRegistry) {
-        itemSupplier = itemRegistry.register(unlocalName, isCenterPart ? () -> new CenterWirePartItem(this) : () -> new FaceWirePartItem(this));
+        itemSupplier = itemRegistry.register(unlocalName, RegistryIds.item(isCenterPart ? () -> new CenterWirePartItem(this) : () -> new FaceWirePartItem(this)));
         partSupplier = partRegistry.register(unlocalName, () -> new SimpleMultipartType<>(isClient -> partFactory.apply(this)));
     }
 }

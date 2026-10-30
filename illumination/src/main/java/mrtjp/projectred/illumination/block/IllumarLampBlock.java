@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.block;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import net.minecraft.world.level.redstone.Orientation;
 import codechicken.multipart.api.RedstoneConnectorBlock;
 import mrtjp.projectred.illumination.tile.IllumarLampBlockEntity;
@@ -30,7 +31,7 @@ public class IllumarLampBlock extends Block implements EntityBlock, RedstoneConn
     private final boolean inverted;
 
     public IllumarLampBlock(int color, boolean inverted) {
-        super(BlockBehaviour.Properties.of()
+        super(RegistryIds.blockProps()
                 .mapColor(state -> state.getValue(LIT) ? MapColor.byId(MapColor.TERRACOTTA_WHITE.id + color) : MapColor.COLOR_GRAY)
                 .sound(SoundType.GLASS)
                 .strength(0.5F)

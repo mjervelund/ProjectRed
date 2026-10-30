@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.SimpleMultipartType;
 import mrtjp.projectred.integration.item.GatePartItem;
@@ -103,7 +104,7 @@ public enum GateType
 
     public void registerParts(DeferredRegister<MultipartType<?>> partRegistry, DeferredRegister<Item> itemRegistry) {
         assert unlocalName != null;
-        itemSupplier = itemRegistry.register(unlocalName, () -> new GatePartItem(this));
+        itemSupplier = itemRegistry.register(unlocalName, RegistryIds.item(() -> new GatePartItem(this)));
         partSupplier = partRegistry.register(unlocalName, () -> new SimpleMultipartType<>(isClient -> Objects.requireNonNull(partFactory).apply(this)));
     }
 

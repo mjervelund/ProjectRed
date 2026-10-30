@@ -1,22 +1,11 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "A": {
-      "tag": "c:ingots/red_alloy"
-    },
-    "B": {
-      "tag": "c:dyes/black"
-    },
-    "E": {
-      "tag": "c:dyes/green"
-    },
-    "G": {
-      "tag": "c:dusts/glowstone"
-    },
-    "R": {
-      "tag": "c:dyes/red"
-    }
+    "A": "#c:ingots/red_alloy",
+    "B": "#c:dyes/black",
+    "E": "#c:dyes/green",
+    "G": "#c:dusts/glowstone",
+    "R": "#c:dyes/red"
   },
   "pattern": [
     "A A",
@@ -24,7 +13,6 @@
     "BGR"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_core:multimeter"
   }
 }

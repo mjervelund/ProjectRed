@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.block;
 
+import mrtjp.projectred.core.block.ProjectRedBlock;
 import mrtjp.projectred.expansion.init.ExpansionBlocks;
 import mrtjp.projectred.expansion.tile.AutoCrafterBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class AutoCrafterBlock extends BaseMachineBlock {
 
     public AutoCrafterBlock() {
-        super(STONE_MACHINE_PROPERTIES);
+        super(ProjectRedBlock.stoneMachineProperties());
     }
 
     @Nullable

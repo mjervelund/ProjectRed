@@ -1,20 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "P": {
-      "item": "projectred_core:plate"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "P": "projectred_core:plate",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     "T",
     "P"
   ],
   "result": {
-    "count": 1,
     "id": "projectred_core:cathode"
   }
 }

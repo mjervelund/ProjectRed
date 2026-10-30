@@ -1,5 +1,6 @@
 package mrtjp.projectred.expansion.init;
 
+import mrtjp.projectred.core.init.RegistryIds;
 import mrtjp.projectred.expansion.block.*;
 import mrtjp.projectred.expansion.tile.*;
 import net.minecraft.world.item.BlockItem;
@@ -60,28 +61,28 @@ public class ExpansionBlocks {
         /* Entity Blocks */
 
         // Blocks
-        PROJECT_BENCH_BLOCK = BLOCKS.register(ID_PROJECT_BENCH, ProjectBenchBlock::new);
-        BATTERY_BOX_BLOCK = BLOCKS.register(ID_BATTERY_BOX, BatteryBoxBlock::new);
-        CHARGING_BENCH_BLOCK = BLOCKS.register(ID_CHARGING_BENCH, ChargingBenchBlock::new);
-        AUTO_CRAFTER_BLOCK = BLOCKS.register(ID_AUTO_CRAFTER, AutoCrafterBlock::new);
-        FIRE_STARTER_BLOCK = BLOCKS.register(ID_FIRE_STARTER, FireStarterBlock::new);
-        FRAME_MOTOR_BLOCK = BLOCKS.register(ID_FRAME_MOTOR, FrameMotorBlock::new);
-        FRAME_ACTUATOR_BLOCK = BLOCKS.register(ID_FRAME_ACTUATOR, FrameActuatorBlock::new);
-        TRANSPOSER_BLOCK = BLOCKS.register(ID_TRANSPOSER, TransposerBlock::new);
-        BLOCK_BREAKER_BLOCK = BLOCKS.register(ID_BLOCK_BREAKER, BlockBreakerBlock::new);
-        DEPLOYER_BLOCK = BLOCKS.register(ID_DEPLOYER, DeployerBlock::new);
+        PROJECT_BENCH_BLOCK = BLOCKS.register(ID_PROJECT_BENCH, RegistryIds.block(ProjectBenchBlock::new));
+        BATTERY_BOX_BLOCK = BLOCKS.register(ID_BATTERY_BOX, RegistryIds.block(BatteryBoxBlock::new));
+        CHARGING_BENCH_BLOCK = BLOCKS.register(ID_CHARGING_BENCH, RegistryIds.block(ChargingBenchBlock::new));
+        AUTO_CRAFTER_BLOCK = BLOCKS.register(ID_AUTO_CRAFTER, RegistryIds.block(AutoCrafterBlock::new));
+        FIRE_STARTER_BLOCK = BLOCKS.register(ID_FIRE_STARTER, RegistryIds.block(FireStarterBlock::new));
+        FRAME_MOTOR_BLOCK = BLOCKS.register(ID_FRAME_MOTOR, RegistryIds.block(FrameMotorBlock::new));
+        FRAME_ACTUATOR_BLOCK = BLOCKS.register(ID_FRAME_ACTUATOR, RegistryIds.block(FrameActuatorBlock::new));
+        TRANSPOSER_BLOCK = BLOCKS.register(ID_TRANSPOSER, RegistryIds.block(TransposerBlock::new));
+        BLOCK_BREAKER_BLOCK = BLOCKS.register(ID_BLOCK_BREAKER, RegistryIds.block(BlockBreakerBlock::new));
+        DEPLOYER_BLOCK = BLOCKS.register(ID_DEPLOYER, RegistryIds.block(DeployerBlock::new));
 
         // Block Items
-        ITEMS.register(ID_PROJECT_BENCH, () -> new BlockItem(PROJECT_BENCH_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_BATTERY_BOX, () -> new BlockItem(BATTERY_BOX_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_AUTO_CRAFTER, () -> new BlockItem(AUTO_CRAFTER_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_CHARGING_BENCH, () -> new BlockItem(CHARGING_BENCH_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_FIRE_STARTER, () -> new BlockItem(FIRE_STARTER_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_FRAME_MOTOR, () -> new BlockItem(FRAME_MOTOR_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_FRAME_ACTUATOR, () -> new BlockItem(FRAME_ACTUATOR_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_TRANSPOSER, () -> new BlockItem(TRANSPOSER_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_BLOCK_BREAKER, () -> new BlockItem(BLOCK_BREAKER_BLOCK.get(), new Item.Properties()));
-        ITEMS.register(ID_DEPLOYER, () -> new BlockItem(DEPLOYER_BLOCK.get(), new Item.Properties()));
+        ITEMS.register(ID_PROJECT_BENCH, RegistryIds.item(() -> new BlockItem(PROJECT_BENCH_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_BATTERY_BOX, RegistryIds.item(() -> new BlockItem(BATTERY_BOX_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_AUTO_CRAFTER, RegistryIds.item(() -> new BlockItem(AUTO_CRAFTER_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_CHARGING_BENCH, RegistryIds.item(() -> new BlockItem(CHARGING_BENCH_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_FIRE_STARTER, RegistryIds.item(() -> new BlockItem(FIRE_STARTER_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_FRAME_MOTOR, RegistryIds.item(() -> new BlockItem(FRAME_MOTOR_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_FRAME_ACTUATOR, RegistryIds.item(() -> new BlockItem(FRAME_ACTUATOR_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_TRANSPOSER, RegistryIds.item(() -> new BlockItem(TRANSPOSER_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_BLOCK_BREAKER, RegistryIds.item(() -> new BlockItem(BLOCK_BREAKER_BLOCK.get(), RegistryIds.blockItemProps())));
+        ITEMS.register(ID_DEPLOYER, RegistryIds.item(() -> new BlockItem(DEPLOYER_BLOCK.get(), RegistryIds.blockItemProps())));
 
         // Tiles
         PROJECT_BENCH_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_PROJECT_BENCH, () -> new BlockEntityType<>(ProjectBenchBlockEntity::new, PROJECT_BENCH_BLOCK.get()));
@@ -96,9 +97,9 @@ public class ExpansionBlocks {
         DEPLOYER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(ID_DEPLOYER, () -> new BlockEntityType<>(DeployerBlockEntity::new, DEPLOYER_BLOCK.get()));
 
         /* Blocks */
-        FRAME_BLOCK = BLOCKS.register(ID_FRAME, FrameBlock::new);
+        FRAME_BLOCK = BLOCKS.register(ID_FRAME, RegistryIds.block(FrameBlock::new));
 
-        ITEMS.register(ID_FRAME, () -> new BlockItem(FRAME_BLOCK.get(), new Item.Properties()));
+        ITEMS.register(ID_FRAME, RegistryIds.item(() -> new BlockItem(FRAME_BLOCK.get(), RegistryIds.blockItemProps())));
     }
 
     public static void registerCaps(RegisterCapabilitiesEvent event) {

@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
-    "P": {
-      "item": "projectred_core:plate"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "P": "projectred_core:plate",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     " R ",

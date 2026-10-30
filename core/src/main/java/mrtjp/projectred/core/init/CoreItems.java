@@ -129,68 +129,68 @@ public class CoreItems {
     public static void register() {
 
         // Ingots/dusts/gems
-        RED_ALLOY_INGOT_ITEM = ITEMS.register(ID_RED_ALLOY_INGOT, createSimpleItemSupplier());
-        ELECTROTINE_ALLOY_INGOT_ITEM = ITEMS.register(ID_ELECTROTINE_ALLOY_INGOT, createSimpleItemSupplier());
-        ELECTROTINE_DUST_ITEM = ITEMS.register(ID_ELECTROTINE_DUST, createSimpleItemSupplier());
-        RUBY_ITEM = ITEMS.register(ID_RUBY, createSimpleItemSupplier());
-        SAPPHIRE_ITEM = ITEMS.register(ID_SAPPHIRE, createSimpleItemSupplier());
-        PERIDOT_ITEM = ITEMS.register(ID_PERIDOT, createSimpleItemSupplier());
+        RED_ALLOY_INGOT_ITEM = ITEMS.register(ID_RED_ALLOY_INGOT, RegistryIds.item(createSimpleItemSupplier()));
+        ELECTROTINE_ALLOY_INGOT_ITEM = ITEMS.register(ID_ELECTROTINE_ALLOY_INGOT, RegistryIds.item(createSimpleItemSupplier()));
+        ELECTROTINE_DUST_ITEM = ITEMS.register(ID_ELECTROTINE_DUST, RegistryIds.item(createSimpleItemSupplier()));
+        RUBY_ITEM = ITEMS.register(ID_RUBY, RegistryIds.item(createSimpleItemSupplier()));
+        SAPPHIRE_ITEM = ITEMS.register(ID_SAPPHIRE, RegistryIds.item(createSimpleItemSupplier()));
+        PERIDOT_ITEM = ITEMS.register(ID_PERIDOT, RegistryIds.item(createSimpleItemSupplier()));
 
         // Recipe ingredients
-        PLATE_ITEM = ITEMS.register(ID_PLATE, createSimpleItemSupplier());
-        CONDUCTIVE_PLATE_ITEM = ITEMS.register(ID_CONDUCTIVE_PLATE, createSimpleItemSupplier());
-        WIRED_PLATE_ITEM = ITEMS.register(ID_WIRED_PLATE, createSimpleItemSupplier());
-        BUNDLED_PLATE_ITEM = ITEMS.register(ID_BUNDLED_PLATE, createSimpleItemSupplier());
-        PLATFORMED_PLATE_ITEM = ITEMS.register(ID_PLATFORMED_PLATE, createSimpleItemSupplier());
-        ANODE_ITEM = ITEMS.register(ID_ANODE, createSimpleItemSupplier());
-        CATHODE_ITEM = ITEMS.register(ID_CATHODE, createSimpleItemSupplier());
-        POINTER_ITEM = ITEMS.register(ID_POINTER, createSimpleItemSupplier());
-        SILICON_CHIP_ITEM = ITEMS.register(ID_SILICON_CHIP, createSimpleItemSupplier());
-        ENERGIZED_SILICON_CHIP_ITEM = ITEMS.register(ID_ENERGIZED_SILICON_CHIP, createSimpleItemSupplier());
-        SAND_COAL_COMP_ITEM = ITEMS.register(ID_SAND_COAL_COMP, createSimpleItemSupplier());
-        RED_IRON_COMP_ITEM = ITEMS.register(ID_RED_IRON_COMP, createSimpleItemSupplier());
-        ELECTROTINE_IRON_COMP_ITEM = ITEMS.register(ID_ELECTROTINE_IRON_COMP, createSimpleItemSupplier());
-        SILICON_BOULE_ITEM = ITEMS.register(ID_SILICON_BOULE, createSimpleItemSupplier());
-        SILICON_ITEM = ITEMS.register(ID_SILICON, createSimpleItemSupplier());
-        RED_SILICON_COMP_ITEM = ITEMS.register(ID_RED_SILICON_COMP, createSimpleItemSupplier());
-        GLOW_SILICON_COMP_ITEM = ITEMS.register(ID_GLOW_SILICON_COMP, createSimpleItemSupplier());
-        ELECTROTINE_SILICON_COMP_ITEM = ITEMS.register(ID_ELECTROTINE_SILICON_COMP, createSimpleItemSupplier());
-        INFUSED_SILICON_ITEM = ITEMS.register(ID_INFUSED_SILICON, createSimpleItemSupplier());
-        ENERGIZED_SILICON_ITEM = ITEMS.register(ID_ENERGIZED_SILICON, createSimpleItemSupplier());
-        ELECTROTINE_SILICON_ITEM = ITEMS.register(ID_ELECTROTINE_SILICON, createSimpleItemSupplier());
-        COPPER_COIL_ITEM = ITEMS.register(ID_COPPER_COIL, createSimpleItemSupplier());
-        IRON_COIL_ITEM = ITEMS.register(ID_IRON_COIL, createSimpleItemSupplier());
-        GOLD_COIL_ITEM = ITEMS.register(ID_GOLD_COIL, createSimpleItemSupplier());
-        MOTOR_ITEM = ITEMS.register(ID_MOTOR, createSimpleItemSupplier());
-        WOVEN_CLOTH_ITEM = ITEMS.register(ID_WOVEN_CLOTH, createSimpleItemSupplier());
-        SAIL_ITEM = ITEMS.register(ID_SAIL, createSimpleItemSupplier());
+        PLATE_ITEM = ITEMS.register(ID_PLATE, RegistryIds.item(createSimpleItemSupplier()));
+        CONDUCTIVE_PLATE_ITEM = ITEMS.register(ID_CONDUCTIVE_PLATE, RegistryIds.item(createSimpleItemSupplier()));
+        WIRED_PLATE_ITEM = ITEMS.register(ID_WIRED_PLATE, RegistryIds.item(createSimpleItemSupplier()));
+        BUNDLED_PLATE_ITEM = ITEMS.register(ID_BUNDLED_PLATE, RegistryIds.item(createSimpleItemSupplier()));
+        PLATFORMED_PLATE_ITEM = ITEMS.register(ID_PLATFORMED_PLATE, RegistryIds.item(createSimpleItemSupplier()));
+        ANODE_ITEM = ITEMS.register(ID_ANODE, RegistryIds.item(createSimpleItemSupplier()));
+        CATHODE_ITEM = ITEMS.register(ID_CATHODE, RegistryIds.item(createSimpleItemSupplier()));
+        POINTER_ITEM = ITEMS.register(ID_POINTER, RegistryIds.item(createSimpleItemSupplier()));
+        SILICON_CHIP_ITEM = ITEMS.register(ID_SILICON_CHIP, RegistryIds.item(createSimpleItemSupplier()));
+        ENERGIZED_SILICON_CHIP_ITEM = ITEMS.register(ID_ENERGIZED_SILICON_CHIP, RegistryIds.item(createSimpleItemSupplier()));
+        SAND_COAL_COMP_ITEM = ITEMS.register(ID_SAND_COAL_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        RED_IRON_COMP_ITEM = ITEMS.register(ID_RED_IRON_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        ELECTROTINE_IRON_COMP_ITEM = ITEMS.register(ID_ELECTROTINE_IRON_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        SILICON_BOULE_ITEM = ITEMS.register(ID_SILICON_BOULE, RegistryIds.item(createSimpleItemSupplier()));
+        SILICON_ITEM = ITEMS.register(ID_SILICON, RegistryIds.item(createSimpleItemSupplier()));
+        RED_SILICON_COMP_ITEM = ITEMS.register(ID_RED_SILICON_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        GLOW_SILICON_COMP_ITEM = ITEMS.register(ID_GLOW_SILICON_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        ELECTROTINE_SILICON_COMP_ITEM = ITEMS.register(ID_ELECTROTINE_SILICON_COMP, RegistryIds.item(createSimpleItemSupplier()));
+        INFUSED_SILICON_ITEM = ITEMS.register(ID_INFUSED_SILICON, RegistryIds.item(createSimpleItemSupplier()));
+        ENERGIZED_SILICON_ITEM = ITEMS.register(ID_ENERGIZED_SILICON, RegistryIds.item(createSimpleItemSupplier()));
+        ELECTROTINE_SILICON_ITEM = ITEMS.register(ID_ELECTROTINE_SILICON, RegistryIds.item(createSimpleItemSupplier()));
+        COPPER_COIL_ITEM = ITEMS.register(ID_COPPER_COIL, RegistryIds.item(createSimpleItemSupplier()));
+        IRON_COIL_ITEM = ITEMS.register(ID_IRON_COIL, RegistryIds.item(createSimpleItemSupplier()));
+        GOLD_COIL_ITEM = ITEMS.register(ID_GOLD_COIL, RegistryIds.item(createSimpleItemSupplier()));
+        MOTOR_ITEM = ITEMS.register(ID_MOTOR, RegistryIds.item(createSimpleItemSupplier()));
+        WOVEN_CLOTH_ITEM = ITEMS.register(ID_WOVEN_CLOTH, RegistryIds.item(createSimpleItemSupplier()));
+        SAIL_ITEM = ITEMS.register(ID_SAIL, RegistryIds.item(createSimpleItemSupplier()));
 
         // Illumars
-        WHITE_ILLUMAR_ITEM = ITEMS.register(ID_WHITE_ILLUMAR, createSimpleItemSupplier());
-        ORANGE_ILLUMAR_ITEM = ITEMS.register(ID_ORANGE_ILLUMAR, createSimpleItemSupplier());
-        MAGENTA_ILLUMAR_ITEM = ITEMS.register(ID_MAGENTA_ILLUMAR, createSimpleItemSupplier());
-        LIGHT_BLUE_ILLUMAR_ITEM = ITEMS.register(ID_LIGHT_BLUE_ILLUMAR, createSimpleItemSupplier());
-        YELLOW_ILLUMAR_ITEM = ITEMS.register(ID_YELLOW_ILLUMAR, createSimpleItemSupplier());
-        LIME_ILLUMAR_ITEM = ITEMS.register(ID_LIME_ILLUMAR, createSimpleItemSupplier());
-        PINK_ILLUMAR_ITEM = ITEMS.register(ID_PINK_ILLUMAR, createSimpleItemSupplier());
-        GRAY_ILLUMAR_ITEM = ITEMS.register(ID_GRAY_ILLUMAR, createSimpleItemSupplier());
-        LIGHT_GRAY_ILLUMAR_ITEM = ITEMS.register(ID_LIGHT_GRAY_ILLUMAR, createSimpleItemSupplier());
-        CYAN_ILLUMAR_ITEM = ITEMS.register(ID_CYAN_ILLUMAR, createSimpleItemSupplier());
-        PURPLE_ILLUMAR_ITEM = ITEMS.register(ID_PURPLE_ILLUMAR, createSimpleItemSupplier());
-        BLUE_ILLUMAR_ITEM = ITEMS.register(ID_BLUE_ILLUMAR, createSimpleItemSupplier());
-        BROWN_ILLUMAR_ITEM = ITEMS.register(ID_BROWN_ILLUMAR, createSimpleItemSupplier());
-        GREEN_ILLUMAR_ITEM = ITEMS.register(ID_GREEN_ILLUMAR, createSimpleItemSupplier());
-        RED_ILLUMAR_ITEM = ITEMS.register(ID_RED_ILLUMAR, createSimpleItemSupplier());
-        BLACK_ILLUMAR_ITEM = ITEMS.register(ID_BLACK_ILLUMAR, createSimpleItemSupplier());
+        WHITE_ILLUMAR_ITEM = ITEMS.register(ID_WHITE_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        ORANGE_ILLUMAR_ITEM = ITEMS.register(ID_ORANGE_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        MAGENTA_ILLUMAR_ITEM = ITEMS.register(ID_MAGENTA_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        LIGHT_BLUE_ILLUMAR_ITEM = ITEMS.register(ID_LIGHT_BLUE_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        YELLOW_ILLUMAR_ITEM = ITEMS.register(ID_YELLOW_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        LIME_ILLUMAR_ITEM = ITEMS.register(ID_LIME_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        PINK_ILLUMAR_ITEM = ITEMS.register(ID_PINK_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        GRAY_ILLUMAR_ITEM = ITEMS.register(ID_GRAY_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        LIGHT_GRAY_ILLUMAR_ITEM = ITEMS.register(ID_LIGHT_GRAY_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        CYAN_ILLUMAR_ITEM = ITEMS.register(ID_CYAN_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        PURPLE_ILLUMAR_ITEM = ITEMS.register(ID_PURPLE_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        BLUE_ILLUMAR_ITEM = ITEMS.register(ID_BLUE_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        BROWN_ILLUMAR_ITEM = ITEMS.register(ID_BROWN_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        GREEN_ILLUMAR_ITEM = ITEMS.register(ID_GREEN_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        RED_ILLUMAR_ITEM = ITEMS.register(ID_RED_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
+        BLACK_ILLUMAR_ITEM = ITEMS.register(ID_BLACK_ILLUMAR, RegistryIds.item(createSimpleItemSupplier()));
 
         // Tools
-        DRAW_PLATE_ITEM = ITEMS.register(ID_DRAW_PLATE, DrawPlateItem::new);
-        SCREWDRIVER_ITEM = ITEMS.register(ID_SCREWDRIVER, ScrewdriverItem::new);
-        MULTIMETER_ITEM = ITEMS.register(ID_MULTIMETER, MultimeterItem::new);
+        DRAW_PLATE_ITEM = ITEMS.register(ID_DRAW_PLATE, RegistryIds.item(DrawPlateItem::new));
+        SCREWDRIVER_ITEM = ITEMS.register(ID_SCREWDRIVER, RegistryIds.item(ScrewdriverItem::new));
+        MULTIMETER_ITEM = ITEMS.register(ID_MULTIMETER, RegistryIds.item(MultimeterItem::new));
     }
 
     private static Supplier<Item> createSimpleItemSupplier() {
-        return () -> new Item(new Item.Properties());
+        return () -> new Item(RegistryIds.itemProps());
     }
 
     //region Utilities
