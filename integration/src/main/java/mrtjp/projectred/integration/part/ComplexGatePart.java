@@ -34,6 +34,25 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
     public static final int KEY_STATE2 = 20;
 
+    /** Shortest timer/sequencer interval in ticks; the config can only raise it (gate_min_timer_ticks, min 4). */
+    public static final int MIN_TIMER_TICKS = 4;
+
+    /**
+     * Clamps a timer's stored {@code pmax} (interval minus 2 ticks) read from NBT or a packet.
+     * {@code setTimerMax} already enforces this for player input; saved data can hold anything.
+     */
+    public static int clampTimerPointerMax(int pointerMax) {
+        return Math.max(MIN_TIMER_TICKS - 2, pointerMax);
+    }
+
+    /**
+     * Clamps a sequencer's {@code pmax} (ticks per output) read from NBT or a packet. The sequencer
+     * divides by it every tick, so 0 would crash the server.
+     */
+    public static int clampSequencerPointerMax(int pointerMax) {
+        return Math.max(MIN_TIMER_TICKS, pointerMax);
+    }
+
     private byte state2 = 0;
 
     public ComplexGatePart(GateType type) {
@@ -296,8 +315,12 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         private static final int KEY_POINTER_MAX = 30;
         private static final int KEY_POINTER_START = 31;
 
-        private int pointer_max = 38;
+        private static final int DEFAULT_POINTER_MAX = 38;
+
+        private int pointer_max = DEFAULT_POINTER_MAX;
         private long pointer_start = -1L;
+        /** pointer_start still holds the elapsed ticks read by load(); converted once the part has a level */
+        private boolean pointerStartIsElapsed = false;
 
         public RedstoneTimerGatePart(GateType type) {
             super(type);
@@ -308,19 +331,22 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         public void save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.save(tag, lookupProvider);
             tag.putInt("pmax", pointer_max);
-            tag.putLong("pelapsed", pointer_start < 0 ? -1L : level().getGameTime() - pointer_start);
+            // A part loaded from NBT but not yet in a level (e.g. /setblock) has no game time to subtract
+            tag.putLong("pelapsed", pointer_start < 0 ? -1L : pointerStartIsElapsed ? pointer_start : level().getGameTime() - pointer_start);
         }
 
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            pointer_max = tag.getIntOr("pmax", 0);
+            pointer_max = clampTimerPointerMax(tag.getIntOr("pmax", DEFAULT_POINTER_MAX));
             pointer_start = tag.getLongOr("pelapsed", 0L);
+            pointerStartIsElapsed = true;
         }
 
         @Override
         public void writeDesc(MCDataOutput packet) {
             super.writeDesc(packet);
+            resolvePointerStart();
             packet.writeInt(pointer_max);
             packet.writeLong(pointer_start);
         }
@@ -328,13 +354,22 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void readDesc(MCDataInput packet) {
             super.readDesc(packet);
-            pointer_max = packet.readInt();
+            pointer_max = clampTimerPointerMax(packet.readInt());
             pointer_start = packet.readLong();
+            pointerStartIsElapsed = false;
         }
 
         @Override
         protected void gateLogicOnWorldLoad() {
-            if (pointer_start >= 0) pointer_start = level().getGameTime() - pointer_start;
+            resolvePointerStart();
+        }
+
+        /** Turns the elapsed ticks read by load() into a start time, once the part is in a level. */
+        private void resolvePointerStart() {
+            if (pointerStartIsElapsed && hasTile() && hasLevel()) {
+                if (pointer_start >= 0) pointer_start = level().getGameTime() - pointer_start;
+                pointerStartIsElapsed = false;
+            }
         }
         //endregion
 
@@ -343,11 +378,12 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         protected void read(MCDataInput packet, int key) {
             switch (key) {
                 case KEY_POINTER_MAX:
-                    pointer_max = packet.readInt();
+                    pointer_max = clampTimerPointerMax(packet.readInt());
                     break;
                 case KEY_POINTER_START:
                     pointer_start = packet.readInt();
                     if (pointer_start >= 0) pointer_start = level().getGameTime() - pointer_start;
+                    pointerStartIsElapsed = false;
                     break;
                 default:
                     super.read(packet, key);
@@ -371,7 +407,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         @Override
         public void setTimerMax(int t) {
-            int minTime = Math.max(4, Configurator.SERVER.minTimerTicks.get());
+            int minTime = Math.max(MIN_TIMER_TICKS, Configurator.SERVER.minTimerTicks.get());
             if (t < minTime) t = minTime;
             if (t != pointer_max) { //TODO check this, should be - 2 here i think
                 pointer_max = t - 2;
@@ -383,6 +419,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         //region Gate logic
         @Override
         protected void gateLogicOnTick() {
+            resolvePointerStart(); // placed by NBT without a chunk load (no gateLogicOnWorldLoad)
             if (pointer_start >= 0) {
                 if (level().getGameTime() >= pointer_start + pointer_max) {
                     pointerTick();
@@ -393,6 +430,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         }
 
         protected void startPointer() {
+            resolvePointerStart();
             if (pointer_start < 0) {
                 pointer_start = level().getGameTime();
                 tile().setChanged();
@@ -401,6 +439,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         }
 
         protected void resetPointer() {
+            resolvePointerStart();
             if (pointer_start >= 0) {
                 pointer_start = -1;
                 tile().setChanged();
@@ -424,6 +463,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         @Override
         public int pointerValue() {
+            resolvePointerStart();
             return pointer_start < 0 ? 0 : (int) (level().getGameTime() - pointer_start);
         }
         //endregion
@@ -499,7 +539,9 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         private static final int KEY_POINTER_MAX = 30;
 
-        private int pointer_max = 40;
+        private static final int DEFAULT_POINTER_MAX = 40;
+
+        private int pointer_max = DEFAULT_POINTER_MAX;
 
         public Sequencer(GateType type) {
             super(type);
@@ -515,7 +557,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             super.load(tag, lookupProvider);
-            pointer_max = tag.getIntOr("pmax", 0);
+            pointer_max = clampSequencerPointerMax(tag.getIntOr("pmax", DEFAULT_POINTER_MAX));
         }
 
         @Override
@@ -527,7 +569,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         @Override
         public void readDesc(MCDataInput packet) {
             super.readDesc(packet);
-            pointer_max = packet.readInt();
+            pointer_max = clampSequencerPointerMax(packet.readInt());
         }
         //endregion
 
@@ -536,7 +578,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
         protected void read(MCDataInput packet, int key) {
             switch (key) {
                 case KEY_POINTER_MAX:
-                    pointer_max = packet.readInt();
+                    pointer_max = clampSequencerPointerMax(packet.readInt());
                     break;
                 default:
                     super.read(packet, key);
@@ -556,7 +598,7 @@ public abstract class ComplexGatePart extends RedstoneGatePart {
 
         @Override
         public void setTimerMax(int t) {
-            int minTime = Math.max(4, Configurator.SERVER.minTimerTicks.get());
+            int minTime = Math.max(MIN_TIMER_TICKS, Configurator.SERVER.minTimerTicks.get());
             if (t < minTime) t = minTime;
             if (t != pointer_max) {
                 pointer_max = t;
