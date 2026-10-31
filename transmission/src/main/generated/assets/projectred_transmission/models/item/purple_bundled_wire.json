@@ -1,5 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "class": "mrtjp.projectred.transmission.client.WirePartItemRenderer",
-  "loader": "codechickenlib:class"
-}

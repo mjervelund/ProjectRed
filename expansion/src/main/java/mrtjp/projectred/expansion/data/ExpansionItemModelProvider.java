@@ -38,8 +38,8 @@ public class ExpansionItemModelProvider extends ProjectRedModelProvider {
         simpleItemBlock(BLOCK_BREAKER_BLOCK.get());
         simpleItemBlock(DEPLOYER_BLOCK.get());
 
-        simpleItemBlock(FRAME_BLOCK.get());
-        simpleItemBlock(FRAME_MOTOR_BLOCK.get());
+        specialItem(FRAME_BLOCK.get(), ExpansionClientInit.FRAME_ITEM_RENDERER);
+        specialItem(FRAME_MOTOR_BLOCK.get(), ExpansionClientInit.FRAME_MOTOR_ITEM_RENDERER);
 
         for (TubeType type : TubeType.values()) {
             specialItem(type.getItem(), ExpansionClientInit.TUBE_ITEM_RENDERER);

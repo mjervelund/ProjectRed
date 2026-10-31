@@ -37,6 +37,11 @@ public class FrameMotorBlockModel extends FullyOrientableBlockModel {
     private static @Nullable MultiIconTransformation iconT3;
 
 
+    /** Icons for the item (idle, uncharged), used by {@link FrameItemRenderer}. */
+    public static MultiIconTransformation getItemIconT() {
+        return Objects.requireNonNull(iconT1);
+    }
+
     @Override
     protected RenderData getBlockRenderData(@Nullable BlockState state) {
         if (state == null) {
