@@ -8,6 +8,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import mrtjp.projectred.redui.GuiModelIcon;
 import mrtjp.projectred.redui.ViewportRenderNode;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -27,6 +28,7 @@ public class CoreClientInit {
         modEventBus.addListener(CoreClientInit::clientSetup);
         modEventBus.addListener(CoreClientInit::onRegisterScreens);
         modEventBus.addListener(CoreClientInit::onRegisterPictureInPictureRenderers);
+        modEventBus.addListener(CoreClientInit::onRegisterRenderPipelines);
     }
 
     private static void clientSetup(final FMLClientSetupEvent event) {
@@ -35,11 +37,16 @@ public class CoreClientInit {
 
         // Register Halo renderer
         NeoForge.EVENT_BUS.addListener(HaloRenderer::onSubmitCustomGeometry);
+        NeoForge.EVENT_BUS.addListener(HaloRenderer::onRenderAfterLevel);
     }
 
     private static void onRegisterScreens(RegisterMenuScreensEvent event) {
         // Register screens
         event.register(ELECTROTINE_GENERATOR_MENU.get(), ElectrotineGeneratorScreen::new);
+    }
+
+    private static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
+        event.registerPipeline(HaloRenderer.HALO_BLOOM_PIPELINE);
     }
 
     private static void onRegisterPictureInPictureRenderers(RegisterPictureInPictureRenderersEvent event) {

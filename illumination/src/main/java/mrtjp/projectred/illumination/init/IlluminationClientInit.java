@@ -1,5 +1,6 @@
 package mrtjp.projectred.illumination.init;
 
+import codechicken.microblock.init.CBMicroblockModContent;
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import mrtjp.projectred.core.client.IconPartParticleHandler;
@@ -55,6 +56,13 @@ public class IlluminationClientInit {
                 event.registerParticleHandler(type.getPartType(colour, true), IconPartParticleHandler.INSTANCE);
             }
         }
+
+        // Lamp microblock halos (CB Multipart registers only static renderers for microblocks)
+        event.registerDynamicPartRenderer(CBMicroblockModContent.FACE_MICROBLOCK_PART.get(), IllumarLampMicroblockHaloRenderer::new);
+        event.registerDynamicPartRenderer(CBMicroblockModContent.HOLLOW_MICROBLOCK_PART.get(), IllumarLampMicroblockHaloRenderer::new);
+        event.registerDynamicPartRenderer(CBMicroblockModContent.CORNER_MICROBLOCK_PART.get(), IllumarLampMicroblockHaloRenderer::new);
+        event.registerDynamicPartRenderer(CBMicroblockModContent.EDGE_MICROBLOCK_PART.get(), IllumarLampMicroblockHaloRenderer::new);
+        event.registerDynamicPartRenderer(CBMicroblockModContent.POST_MICROBLOCK_PART.get(), IllumarLampMicroblockHaloRenderer::new);
     }
 
     public static final ProjectRedItemRenderer.Unbaked LAMP_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(IllumarLampItemRenderer::new);
