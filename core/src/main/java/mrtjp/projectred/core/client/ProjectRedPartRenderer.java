@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * <p>
  * The extract step keeps a reference to the part (extraction and submission both run on the client thread in the
  * same frame); {@link #renderDynamic} then draws it as before through a {@link RecordingBufferSource}.
- * Everything renders on this path for now; chunk-baked static rendering is not ported.
+ * Static (chunk-baked) geometry goes through {@link StaticPartModel} instead.
  */
 public abstract class ProjectRedPartRenderer<P extends MultiPart> implements DynamicPartRenderer<P, ProjectRedPartRenderer.State<P>> {
 
@@ -26,7 +26,7 @@ public abstract class ProjectRedPartRenderer<P extends MultiPart> implements Dyn
 
     @Override
     public void extractDynamicState(BEState beState, State<P> state, P part, float partialTick, Vec3 camera, @Nullable CrumblingOverlay breakProgress) {
-        state.part = part;
+        state.part = shouldRenderDynamic(part) ? part : null;
         state.partialTick = partialTick;
     }
 
@@ -39,6 +39,14 @@ public abstract class ProjectRedPartRenderer<P extends MultiPart> implements Dyn
         renderDynamic(part, poseStack, buffers, beState.packedLight(), OverlayTexture.NO_OVERLAY, state.partialTick);
         buffers.submit(collector);
         submitExtra(part, poseStack, collector, beState.packedLight(), state.partialTick);
+    }
+
+    /**
+     * False skips {@link #renderDynamic} this frame, e.g. when everything the part draws is chunk-baked
+     * ({@link StaticPartModel}) and it has no animated parts.
+     */
+    protected boolean shouldRenderDynamic(P part) {
+        return true;
     }
 
     /**

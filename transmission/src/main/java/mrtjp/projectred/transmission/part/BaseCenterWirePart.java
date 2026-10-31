@@ -23,6 +23,8 @@ import mrtjp.projectred.api.IConnectable;
 import mrtjp.projectred.core.PlacementLib;
 import mrtjp.projectred.core.part.IConnectableCenterPart;
 import mrtjp.projectred.transmission.WireType;
+import mrtjp.projectred.transmission.client.WireStaticModels;
+import net.neoforged.neoforge.model.data.ModelData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -349,6 +351,16 @@ public abstract class BaseCenterWirePart extends BaseWirePart implements IConnec
         if (internalChange || externalChange) {
             sendConnUpdate();
         }
+    }
+    //endregion
+
+    //region Static rendering (client)
+    @Override
+    public ModelData getModelData() {
+        // Client thread only (ModelDataManager); the client class is only loaded when this runs.
+        boolean useStatic = useStaticRenderer();
+        setStaticModelActive(useStatic);
+        return useStatic ? WireStaticModels.center(this) : ModelData.EMPTY;
     }
     //endregion
 }

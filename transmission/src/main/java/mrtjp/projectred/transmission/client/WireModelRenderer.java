@@ -43,7 +43,7 @@ public class WireModelRenderer {
         return key;
     }
 
-    private static int modelKey(BaseFaceWirePart wire) {
+    static int modelKey(BaseFaceWirePart wire) {
         return modelKey(wire.getSide(), wire.getWireType().getThickness(), wire.getConnMap());
     }
 

@@ -1,5 +1,6 @@
 package mrtjp.projectred.fabrication.init;
 
+import mrtjp.projectred.core.client.StaticPartModel;
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.IconPartParticleHandler;
 import mrtjp.projectred.fabrication.client.RenderFabricatedGate;
@@ -39,6 +40,7 @@ public class FabricationClientInit {
 
     private static void onRegisterMultipartRenderers(RegisterMultipartRenderersEvent event) {
         event.registerDynamicPartRenderer(FabricationParts.FABRICATED_GATE_PART.get(), () -> GatePartRenderer.INSTANCE);
+        event.registerStaticPartRenderer(FabricationParts.FABRICATED_GATE_PART.get(), () -> StaticPartModel.Renderer.INSTANCE);
         event.registerParticleHandler(FabricationParts.FABRICATED_GATE_PART.get(), IconPartParticleHandler.INSTANCE);
     }
 

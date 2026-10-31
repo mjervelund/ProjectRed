@@ -30,7 +30,7 @@ public class FramedWireModelRenderer {
         return thickness << 6 | connMap;
     }
 
-    private static int modelKey(BaseCenterWirePart wire) {
+    static int modelKey(BaseCenterWirePart wire) {
         return modelKey(wire.getWireType().getThickness(), wire.getConnMap());
     }
 
@@ -64,6 +64,20 @@ public class FramedWireModelRenderer {
             FramedJacketedWireModel model = getOrGenerateJacketModel(modelKey);
             model.renderWire(ccrs, uvt, c);
             model.renderMaterial(ccrs, material, false);
+        } else {
+            getOrGenerateWireModel(modelKey).render(ccrs, uvt, c);
+            renderWireScaffold(modelKey, ccrs, uvt);
+        }
+    }
+
+    /**
+     * The wire alone (no jacket material): the jacket's inner wire model when jacketed, else wire plus scaffold.
+     */
+    static void renderWire(CCRenderState ccrs, int modelKey, int hue, TextureAtlasSprite icon, boolean jacketed) {
+        IconTransformation uvt = new IconTransformation(icon);
+        ColourMultiplier c = ColourMultiplier.instance(hue);
+        if (jacketed) {
+            getOrGenerateJacketModel(modelKey).renderWire(ccrs, uvt, c);
         } else {
             getOrGenerateWireModel(modelKey).render(ccrs, uvt, c);
             renderWireScaffold(modelKey, ccrs, uvt);

@@ -13,10 +13,11 @@ import codechicken.multipart.block.TileMultipart;
 import codechicken.multipart.util.PartMap;
 import codechicken.multipart.util.PartRayTraceResult;
 import mrtjp.projectred.api.IConnectable;
-import mrtjp.projectred.core.Configurator;
 import mrtjp.projectred.core.PlacementLib;
 import mrtjp.projectred.core.part.IConnectableFacePart;
 import mrtjp.projectred.transmission.WireType;
+import mrtjp.projectred.transmission.client.WireStaticModels;
+import net.neoforged.neoforge.model.data.ModelData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -109,7 +110,7 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
         switch (key) {
             case KEY_CONN_MAP:
                 connMap = packet.readInt();
-                if (Configurator.CLIENT.staticWires.get()) {
+                if (useStaticRenderer()) {
                     tile().markRender();
                 }
                 break;
@@ -266,6 +267,16 @@ public abstract class BaseFaceWirePart extends BaseWirePart implements IConnecta
         if (internalChange || externalChange) {
             sendConnUpdate();
         }
+    }
+    //endregion
+
+    //region Static rendering (client)
+    @Override
+    public ModelData getModelData() {
+        // Client thread only (ModelDataManager); the client class is only loaded when this runs.
+        boolean useStatic = useStaticRenderer();
+        setStaticModelActive(useStatic);
+        return useStatic ? WireStaticModels.face(this) : ModelData.EMPTY;
     }
     //endregion
 }

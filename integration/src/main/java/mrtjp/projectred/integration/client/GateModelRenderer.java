@@ -102,6 +102,13 @@ public class GateModelRenderer {
     //endregion
 
     //region Dynamic rendering
+    /**
+     * Whether this gate draws anything on the dynamic path besides its static geometry (pointers, custom renders).
+     */
+    public boolean hasDynamic(IGateRenderData key) {
+        return getRenderer(key.getRenderIndex()).hasSpecials();
+    }
+
     public void renderDynamic(CCRenderState ccrs, IGateRenderData key, Transformation t, float partialFrame) {
         renderDynamic(ccrs, key, t, null, null, 0, 0, partialFrame);
     }

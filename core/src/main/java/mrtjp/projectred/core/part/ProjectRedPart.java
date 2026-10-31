@@ -21,6 +21,20 @@ import java.util.function.Consumer;
  */
 public abstract class ProjectRedPart extends BaseMultipart {
 
+    /**
+     * Client only: true when the last {@link #getModelData()} handed this part's static geometry to the chunk mesh
+     * (see {@code mrtjp.projectred.core.client.StaticPartModel}), so the dynamic renderer must not draw it again.
+     */
+    private boolean staticModelActive;
+
+    public boolean isStaticModelActive() {
+        return staticModelActive;
+    }
+
+    protected void setStaticModelActive(boolean staticModelActive) {
+        this.staticModelActive = staticModelActive;
+    }
+
     //region Project Red API (CB Multipart 3.5 style)
     public void save(CompoundTag tag, HolderLookup.Provider registries) {
     }
