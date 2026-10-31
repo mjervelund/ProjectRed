@@ -47,7 +47,8 @@ public class IllumarLampMicroMaterial extends BlockMicroMaterial {
     public void initializeClient(Consumer<MicroMaterialClient> cons) {
         super.initializeClient(superMicroMaterial -> cons.accept(new MicroMaterialClient() {
 
-            // TODO 26.3: lamp microblock halos. CB Multipart 3.6 has no dynamic microblock rendering yet.
+            // 26.3: world halos come from IllumarLampMicroblockHaloRenderer (dynamic part renderer on the microblock
+            // part types). Inventory halos need CB Multipart's MicroMaterialClient.submitDynamic (still a TODO there).
 
             // Delegate the rest to super material
             //@formatter:off
