@@ -4,38 +4,101 @@ import codechicken.lib.render.BlockRenderer;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.TransformingVertexConsumer;
 import codechicken.lib.vec.*;
+import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
+import com.mojang.blaze3d.resource.ResourceHandle;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.GpuFormat;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.CommandEncoder;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
 import mrtjp.projectred.api.MovingBlockEntityRenderCallback;
 import mrtjp.projectred.api.ProjectRedAPI;
 import mrtjp.projectred.core.Configurator;
+import mrtjp.projectred.core.ProjectRedCore;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.PostChain;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
+import org.joml.Matrix4f;
+import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.Set;
+
+import static mrtjp.projectred.core.ProjectRedCore.MOD_ID;
 
 /**
  * Light halos for illumar lamps and lights.
  * <p>
- * 26.3 port: halos are additive glow geometry submitted through {@link SubmitCustomGeometryEvent}. The Fabulous-only
- * bloom post chain ({@code fabulousLights}) is not ported yet: its render types and post chain were built on the
- * removed {@code RenderStateShard}/{@code PostChain} APIs. Entity/item bloom requests are accepted and dropped.
+ * 26.3 port: halos are additive glow geometry submitted through {@link SubmitCustomGeometryEvent}. With
+ * {@code fabulous_lights} on and Improved Transparency (26.x's replacement for Fabulous graphics) enabled, the halos
+ * are also drawn into a separate bloom target after the level ({@link RenderLevelStageEvent.AfterLevel}), which the
+ * {@code projectred_core:halo_bloom} post effect blurs (4 downsample + 4 upsample passes) and blends over the main
+ * target. Level halos and entity/item halos (ground, item frame, third person) bloom; first-person held items do not,
+ * since they are drawn after the level with the hand projection.
  */
 public class HaloRenderer {
 
     // Position + colour, additive blending, no depth write: the same look as the old unfabulous halo type.
     private static final RenderType HALO_GLOW_RENDER_TYPE = RenderTypes.lightning();
 
+    // Bloom geometry: position + colour, no blending, depth-tested against the level depth, no depth write.
+    public static final RenderPipeline HALO_BLOOM_PIPELINE = RenderPipeline.builder(RenderPipelines.DEBUG_FILLED_SNIPPET)
+            .withLocation(Identifier.fromNamespaceAndPath(MOD_ID, "pipeline/halo_bloom"))
+            .withColorTargetState(ColorTargetState.DEFAULT)
+            .withCull(true)
+            .build();
+
+    private static final Identifier BLOOM_POST_CHAIN_ID = Identifier.fromNamespaceAndPath(MOD_ID, "halo_bloom");
+    private static final Identifier BLOOM_TARGET_ID = Identifier.fromNamespaceAndPath(MOD_ID, "halo_bloom");
+    // Downsample targets at 1/2, 1/4, 1/8 and 1/16 of the screen (the old FixedScalePostChain scales)
+    private static final Identifier[] DOWNSAMPLE_TARGET_IDS = {
+            Identifier.fromNamespaceAndPath(MOD_ID, "halo_ds1"),
+            Identifier.fromNamespaceAndPath(MOD_ID, "halo_ds2"),
+            Identifier.fromNamespaceAndPath(MOD_ID, "halo_ds3"),
+            Identifier.fromNamespaceAndPath(MOD_ID, "halo_ds4"),
+    };
+    private static final Set<Identifier> BLOOM_EXTERNAL_TARGETS = Set.of(PostChain.MAIN_TARGET_ID, BLOOM_TARGET_ID,
+            DOWNSAMPLE_TARGET_IDS[0], DOWNSAMPLE_TARGET_IDS[1], DOWNSAMPLE_TARGET_IDS[2], DOWNSAMPLE_TARGET_IDS[3]);
+    private static final Vector4f CLEAR_COLOUR = new Vector4f(0, 0, 0, 0);
+
+    private static @Nullable TextureTarget bloomTarget;
+    private static final TextureTarget[] downsampleTargets = new TextureTarget[DOWNSAMPLE_TARGET_IDS.length];
+    private static boolean bloomFailed = false;
+
     // Ring buffer of all pending halos to render. Capped by config
     private static final LinkedList<HaloRenderData> levelHalos = new LinkedList<>();
-    // Bloom requests from item/entity renderers; only consumed by the (unported) Fabulous bloom pass.
+    // Bloom requests from item/entity renderers, consumed by the bloom pass after the level
     private static final LinkedList<HaloRenderData> entityHalos = new LinkedList<>();
+    // Level halos of the current frame, kept for the bloom pass
+    private static List<HaloRenderData> pendingLevelBloom = List.of();
 
     private static final Vector3 offset = Vector3.ZERO.copy();
 
@@ -58,10 +121,13 @@ public class HaloRenderer {
     }
 
     public static void onSubmitCustomGeometry(final SubmitCustomGeometryEvent event) {
-        entityHalos.clear();
+        pendingLevelBloom = List.of();
         if (levelHalos.isEmpty()) return;
 
         List<HaloRenderData> lightList = pollHalos(levelHalos);
+        if (isFabulous()) {
+            pendingLevelBloom = lightList;
+        }
         Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
         PoseStack stack = event.getPoseStack();
         stack.pushPose();
@@ -75,6 +141,126 @@ public class HaloRenderer {
             }
         });
         stack.popPose();
+    }
+
+    public static void onRenderAfterLevel(final RenderLevelStageEvent.AfterLevel event) {
+        List<HaloRenderData> levelList = pendingLevelBloom;
+        pendingLevelBloom = List.of();
+        List<HaloRenderData> entityList = pollHalos(entityHalos);
+        if (levelList.isEmpty() && entityList.isEmpty() || !isFabulous() || bloomFailed) {
+            return;
+        }
+
+        try {
+            renderBloom(event, levelList, entityList);
+        } catch (RuntimeException e) {
+            // Don't spam the log or crash the client every frame: fall back to glow only
+            bloomFailed = true;
+            ProjectRedCore.LOGGER.error("Halo bloom failed, disabling it until restart", e);
+        }
+    }
+    //endregion
+
+    //region Bloom
+    private static void renderBloom(RenderLevelStageEvent.AfterLevel event, List<HaloRenderData> levelList, List<HaloRenderData> entityList) {
+        Minecraft mc = Minecraft.getInstance();
+        PostChain chain = mc.getShaderManager().getPostChain(BLOOM_POST_CHAIN_ID, BLOOM_EXTERNAL_TARGETS);
+        if (chain == null) return; // Load error already logged by the shader manager
+
+        RenderTarget main = mc.gameRenderer.mainRenderTarget();
+        if (main.getDepthTexture() == null) return;
+        prepareTargets(main);
+        assert bloomTarget != null;
+
+        // Halo geometry into the bloom target, occluded by the level depth
+        CommandEncoder encoder = RenderSystem.getDevice().createCommandEncoder();
+        encoder.clearColorTexture(bloomTarget.getColorTexture(), CLEAR_COLOUR);
+        bloomTarget.copyDepthFrom(main);
+
+        Vec3 cam = event.getLevelRenderState().cameraRenderState.pos;
+        try (ByteBufferBuilder bytes = new ByteBufferBuilder(DefaultVertexFormat.POSITION_COLOR.getVertexSize() * 24 * (levelList.size() + entityList.size()))) {
+            BufferBuilder builder = new BufferBuilder(bytes, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(builder, DefaultVertexFormat.POSITION_COLOR);
+            Translation camOffset = new Translation(-cam.x, -cam.y, -cam.z);
+            for (var light : levelList) {
+                renderToCCRS(ccrs, light.box, new TransformationList(light.t, camOffset), light.bloomRgba);
+            }
+            for (var light : entityList) {
+                // Item poses are already camera-relative
+                renderToCCRS(ccrs, light.box, light.t, light.bloomRgba);
+            }
+            ccrs.reset();
+
+            try (MeshData mesh = builder.build()) {
+                if (mesh == null) return;
+                drawBloomMesh(encoder, mesh, new Matrix4f(event.getModelViewMatrix()));
+            }
+        }
+
+        // Blur the bloom target and blend it over the main target
+        FrameGraphBuilder frame = new FrameGraphBuilder();
+        Map<Identifier, ResourceHandle<RenderTarget>> handles = new HashMap<>();
+        handles.put(PostChain.MAIN_TARGET_ID, frame.importExternal("main", main));
+        handles.put(BLOOM_TARGET_ID, frame.importExternal(BLOOM_TARGET_ID.toString(), bloomTarget));
+        for (int i = 0; i < DOWNSAMPLE_TARGET_IDS.length; i++) {
+            handles.put(DOWNSAMPLE_TARGET_IDS[i], frame.importExternal(DOWNSAMPLE_TARGET_IDS[i].toString(), downsampleTargets[i]));
+        }
+        chain.addToFrame(frame, main.width, main.height, new PostChain.TargetBundle() {
+            @Override
+            public void replace(Identifier id, ResourceHandle<RenderTarget> handle) {
+                handles.put(id, handle);
+            }
+
+            @Override
+            public @Nullable ResourceHandle<RenderTarget> get(Identifier id) {
+                return handles.get(id);
+            }
+        });
+        // The chain's only internal target (main_copy) is persistent, so nothing is allocated per frame
+        frame.execute(GraphicsResourceAllocator.UNPOOLED);
+    }
+
+    private static void drawBloomMesh(CommandEncoder encoder, MeshData mesh, Matrix4f modelView) {
+        assert bloomTarget != null;
+        int indexCount = mesh.drawState().indexCount();
+        RenderSystem.AutoStorageIndexBuffer indices = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS);
+        GpuBuffer indexBuffer = indices.getBuffer(indexCount);
+        GpuBufferSlice transform = RenderSystem.getDynamicUniforms().writeTransform(modelView);
+        try (GpuBuffer vertexBuffer = RenderSystem.getDevice().createBuffer(() -> "ProjectRed halo bloom vertices", GpuBuffer.USAGE_VERTEX, mesh.vertexBuffer());
+             RenderPass pass = encoder.createRenderPass(() -> "ProjectRed halo bloom",
+                     bloomTarget.getColorTextureView(), Optional.empty(), bloomTarget.getDepthTextureView(), OptionalDouble.empty())) {
+            pass.setPipeline(RenderSystem.getCompiledPipeline(HALO_BLOOM_PIPELINE));
+            RenderSystem.bindDefaultUniforms(pass);
+            pass.setUniform("DynamicTransforms", transform);
+            pass.setVertexBuffer(0, vertexBuffer.slice());
+            pass.setIndexBuffer(indexBuffer, indices.type());
+            pass.drawIndexed(indexCount, 1, 0, 0, 0);
+        }
+    }
+
+    private static void prepareTargets(RenderTarget main) {
+        GpuFormat depthFormat = main.getDepthTexture().getFormat();
+        if (bloomTarget == null || bloomTarget.width != main.width || bloomTarget.height != main.height
+                || bloomTarget.getDepthTexture() == null || bloomTarget.getDepthTexture().getFormat() != depthFormat) {
+            if (bloomTarget != null) bloomTarget.destroyBuffers();
+            bloomTarget = new TextureTarget("ProjectRed halo bloom", main.width, main.height, GpuFormat.RGBA8_UNORM, depthFormat);
+        }
+        for (int i = 0; i < downsampleTargets.length; i++) {
+            int scale = 2 << i;
+            int w = Math.max(1, (main.width + scale - 1) / scale);
+            int h = Math.max(1, (main.height + scale - 1) / scale);
+            TextureTarget t = downsampleTargets[i];
+            if (t == null || t.width != w || t.height != h) {
+                if (t != null) t.destroyBuffers();
+                downsampleTargets[i] = new TextureTarget("ProjectRed halo bloom ds" + (i + 1), w, h, GpuFormat.RGBA8_UNORM, null);
+            }
+        }
+    }
+
+    private static boolean isFabulous() {
+        return Configurator.CLIENT.fabulousLights.get() && Minecraft.getInstance().gameRenderer.useImprovedTransparency();
     }
     //endregion
 
@@ -179,7 +365,8 @@ public class HaloRenderer {
 
     private static boolean isEntityItemRenderType(ItemDisplayContext transformType) {
         return switch (transformType) {
-            case FIXED, GROUND, THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND, FIRST_PERSON_LEFT_HAND, FIRST_PERSON_RIGHT_HAND -> true;
+            // First-person hands are drawn after the level with their own projection: no bloom there
+            case FIXED, GROUND, THIRD_PERSON_LEFT_HAND, THIRD_PERSON_RIGHT_HAND -> true;
             default -> false;
         };
     }

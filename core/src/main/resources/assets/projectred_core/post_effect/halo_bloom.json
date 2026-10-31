@@ -1,0 +1,182 @@
+{
+    "targets": {
+        "main_copy": { "persistent": true }
+    },
+    "passes": [
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_downsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_bloom",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds1"
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_downsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds1",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds2"
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_downsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds2",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds3"
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_downsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds3",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds4"
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_upsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds4",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds3",
+            "uniforms": {
+                "UpsampleConfig": [
+                    {
+                        "name": "FilterRadius",
+                        "type": "float",
+                        "value": 2.0
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_upsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds3",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds2",
+            "uniforms": {
+                "UpsampleConfig": [
+                    {
+                        "name": "FilterRadius",
+                        "type": "float",
+                        "value": 3.0
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_upsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds2",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_ds1",
+            "uniforms": {
+                "UpsampleConfig": [
+                    {
+                        "name": "FilterRadius",
+                        "type": "float",
+                        "value": 4.0
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_upsample",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "projectred_core:halo_ds1",
+                    "bilinear": true
+                }
+            ],
+            "output": "projectred_core:halo_bloom",
+            "uniforms": {
+                "UpsampleConfig": [
+                    {
+                        "name": "FilterRadius",
+                        "type": "float",
+                        "value": 5.0
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "minecraft:post/blit",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "minecraft:main",
+                    "bilinear": false
+                }
+            ],
+            "output": "main_copy",
+            "uniforms": {
+                "BlitConfig": [
+                    {
+                        "name": "ColorModulate",
+                        "type": "vec4",
+                        "value": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "vertex_shader": "minecraft:core/screenquad",
+            "fragment_shader": "projectred_core:post/halo_blend",
+            "inputs": [
+                {
+                    "sampler_name": "In",
+                    "target": "main_copy",
+                    "bilinear": false
+                },
+                {
+                    "sampler_name": "Halo",
+                    "target": "projectred_core:halo_bloom",
+                    "bilinear": false
+                }
+            ],
+            "output": "minecraft:main"
+        }
+    ]
+}
