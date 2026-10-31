@@ -3,6 +3,7 @@ package mrtjp.projectred.transmission.init;
 import codechicken.multipart.api.MultipartType;
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
+import mrtjp.projectred.core.client.StaticPartModel;
 import mrtjp.projectred.core.client.IconPartParticleHandler;
 import mrtjp.projectred.transmission.part.BaseCenterWirePart;
 import mrtjp.projectred.transmission.part.BaseFaceWirePart;
@@ -39,6 +40,7 @@ public class TransmissionClientInit {
     private static void onRegisterMultipartRenderers(RegisterMultipartRenderersEvent event) {
         for (WireType type : WireType.values()) {
             event.registerParticleHandler(type.getPartType(), IconPartParticleHandler.INSTANCE);
+            event.registerStaticPartRenderer(type.getPartType(), () -> StaticPartModel.Renderer.INSTANCE);
             if (type.isCenterPart()) {
                 event.registerDynamicPartRenderer(SneakyUtils.<MultipartType<BaseCenterWirePart>>unsafeCast(type.getPartType()), () -> CenterWirePartRenderer.INSTANCE);
             } else {

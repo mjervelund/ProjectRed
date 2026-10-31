@@ -1,5 +1,6 @@
 package mrtjp.projectred.integration.init;
 
+import mrtjp.projectred.core.client.StaticPartModel;
 import codechicken.multipart.api.RegisterMultipartRenderersEvent;
 import mrtjp.projectred.core.client.ProjectRedItemRenderer;
 import mrtjp.projectred.core.client.IconPartParticleHandler;
@@ -34,6 +35,7 @@ public class IntegrationClientInit {
         for (GateType type : GateType.values()) {
             if (type.isExternalGate()) continue;
             event.registerDynamicPartRenderer(type.getPartType(), () -> GatePartRenderer.INSTANCE);
+            event.registerStaticPartRenderer(type.getPartType(), () -> StaticPartModel.Renderer.INSTANCE);
             event.registerParticleHandler(type.getPartType(), IconPartParticleHandler.INSTANCE);
         }
     }

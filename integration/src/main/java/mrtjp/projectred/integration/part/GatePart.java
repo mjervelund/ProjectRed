@@ -25,6 +25,8 @@ import mrtjp.projectred.core.part.IConnectableFacePart;
 import mrtjp.projectred.core.part.IOrientableFacePart;
 import mrtjp.projectred.integration.GateType;
 import mrtjp.projectred.integration.client.GateComponentModels;
+import mrtjp.projectred.integration.client.GateStaticModels;
+import net.neoforged.neoforge.model.data.ModelData;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -502,6 +504,16 @@ public abstract class GatePart extends ProjectRedPart implements IConnectableFac
 
     protected boolean gateLogicActivate(Player player, ItemStack held, PartRayTraceResult hit) {
         return false;
+    }
+    //endregion
+
+    //region Static rendering (client)
+    @Override
+    public ModelData getModelData() {
+        // Client thread only (ModelDataManager); the client class is only loaded when this runs.
+        boolean useStatic = Configurator.CLIENT.staticGates.get();
+        setStaticModelActive(useStatic);
+        return useStatic ? GateStaticModels.gate(this) : ModelData.EMPTY;
     }
     //endregion
 }

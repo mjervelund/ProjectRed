@@ -40,6 +40,18 @@ public class FramedJacketedWireModel {
         highlightBoxList = Arrays.asList(highlightBoxes);
     }
 
+    private @org.jetbrains.annotations.Nullable ImmutableSet<MaskedCuboid> materialBoxes;
+
+    /**
+     * The jacket's material cuboids, for chunk-baked rendering ({@code WireStaticModels}).
+     */
+    public ImmutableSet<MaskedCuboid> getMaterialBoxes() {
+        if (materialBoxes == null) {
+            materialBoxes = ImmutableSet.copyOf(wireBoxList);
+        }
+        return materialBoxes;
+    }
+
     public void renderWire(CCRenderState ccrs, IVertexOperation... ops) {
         wireModel.render(ccrs, ops);
     }
