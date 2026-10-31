@@ -1,5 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "class": "mrtjp.projectred.integration.client.GatePartItemRenderer",
-  "loader": "codechickenlib:class"
-}

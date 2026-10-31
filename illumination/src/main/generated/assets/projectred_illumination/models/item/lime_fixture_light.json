@@ -1,5 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "class": "mrtjp.projectred.illumination.MultipartLightProperties$DefaultMultipartLightItemRenderer",
-  "loader": "codechickenlib:class"
-}

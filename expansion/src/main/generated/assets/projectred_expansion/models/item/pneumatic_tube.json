@@ -1,5 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "class": "mrtjp.projectred.expansion.client.TubePartItemRenderer",
-  "loader": "codechickenlib:class"
-}

@@ -1,5 +1,0 @@
-{
-  "parent": "minecraft:block/block",
-  "class": "mrtjp.projectred.expansion.client.FrameBlockModel",
-  "loader": "codechickenlib:class"
-}

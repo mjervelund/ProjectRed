@@ -10,6 +10,7 @@ import net.neoforged.neoforge.client.event.RegisterBlockStateModels;
 import mrtjp.projectred.expansion.part.BaseTubePart;
 import mrtjp.projectred.expansion.client.TubePartRenderer;
 import mrtjp.projectred.expansion.client.TubePartItemRenderer;
+import mrtjp.projectred.expansion.client.FrameItemRenderer;
 import mrtjp.projectred.expansion.client.FrameMotorBlockModel;
 import mrtjp.projectred.expansion.client.FrameBlockModel;
 import mrtjp.projectred.expansion.client.ExpansionItemProperties;
@@ -110,8 +111,12 @@ public class ExpansionClientInit {
     }
 
     public static final ProjectRedItemRenderer.Unbaked TUBE_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(TubePartItemRenderer::new);
+    public static final ProjectRedItemRenderer.Unbaked FRAME_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(() -> new FrameItemRenderer(false));
+    public static final ProjectRedItemRenderer.Unbaked FRAME_MOTOR_ITEM_RENDERER = new ProjectRedItemRenderer.Unbaked(() -> new FrameItemRenderer(true));
 
     private static void onRegisterSpecialModelRenderers(RegisterSpecialModelRendererEvent event) {
         event.register(Identifier.fromNamespaceAndPath(MOD_ID, "tube"), TUBE_ITEM_RENDERER.type());
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "frame"), FRAME_ITEM_RENDERER.type());
+        event.register(Identifier.fromNamespaceAndPath(MOD_ID, "frame_motor"), FRAME_MOTOR_ITEM_RENDERER.type());
     }
 }
