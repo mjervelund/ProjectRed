@@ -215,11 +215,11 @@ public class BundledCablePart extends BaseFaceWirePart implements IBundledCableP
             raiseSignal(tmpSignal, signalIn);
 
         } else if (lookup.tile instanceof IBundledTile) {
-            byte[] signalIn = ((IBundledTile) lookup.tile).getBundledSignal(Rotation.rotateSide(lookup.otherSide, lookup.otherRotation));
+            byte[] signalIn = ((IBundledTile) lookup.tile).getBundledSignal(lookup.otherDir);
             raiseSignal(tmpSignal, signalIn);
 
         } else if (lookup.tile != null) {
-            byte[] externalSignal = BundledSignalsLib.getBundledSignalViaInteraction(Objects.requireNonNull(lookup.tile.getLevel()), lookup.tile.getBlockPos(), Direction.values()[Rotation.rotateSide(lookup.otherSide, lookup.otherRotation)]);
+            byte[] externalSignal = BundledSignalsLib.getBundledSignalViaInteraction(Objects.requireNonNull(lookup.tile.getLevel()), lookup.tile.getBlockPos(), Direction.values()[lookup.otherDir]);
             raiseSignal(tmpSignal, externalSignal);
         }
     }

@@ -69,7 +69,7 @@ public abstract class FacePowerWire extends BaseFaceWirePart implements IPowerCo
         }
 
         if (lookup.tile instanceof IPowerConnectable) {
-            return ((IPowerConnectable) lookup.tile).getConductor(Rotation.rotateSide(lookup.otherSide, lookup.otherRotation));
+            return ((IPowerConnectable) lookup.tile).getConductor(lookup.otherDir);
         }
 
         return null;
