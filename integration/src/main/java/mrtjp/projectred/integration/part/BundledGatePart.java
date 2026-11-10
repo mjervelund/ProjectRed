@@ -85,10 +85,10 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
             return ((IBundledEmitter) lookup.part).getBundledSignal(lookup.otherRotation);
 
         } else if (lookup.tile instanceof IBundledTile) {
-            return ((IBundledTile) lookup.tile).getBundledSignal(Rotation.rotateSide(lookup.otherSide, lookup.otherRotation));
+            return ((IBundledTile) lookup.tile).getBundledSignal(lookup.otherDir);
 
         } else if (lookup.tile != null) {
-            return BundledSignalsLib.getBundledSignalViaInteraction(Objects.requireNonNull(lookup.tile.getLevel()), lookup.tile.getBlockPos(), Direction.values()[Rotation.rotateSide(lookup.otherSide, lookup.otherRotation)]);
+            return BundledSignalsLib.getBundledSignalViaInteraction(Objects.requireNonNull(lookup.tile.getLevel()), lookup.tile.getBlockPos(), Direction.values()[lookup.otherDir]);
         }
         return null;
     }
