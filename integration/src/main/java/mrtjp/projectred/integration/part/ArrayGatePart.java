@@ -84,7 +84,10 @@ public abstract class ArrayGatePart extends RedstoneGatePart implements IRedwire
     private int sideDiff(@Nullable IPropagationPart p) {
         if (!(p instanceof MultiPart part)) return 0xF;
 
-        if (!(p instanceof IOrientableFacePart facePart)) return 0xF;
+        // Any face part, wires included (not only other gates): a red alloy wire on a non-redwire side (the lower
+        // input of the AND / transparent latch cell) must map to its own side. Answering "all sides" sent its change
+        // through the overhead wire's propagation only, so that input never got its neighbour update (#2003).
+        if (!(p instanceof IConnectableFacePart facePart)) return 0xF;
 
         BlockPos here = pos();
         BlockPos there = part.pos();
