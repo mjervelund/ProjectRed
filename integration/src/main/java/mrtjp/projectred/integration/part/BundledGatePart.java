@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static mrtjp.projectred.core.BundledSignalsLib.*;
 import static mrtjp.projectred.core.part.IOrientableFacePart.flipMaskZ;
@@ -681,18 +682,18 @@ public abstract class BundledGatePart extends RedstoneGatePart implements IBundl
         private static final Cuboid6[] UNPRESSED_BOXES = VecLib.buildCubeArray(4, 4, new Cuboid6(3, 1, 3, 13, 3, 13), new Vector3(-0.25, 0, -0.25));
         private static final Cuboid6[] PRESSED_BOXES = VecLib.buildCubeArray(4, 4, new Cuboid6(3, 1, 3, 13, 2.5, 13), new Vector3(-0.25, 0, -0.25));
 
-        private static final ArrayList<HashMap<Integer, MultiIndexedVoxelShape>> shapeCache = new ArrayList<>(6 * 4);
+        // One map per orientation (side << 2 | rotation, 0..23). getShape is called from the server thread and the
+        // client threads at once (singleplayer), so the cache must be thread-safe (#1937).
+        private static final List<Map<Integer, MultiIndexedVoxelShape>> shapeCache = createShapeCache();
+
+        private static List<Map<Integer, MultiIndexedVoxelShape>> createShapeCache() {
+            List<Map<Integer, MultiIndexedVoxelShape>> list = new ArrayList<>(6 * 4);
+            for (int i = 0; i < 6 * 4; i++) list.add(new ConcurrentHashMap<>());
+            return Collections.unmodifiableList(list);
+        }
 
         public static MultiIndexedVoxelShape getOrCreateOutline(int orient, short pressMask) {
-            while (shapeCache.size() <= orient) shapeCache.add(null);
-
-            HashMap<Integer, MultiIndexedVoxelShape> shapeMap = shapeCache.get(orient);
-            if (shapeMap == null) {
-                shapeMap = new HashMap<>();
-                shapeCache.set(orient, shapeMap);
-            }
-
-            return shapeMap.computeIfAbsent(pressMask & 0xFFFF, k -> createOutline(orient, pressMask));
+            return shapeCache.get(orient).computeIfAbsent(pressMask & 0xFFFF, k -> createOutline(orient, pressMask));
         }
 
         private static MultiIndexedVoxelShape createOutline(int orient, short pressMask) {
