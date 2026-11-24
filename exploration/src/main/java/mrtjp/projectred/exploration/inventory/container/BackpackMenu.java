@@ -17,27 +17,43 @@ import net.minecraft.world.item.ItemStack;
 
 public class BackpackMenu extends AbstractContainerMenu {
 
-    public static final ProjectRedMenuType<BackpackMenu> FACTORY = (windowId, playerInv, packet) -> new BackpackMenu(windowId, playerInv);
+    public static final ProjectRedMenuType<BackpackMenu> FACTORY = (windowId, playerInv, packet) ->
+            new BackpackMenu(windowId, playerInv, packet != null ? packet.readVarInt() : playerInv.getSelectedSlot());
 
     private final BackpackInventory inventory;// = new BackpackInventory(27);
 
     private final Inventory playerInventory;
 
+    // The open backpack: the player inventory slot it was opened from and that exact stack. The menu stays bound to
+    // them, not to "whatever is in the main hand", so changing the selected hotbar slot while it is open (scroll wheel,
+    // number keys, lag between the right-click and the GUI) can no longer save into another item (MrTJP/ProjectRed#1925).
+    private final int backpackSlot;
+    private final ItemStack backpack;
+
     public BackpackMenu(int windowId, Inventory playerInventory) {
+        this(windowId, playerInventory, playerInventory.getSelectedSlot());
+    }
+
+    public BackpackMenu(int windowId, Inventory playerInventory, int backpackSlot) {
         super(ExplorationMenus.BACKPACK_MENU.get(), windowId);
 
         this.playerInventory = playerInventory;
-        this.inventory = this.loadInventoryFromMainHand(playerInventory);
+        this.backpackSlot = backpackSlot;
+        this.backpack = backpackSlot >= 0 && backpackSlot < playerInventory.getContainerSize() ? playerInventory.getItem(backpackSlot) : ItemStack.EMPTY;
+        this.inventory = this.loadInventory();
 
         inventory.addListener(this::onBackpackInventoryChanged);
 
-        InventoryLib.addPlayerInventory(playerInventory, 8, 86, BackpackPlayerSlot::new, this::addSlot);
+        InventoryLib.addPlayerInventory(playerInventory, 8, 86, (inv, index, x, y) -> new BackpackPlayerSlot(inv, index, x, y, backpackSlot), this::addSlot);
         InventoryLib.addInventory(inventory, 0, 8, 18, 9, 3, BackpackSlot::new, this::addSlot);
     }
 
-    public BackpackInventory loadInventoryFromMainHand(Inventory playerInventory) {
-        ItemStack backpack = playerInventory.player.getMainHandItem();
-        if (!BackpackItem.isBackpack(backpack)) {
+    private boolean hasBackpack() {
+        return !backpack.isEmpty() && BackpackItem.isBackpack(backpack);
+    }
+
+    private BackpackInventory loadInventory() {
+        if (!hasBackpack()) {
             return new BackpackInventory(27);
         }
 
@@ -50,14 +66,14 @@ public class BackpackMenu extends AbstractContainerMenu {
         return component.createInventory();
     }
 
-    public void saveInventoryToMainHand(Inventory playerInventory) {
-        ItemStack backpack = playerInventory.player.getMainHandItem();
-        if (!BackpackItem.isBackpack(backpack)) {
+    private void saveInventory(boolean isOpened) {
+        // Saved into the bound stack wherever it is now (even if it has left its slot and the menu is closing for it)
+        if (!hasBackpack()) {
             return;
         }
 
-        // Convert inventory to a Backpack component with closed state
-        var component = BackpackDataComponent.fromInventory(inventory, false);
+        // Convert inventory to a Backpack component
+        var component = BackpackDataComponent.fromInventory(inventory, isOpened);
 
         // Save it
         BackpackDataComponent.setComponent(backpack, component);
@@ -76,13 +92,14 @@ public class BackpackMenu extends AbstractContainerMenu {
 
         if (isHotbar(slotId)) {
             int hotbarIndex = slotId - 27;
-            if (hotbarIndex == player.getInventory().getSelectedSlot()) {
+            if (hotbarIndex == backpackSlot) {
                 return;
             }
         }
 
         if (clickType == ContainerInput.SWAP) {
-            if (dragType == player.getInventory().getSelectedSlot()) {
+            // dragType is the hotbar slot (0-8) or the offhand (40) to swap with
+            if (dragType == backpackSlot) {
                 return;
             }
         }
@@ -93,17 +110,21 @@ public class BackpackMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        saveInventoryToMainHand(playerInventory);
+        saveInventory(false);
     }
 
     @Override
     public boolean stillValid(Player player) {
-        ItemStack stack = player.getMainHandItem();
-        return BackpackItem.isBackpack(stack);
+        // Only while the backpack it was opened from is still in its slot
+        return hasBackpack() && playerInventory.getItem(backpackSlot) == backpack;
     }
 
     protected void onBackpackInventoryChanged(Container backpackInventory) {
-        // Note: no need to save here. Inventory is saved on container close
+        // Keep the backpack's own data current (server only), so a copy of the stack made while it is open (dropped,
+        // moved by another mod) carries what the menu holds instead of the contents at open time.
+        if (!playerInventory.player.level().isClientSide()) {
+            saveInventory(true);
+        }
     }
 
     @Override
@@ -163,13 +184,16 @@ public class BackpackMenu extends AbstractContainerMenu {
      * Slot for the actual player inventory. Disables picking up backpack from hotbar.
      */
     private static class BackpackPlayerSlot extends Slot {
-        public BackpackPlayerSlot(Container inventory, int slotIndex, int x, int y) {
+        private final int backpackSlot;
+
+        public BackpackPlayerSlot(Container inventory, int slotIndex, int x, int y, int backpackSlot) {
             super(inventory, slotIndex, x, y);
+            this.backpackSlot = backpackSlot;
         }
         @Override
         public boolean mayPickup(Player player) {
-            // Dont allow pickup if this is the slot containing the selected backpack
-            return getSlotIndex() != player.getInventory().getSelectedSlot();
+            // Dont allow pickup if this is the slot containing the open backpack
+            return getSlotIndex() != backpackSlot;
         }
     }
 
