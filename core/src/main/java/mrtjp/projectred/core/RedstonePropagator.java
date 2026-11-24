@@ -131,8 +131,25 @@ public class RedstonePropagator {
         void executeRun(@Nullable PropagationRun parent) {
             this.parent = parent;
             RedstonePropagator.currentRun = this;
-            runLoop();
+            try {
+                runLoop();
+            } catch (Throwable t) {
+                // A part threw mid-run (e.g. a bad neighbour lookup). Without this, currentRun stays set forever:
+                // every later propagateTo only queues onto this dead run and no wire on the server updates again
+                // (MrTJP/ProjectRed#2008, #1862, #2000). Drop the run, restore the global flags and rethrow.
+                abortRun();
+                throw t;
+            }
             finishRun();
+        }
+
+        private void abortRun() {
+            RedstonePropagator.currentRun = null;
+            RedstonePropagator.finishingRun = parent;
+            propagationTasks.clear();
+            analogDropPropagationTasks.clear();
+            resetPowerFlags();
+            clear();
         }
 
         void runLoop() {
@@ -159,27 +176,29 @@ public class RedstonePropagator {
             }
 
             RedstonePropagator.finishingRun = this;
-
-            // Notify part changes in bulk
-            for (Map.Entry<TileMultipart, Collection<MultiPart>> entry : partChanges.asMap().entrySet()) {
-                Collection<MultiPart> parts = entry.getValue();
-                for (MultiPart part : parts) {
-                    ((IPropagationPart) part).onSignalUpdate();
+            try {
+                // Notify part changes in bulk
+                for (Map.Entry<TileMultipart, Collection<MultiPart>> entry : partChanges.asMap().entrySet()) {
+                    Collection<MultiPart> parts = entry.getValue();
+                    for (MultiPart part : parts) {
+                        ((IPropagationPart) part).onSignalUpdate();
+                    }
+                    entry.getKey().multiPartChange(parts);
                 }
-                entry.getKey().multiPartChange(parts);
-            }
 
-            // Notify normal neighbor changes in bulk
-            for (Map.Entry<Level, Collection<BlockPos>> entry : neighborChanges.asMap().entrySet()) {
-                Level world = entry.getKey();
-                Collection<BlockPos> positions = entry.getValue();
-                for (BlockPos pos : positions) {
-                    world.neighborChanged(pos, CBMultipartModContent.MULTIPART_BLOCK.get(), null);
+                // Notify normal neighbor changes in bulk
+                for (Map.Entry<Level, Collection<BlockPos>> entry : neighborChanges.asMap().entrySet()) {
+                    Level world = entry.getKey();
+                    Collection<BlockPos> positions = entry.getValue();
+                    for (BlockPos pos : positions) {
+                        world.neighborChanged(pos, CBMultipartModContent.MULTIPART_BLOCK.get(), null);
+                    }
                 }
+            } finally {
+                // Also when a notified neighbour throws: leave no stale finishingRun behind and recycle this run
+                RedstonePropagator.finishingRun = parent;
+                clear();
             }
-
-            RedstonePropagator.finishingRun = parent;
-            clear();
         }
 
         void add(IPropagationPart part, @Nullable IPropagationPart from, int mode) {
