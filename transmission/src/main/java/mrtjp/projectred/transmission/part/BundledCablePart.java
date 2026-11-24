@@ -44,8 +44,13 @@ public class BundledCablePart extends BaseFaceWirePart implements IBundledCableP
     public void setSignal(@Nullable byte[] signal) {
         if (signal == null) {
             Arrays.fill(this.signal, (byte) 0);
-        } else {
+        } else if (signal.length >= 16) {
             System.arraycopy(signal, 0, this.signal, 0, 16);
+        } else {
+            // Part NBT without (or with a short) "signal" array: load what is there instead of throwing, which left
+            // the whole multipart block unloaded
+            Arrays.fill(this.signal, (byte) 0);
+            System.arraycopy(signal, 0, this.signal, 0, signal.length);
         }
     }
 
