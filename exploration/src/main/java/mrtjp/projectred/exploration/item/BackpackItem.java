@@ -13,6 +13,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -40,7 +41,7 @@ public class BackpackItem extends Item {
         if (!context.getLevel().isClientSide()) {
             ServerPlayer player = (ServerPlayer) context.getPlayer();
             if (player != null) {
-                openGui(player);
+                openGui(player, context.getHand());
             }
         }
         return InteractionResult.SUCCESS;
@@ -50,15 +51,18 @@ public class BackpackItem extends Item {
     public InteractionResult use(Level world, Player player, InteractionHand hand) {
         if (!world.isClientSide()) {
             ServerPlayer serverPlayer = (ServerPlayer) player;
-            openGui(serverPlayer);
+            openGui(serverPlayer, hand);
         }
         return InteractionResult.SUCCESS;
     }
 
-    private void openGui(ServerPlayer player) {
+    private void openGui(ServerPlayer player, InteractionHand hand) {
+        // Bind the menu to the slot the backpack was used from (client gets it too, for the slot lock)
+        int slot = hand == InteractionHand.OFF_HAND ? Inventory.SLOT_OFFHAND : player.getInventory().getSelectedSlot();
         ProjectRedMenuType.openMenu(player,
-                new SimpleMenuProvider((windowId, playerInventory, playerEntity) -> new BackpackMenu(windowId, playerInventory),
-                        Component.translatable(this.getDescriptionId())));
+                new SimpleMenuProvider((windowId, playerInventory, playerEntity) -> new BackpackMenu(windowId, playerInventory, slot),
+                        Component.translatable(this.getDescriptionId())),
+                p -> p.writeVarInt(slot));
     }
 
     @Override
