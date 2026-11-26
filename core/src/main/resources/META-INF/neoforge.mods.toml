@@ -6,6 +6,8 @@ license="MIT"
 [[mods]]
     modId="projectred_core"
     displayName="ProjectRed Core"
+    iconFile="icons/projectred_core.png"
+    iconBlur=false
     version="${file.jarVersion}"
 
     updateJSONURL="https://version-check.covers1624.net/check/?mod=${mod_id}&mc=${mc_version}"
